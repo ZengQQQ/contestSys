@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Team_Student {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Team_Student extends ReflectionUtils {
     private Integer t_id;
     private Integer m_id;
 
@@ -34,5 +38,8 @@ public class Team_Student {
                 "t_id=" + t_id +
                 ", m_id=" + m_id +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

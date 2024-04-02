@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Competition {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Competition extends ReflectionUtils {
     private Integer c_id;
     private String c_name;
     private String c_level;
@@ -66,5 +70,8 @@ public class Competition {
 
     public void setC_img(String c_img) {
         this.c_img = c_img;
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

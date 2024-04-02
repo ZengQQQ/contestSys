@@ -1,9 +1,12 @@
 package com.game.domain;
 
 
+import com.game.domain.tool.ReflectionUtils;
 import lombok.Data;
 
-public class Administrator {
+import java.util.Map;
+
+public class Administrator extends ReflectionUtils {
 
     private int a_id;
     private String a_acc;
@@ -50,4 +53,9 @@ public class Administrator {
                 ", a_pwd='" + a_pwd + '\'' +
                 '}';
     }
+
+    public Map<String, Object> toMap(){
+        return mapFields(this);
+    }
+
 }

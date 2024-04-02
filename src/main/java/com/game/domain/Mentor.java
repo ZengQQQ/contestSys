@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Mentor {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Mentor extends ReflectionUtils {
     private Integer m_id;
     private String m_acc;
     private String m_name;
@@ -89,5 +93,8 @@ public class Mentor {
                 ", m_tele='" + m_tele + '\'' +
                 ", m_mail='" + m_mail + '\'' +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

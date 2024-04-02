@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Team_Mentor {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Team_Mentor extends ReflectionUtils {
     //队伍id
     private Integer t_id;
     //导师id
@@ -36,5 +40,8 @@ public class Team_Mentor {
                 "t_id=" + t_id +
                 ", m_id=" + m_id +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

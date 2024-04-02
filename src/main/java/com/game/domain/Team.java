@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Team {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Team extends ReflectionUtils {
     private Integer t_id;
     private Integer captain_id;
     private String t_desc;
@@ -79,5 +83,8 @@ public class Team {
                 ", t_num=" + t_num +
                 ", t_status='" + t_status + '\'' +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

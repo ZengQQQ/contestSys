@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Register {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Register extends ReflectionUtils {
     private Integer r_id;
     private String s_xuehao;
 
@@ -8,8 +12,6 @@ public class Register {
 
     private String r_major;
 
-    public Register() {
-    }
 
     public Register(Integer r_id, String s_xuehao, String r_name, String r_major) {
         this.r_id = r_id;
@@ -60,5 +62,8 @@ public class Register {
                 ", r_name='" + r_name + '\'' +
                 ", r_major='" + r_major + '\'' +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }

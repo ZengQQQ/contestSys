@@ -1,6 +1,10 @@
 package com.game.domain;
 
-public class Student {
+import com.game.domain.tool.ReflectionUtils;
+
+import java.util.Map;
+
+public class Student extends ReflectionUtils {
     private Integer s_id;
     private String s_xuehao;
     private String s_name;
@@ -89,5 +93,8 @@ public class Student {
                 ", s_tele='" + s_tele + '\'' +
                 ", s_status=" + s_status +
                 '}';
+    }
+    public Map<String, Object> toMap(){
+        return mapFields(this);
     }
 }
