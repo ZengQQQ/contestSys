@@ -3,12 +3,9 @@ package com.game.domain;
 import com.game.domain.tool.ReflectionUtils;
 
 import java.util.Map;
-
-public class Register extends ReflectionUtils {
 import lombok.Data;
-
 @Data
-public class Register {
+public class Register extends ReflectionUtils {
     private Integer r_id;
     private String s_xuehao;
 
