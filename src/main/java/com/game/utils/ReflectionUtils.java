@@ -14,7 +14,9 @@ public class ReflectionUtils {
             field.setAccessible(true); // 设置字段为可访问，即使是私有字段也可以访问
             try {
                 Object value = field.get(object); // 获取字段的值
-                resultMap.put(field.getName(), value); // 将字段名和值映射到Map中
+                if (value != null){
+                    resultMap.put(field.getName(), value); // 将字段名和值映射到Map中
+                }
             } catch (IllegalAccessException e) {
                 // 处理异常
                 e.printStackTrace();
