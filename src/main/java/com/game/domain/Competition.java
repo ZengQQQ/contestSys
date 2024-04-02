@@ -1,16 +1,26 @@
 package com.game.domain;
 
 import com.game.domain.tool.ReflectionUtils;
+import com.game.utils.Level;
+import lombok.Data;
+import java.time.LocalDateTime;
 
 import java.util.Map;
 
+@Data
 public class Competition extends ReflectionUtils {
-    private Integer c_id;
-    private String c_name;
-    private String c_level;
-    private String c_sign_t;
-    private String c_url;
-    private String c_img;
+
+/**
+ * 竞赛信息实体类
+ */
+
+
+    private Integer c_id=null;
+    private String c_name=null;
+    private Level c_level=null;
+    private LocalDateTime c_sign_t=null;
+    private String c_url=null;
+    private String c_img=null;
 
     public Competition() {
     }

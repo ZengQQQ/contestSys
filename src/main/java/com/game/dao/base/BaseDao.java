@@ -250,8 +250,13 @@ public class BaseDao<T> {
 
             // 设置参数
             int conut = 1;
-
+            // 设置更新内容
             for (Map.Entry<String, Object> entry : map.entrySet()) {
+                preparedStatement.setObject(conut, entry.getValue());
+                conut++;
+            }
+            // 设置更新条件
+            for (Map.Entry<String, Object> entry : condition.entrySet()) {
                 preparedStatement.setObject(conut, entry.getValue());
                 conut++;
             }
