@@ -27,4 +27,12 @@ public class Team_Student {
     public void setM_id(Integer m_id) {
         this.m_id = m_id;
     }
+
+    @Override
+    public String toString() {
+        return "Team_Student{" +
+                "t_id=" + t_id +
+                ", m_id=" + m_id +
+                '}';
+    }
 }

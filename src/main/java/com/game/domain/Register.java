@@ -18,6 +18,8 @@ public class Register {
         this.r_major = r_major;
     }
 
+    public Register(){}
+
     public Integer getR_id() {
         return r_id;
     }
@@ -48,5 +50,15 @@ public class Register {
 
     public void setR_major(String r_major) {
         this.r_major = r_major;
+    }
+
+    @Override
+    public String toString() {
+        return "Register{" +
+                "r_id=" + r_id +
+                ", s_xuehao='" + s_xuehao + '\'' +
+                ", r_name='" + r_name + '\'' +
+                ", r_major='" + r_major + '\'' +
+                '}';
     }
 }

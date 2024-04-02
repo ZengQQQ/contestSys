@@ -10,6 +10,11 @@ import java.util.Map;
 public class BaseDao<T> {
     public String tableName;
 
+    public BaseDao() {}
+
+    public BaseDao(String tableName) {
+        this.tableName = tableName;
+    }
 
     public static <T> List<T> resultSetToList(ResultSet rs, Class<T> clazz) throws Exception {
         List<T> list = new ArrayList<>();
@@ -63,7 +68,7 @@ public class BaseDao<T> {
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(")");
         // 拼接value的？
-        sqlBuilder.append("VALUES (");
+        sqlBuilder.append(" VALUES (");
         sqlBuilder.append("?,".repeat(map.size()));
         // 删除末尾多余的逗号
         sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
@@ -186,9 +191,10 @@ public class BaseDao<T> {
                 preparedStatement.setObject(conut++, end);
             }
             resultSet = preparedStatement.executeQuery();
+
+            List<T> list = new ArrayList<>();
             // 将结果集转换为对象
             //list = resultSetToList(resultSet, (Class<T>) this.getClass());
-            List<T> list = new ArrayList<>();
             while (resultSet.next()) {
                 // 根据泛型类的实际类型创建对象实例
                 T object = clazz.newInstance();

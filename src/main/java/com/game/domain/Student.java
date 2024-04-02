@@ -77,4 +77,17 @@ public class Student {
     public void setS_status(Integer s_status) {
         this.s_status = s_status;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "s_id=" + s_id +
+                ", s_xuehao='" + s_xuehao + '\'' +
+                ", s_name='" + s_name + '\'' +
+                ", s_major='" + s_major + '\'' +
+                ", s_pwd='" + s_pwd + '\'' +
+                ", s_tele='" + s_tele + '\'' +
+                ", s_status=" + s_status +
+                '}';
+    }
 }

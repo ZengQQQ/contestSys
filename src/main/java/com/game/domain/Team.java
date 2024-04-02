@@ -68,4 +68,16 @@ public class Team {
     public void setT_status(String t_status) {
         this.t_status = t_status;
     }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "t_id=" + t_id +
+                ", captain_id=" + captain_id +
+                ", t_desc='" + t_desc + '\'' +
+                ", c_id=" + c_id +
+                ", t_num=" + t_num +
+                ", t_status='" + t_status + '\'' +
+                '}';
+    }
 }

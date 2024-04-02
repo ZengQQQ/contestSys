@@ -41,4 +41,13 @@ public class Administrator {
     public void setA_pwd(String a_pwd) {
         this.a_pwd = a_pwd;
     }
+
+    @Override
+    public String toString() {
+        return "Administrator{" +
+                "a_id=" + a_id +
+                ", a_acc='" + a_acc + '\'' +
+                ", a_pwd='" + a_pwd + '\'' +
+                '}';
+    }
 }

@@ -58,4 +58,15 @@ public class TeamApplication {
     public void setTa_status(String ta_status) {
         this.ta_status = ta_status;
     }
+
+    @Override
+    public String toString() {
+        return "TeamApplication{" +
+                "ta_id=" + ta_id +
+                ", s_id=" + s_id +
+                ", t_id=" + t_id +
+                ", ta_reason='" + ta_reason + '\'' +
+                ", ta_status='" + ta_status + '\'' +
+                '}';
+    }
 }

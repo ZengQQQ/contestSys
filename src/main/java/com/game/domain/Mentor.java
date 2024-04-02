@@ -77,4 +77,17 @@ public class Mentor {
     public void setM_mail(String m_mail) {
         this.m_mail = m_mail;
     }
+
+    @Override
+    public String toString() {
+        return "Mentor{" +
+                "m_id=" + m_id +
+                ", m_acc='" + m_acc + '\'' +
+                ", m_name='" + m_name + '\'' +
+                ", m_pwd='" + m_pwd + '\'' +
+                ", m_direction='" + m_direction + '\'' +
+                ", m_tele='" + m_tele + '\'' +
+                ", m_mail='" + m_mail + '\'' +
+                '}';
+    }
 }

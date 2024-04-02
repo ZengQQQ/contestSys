@@ -29,4 +29,12 @@ public class Team_Mentor {
     public void setM_id(Integer m_id) {
         this.m_id = m_id;
     }
+
+    @Override
+    public String toString() {
+        return "Team_Mentor{" +
+                "t_id=" + t_id +
+                ", m_id=" + m_id +
+                '}';
+    }
 }
