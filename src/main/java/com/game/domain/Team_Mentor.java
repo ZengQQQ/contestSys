@@ -6,6 +6,9 @@ public class Team_Mentor {
     //导师id
     private Integer m_id;
 
+    public Team_Mentor() {
+    }
+
     public Team_Mentor(Integer t_id, Integer m_id) {
         this.t_id = t_id;
         this.m_id = m_id;

@@ -8,6 +8,9 @@ public class Register {
 
     private String r_major;
 
+    public Register() {
+    }
+
     public Register(Integer r_id, String s_xuehao, String r_name, String r_major) {
         this.r_id = r_id;
         this.s_xuehao = s_xuehao;

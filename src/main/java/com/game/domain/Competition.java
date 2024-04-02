@@ -8,6 +8,9 @@ public class Competition {
     private String c_url;
     private String c_img;
 
+    public Competition() {
+    }
+
     public Competition(Integer c_id, String c_name, String c_level, String c_sign_t, String c_url, String c_img) {
         this.c_id = c_id;
         this.c_name = c_name;

@@ -4,6 +4,9 @@ public class Team_Student {
     private Integer t_id;
     private Integer m_id;
 
+    public Team_Student() {
+    }
+
     public Team_Student(Integer t_id, Integer m_id) {
         this.t_id = t_id;
         this.m_id = m_id;

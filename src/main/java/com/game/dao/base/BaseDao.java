@@ -46,7 +46,6 @@ public class BaseDao<T> {
     /**
      * 插入数据
      *
-     * @param connection 数据库连接
      * @param map        插入的数据 "String, Object"
      * @return 是否插入成功
      */
@@ -99,7 +98,6 @@ public class BaseDao<T> {
 
     /**
      * 删除数据
-     * @param connection 数据库连接
      * @param map 删除条件 "String, Object"
      * @return 删除的行数
      */
@@ -124,7 +122,6 @@ public class BaseDao<T> {
 
             // 设置参数
             int conut = 1;
-            conut++;
             // 设置值
             for (Object value : map.values()) {
                 preparedStatement.setObject(conut, value);
@@ -149,7 +146,6 @@ public class BaseDao<T> {
     /**
      * 查询数据
      *
-     * @param connection 数据库连接
      * @param map        查询条件 "String, Object"
      * @return 查询结果，需要检查为空
      */
@@ -163,7 +159,10 @@ public class BaseDao<T> {
         }
         // 闭合and
         sqlBuilder.append("1=1");
-        sqlBuilder.append(" LIMIT ?,?");
+        if (start>=0 && end >=start){
+            sqlBuilder.append(" LIMIT ?,?");
+        }
+
 
         System.out.println("预制sql： " + sqlBuilder.toString());
 
@@ -182,9 +181,10 @@ public class BaseDao<T> {
                 conut++;
             }
             // 设置limit（分页）
-            preparedStatement.setObject(conut++, start);
-            preparedStatement.setObject(conut++, end);
-
+            if (start>=0 && end >=start) {
+                preparedStatement.setObject(conut++, start);
+                preparedStatement.setObject(conut++, end);
+            }
             resultSet = preparedStatement.executeQuery();
             // 将结果集转换为对象
             //list = resultSetToList(resultSet, (Class<T>) this.getClass());

@@ -9,6 +9,9 @@ public class Team {
     //枚举变量，只有四个状态："组队中","参赛中","已完赛","已解散"
     private String t_status;
 
+    public Team() {
+    }
+
     public Team(Integer t_id, Integer captain_id, String t_desc, int c_id, int t_num, String t_status) {
         this.t_id = t_id;
         this.captain_id = captain_id;

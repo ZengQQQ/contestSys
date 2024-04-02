@@ -9,6 +9,9 @@ public class Student {
     private String s_tele;
     private Integer s_status;
 
+    public Student() {
+    }
+
     public Student(Integer s_id, String s_xuehao, String s_name, String s_major, String s_pwd, String s_tele, Integer s_status) {
         this.s_id = s_id;
         this.s_xuehao = s_xuehao;

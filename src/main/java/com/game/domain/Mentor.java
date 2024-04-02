@@ -9,6 +9,9 @@ public class Mentor {
     private String m_tele;
     private String m_mail;
 
+    public Mentor() {
+    }
+
     public Mentor(Integer m_id, String m_acc, String m_name, String m_pwd, String m_direction, String m_tele, String m_mail) {
         this.m_id = m_id;
         this.m_acc = m_acc;
