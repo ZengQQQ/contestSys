@@ -1,10 +1,9 @@
 package com.game.domain;
 
-import com.game.domain.tool.ReflectionUtils;
+import com.game.utils.ReflectionUtils;
 import com.game.utils.Level;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import java.util.Map;

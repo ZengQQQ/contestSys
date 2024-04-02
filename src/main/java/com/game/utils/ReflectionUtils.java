@@ -1,4 +1,4 @@
-package com.game.domain.tool;
+package com.game.utils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
