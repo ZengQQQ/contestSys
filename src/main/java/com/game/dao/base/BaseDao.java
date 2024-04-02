@@ -1,10 +1,7 @@
 package com.game.dao.base;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +24,7 @@ public class BaseDao<T> {
                 Class<?> fieldType = field.getType();
                 // 根据属性类型获取 ResultSet 中的值
                 Object value = null;
-                if (fieldType == int.class) {
+                if (fieldType == Integer.class) {
                     value = rs.getInt(fieldName);
                 } else if (fieldType == String.class) {
                     value = rs.getString(fieldName);
@@ -53,36 +50,37 @@ public class BaseDao<T> {
      * @param map        插入的数据 "String, Object"
      * @return 是否插入成功
      */
-    public boolean insert(Connection connection, Map<String, Object> map) {
+    public boolean insert(Map<String, Object> map) {
 
         // 构建 SQL 查询语句
         // 构建？
-        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO ? ");
+        StringBuilder sqlBuilder = new StringBuilder("INSERT INTO "+tableName+" ");
         // 拼接key
         sqlBuilder.append("(");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append(",");
         }
+        // 删除末尾多余的逗号
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(")");
         // 拼接value的？
-        sqlBuilder.append(" VALUES (");
-        sqlBuilder.append("?)".repeat(map.size()));
+        sqlBuilder.append("VALUES (");
+        sqlBuilder.append("?,".repeat(map.size()));
+        // 删除末尾多余的逗号
+        sqlBuilder.deleteCharAt(sqlBuilder.length() - 1);
         sqlBuilder.append(")");
-
         System.out.println("预制sql： " + sqlBuilder.toString());
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        Connection connection = null;
         try {
-
 
             connection = Druid.getConnection();
             preparedStatement = connection.prepareStatement(sqlBuilder.toString());
 
             // 设置参数
-            // 表名
-            preparedStatement.setObject(1, tableName);
-            int conut = 2;
+            int conut = 1;
             // 设置值
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 preparedStatement.setObject(conut, entry.getValue());
@@ -105,10 +103,10 @@ public class BaseDao<T> {
      * @param map 删除条件 "String, Object"
      * @return 删除的行数
      */
-    public int delete(Connection connection, Map<String, Object> map) {
+    public int delete(Map<String, Object> map) {
         // 构建 SQL 查询语句
         // 构建？
-        StringBuilder sqlBuilder = new StringBuilder("DELETE FROM ? WHERE ");
+        StringBuilder sqlBuilder = new StringBuilder("DELETE FROM "+tableName+" WHERE ");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append("=? AND ");
         }
@@ -119,14 +117,13 @@ public class BaseDao<T> {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        Connection connection = null;
         try {
             connection = Druid.getConnection();
             preparedStatement = connection.prepareStatement(sqlBuilder.toString());
 
             // 设置参数
             int conut = 1;
-            // 表名
-            preparedStatement.setObject(conut, tableName);
             conut++;
             // 设置值
             for (Object value : map.values()) {
@@ -140,7 +137,6 @@ public class BaseDao<T> {
                 return 0;
             }
             System.out.println("删除成功");
-
             return 1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -158,10 +154,10 @@ public class BaseDao<T> {
      * @return 查询结果，需要检查为空
      */
 
-    public List<T> query(Connection connection, Map<String, Object> map, int start, int end) {
+    public List<T> query(Class<T> clazz,Map<String, Object> map, int start, int end) {
         // 构建 SQL 查询语句
         // 构建？
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ? WHERE ");
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM "+tableName+" WHERE ");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append("=? AND ");
         }
@@ -173,30 +169,41 @@ public class BaseDao<T> {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        Connection connection = null;
         try {
             connection = Druid.getConnection();
             preparedStatement = connection.prepareStatement(sqlBuilder.toString());
 
             // 设置参数
             int conut = 1;
-            // 表名
-            preparedStatement.setObject(conut, tableName);
-            conut++;
             // 设置值
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 preparedStatement.setObject(conut, entry.getValue());
                 conut++;
             }
             // 设置limit（分页）
-            preparedStatement.setObject(conut, start);
-            conut++;
-            preparedStatement.setObject(conut, end);
+            preparedStatement.setObject(conut++, start);
+            preparedStatement.setObject(conut++, end);
 
             resultSet = preparedStatement.executeQuery();
-            List<T> list = null;
+            // 将结果集转换为对象
+            //list = resultSetToList(resultSet, (Class<T>) this.getClass());
+            List<T> list = new ArrayList<>();
             while (resultSet.next()) {
-                // 将结果集转换为对象
-                list = resultSetToList(resultSet, (Class<T>) this.getClass());
+                // 根据泛型类的实际类型创建对象实例
+                T object = clazz.newInstance();
+                // 从 ResultSet 中读取数据，并设置到对象的属性中
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(columnName);
+                    // 使用反射设置对象的属性值
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(object, value);
+                }
+                list.add(object);
             }
             return list;
         } catch (SQLException e) {
@@ -209,15 +216,17 @@ public class BaseDao<T> {
     }
 
 
-    public int update(Connection connection, Map<String, Object> map, Map<String, Object> condition) {
+    public int update(Map<String, Object> map, Map<String, Object> condition) {
         // 构建 SQL 查询语句
         // 构建？
-        StringBuilder sqlBuilder = new StringBuilder("UPDATE ? SET ");
+        StringBuilder sqlBuilder = new StringBuilder("UPDATE "+tableName+" SET ");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append("=?,");
         }
+        // 删除末尾多余的逗号和空格
+        sqlBuilder.delete(sqlBuilder.length() - 1, sqlBuilder.length());
         // 闭合and
-        sqlBuilder.append("1=1 WHERE ");
+        sqlBuilder.append(" WHERE ");
         for (String key : condition.keySet()) {
             sqlBuilder.append(key).append("=? AND ");
         }
@@ -228,22 +237,15 @@ public class BaseDao<T> {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        Connection connection = null;
         try {
             connection = Druid.getConnection();
             preparedStatement = connection.prepareStatement(sqlBuilder.toString());
 
             // 设置参数
             int conut = 1;
-            // 表明
-            preparedStatement.setObject(conut, tableName);
-            conut++;
 
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                preparedStatement.setObject(conut, entry.getValue());
-                conut++;
-            }
-
-            for (Map.Entry<String, Object> entry : condition.entrySet()) {
                 preparedStatement.setObject(conut, entry.getValue());
                 conut++;
             }
