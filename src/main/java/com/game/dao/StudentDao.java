@@ -8,8 +8,9 @@ import java.util.Map;
 
 public class StudentDao extends BaseDao<Student> {
     public StudentDao() {
-        super("Student");
+        super("student");
     }
+
 
     public boolean insert(Student Student) {
         Map<String, Object> map = Student.toMap();
@@ -63,5 +64,9 @@ public class StudentDao extends BaseDao<Student> {
 
         }
         return value;
+    }
+
+    public static void main(String[] args) {
+        Student s = new Student();
     }
 }

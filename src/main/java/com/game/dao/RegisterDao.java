@@ -2,17 +2,14 @@ package com.game.dao;
 
 import com.game.dao.base.BaseDao;
 import com.game.domain.Register;
-
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RegisterDao extends BaseDao<Register> {
 
-    public RegisterDao(String tableName){
-        super(tableName);
+    public RegisterDao(){
+        super("register");
     }
 
 
@@ -35,7 +32,7 @@ public class RegisterDao extends BaseDao<Register> {
 
 
     public static void main(String[] args) {
-       RegisterDao tesdao = new RegisterDao("register");
+       RegisterDao tesdao = new RegisterDao();
        List<Register> lists;
        lists = tesdao.query("21110223",0,10);
        for(Register jj:lists){

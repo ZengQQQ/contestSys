@@ -34,6 +34,6 @@ public class Mentor extends ReflectionUtils {
 
     public static void main(String[] args) {
         Mentor m = new Mentor(null,"123",null,null,null,null,null);
-        System.out.println(m.m_acc.getClass());
+        System.out.println(m.getM_id());
     }
 }

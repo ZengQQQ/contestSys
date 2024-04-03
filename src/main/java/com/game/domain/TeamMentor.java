@@ -1,20 +1,19 @@
 package com.game.domain;
 
 import com.game.utils.ReflectionUtils;
-import lombok.Data;
 
 import java.util.Map;
 
-public class Team_Mentor extends ReflectionUtils {
+public class TeamMentor extends ReflectionUtils {
     //队伍id
     private Integer t_id;
     //导师id
     private Integer m_id;
 
-    public Team_Mentor() {
+    public TeamMentor() {
     }
 
-    public Team_Mentor(Integer t_id, Integer m_id) {
+    public TeamMentor(Integer t_id, Integer m_id) {
         this.t_id = t_id;
         this.m_id = m_id;
     }
@@ -37,7 +36,7 @@ public class Team_Mentor extends ReflectionUtils {
 
     @Override
     public String toString() {
-        return "Team_Mentor{" +
+        return "TeamMentor{" +
                 "t_id=" + t_id +
                 ", m_id=" + m_id +
                 '}';

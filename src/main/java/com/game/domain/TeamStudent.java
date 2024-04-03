@@ -5,14 +5,14 @@ import lombok.Data;
 
 import java.util.Map;
 @Data
-public class Team_Student extends ReflectionUtils {
+public class TeamStudent extends ReflectionUtils {
     private Integer t_id;
     private Integer m_id;
 
-    public Team_Student() {
+    public TeamStudent() {
     }
 
-    public Team_Student(Integer t_id, Integer m_id) {
+    public TeamStudent(Integer t_id, Integer m_id) {
         this.t_id = t_id;
         this.m_id = m_id;
     }

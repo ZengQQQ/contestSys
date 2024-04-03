@@ -4,7 +4,6 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.Competition;
 import com.game.utils.Level;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;

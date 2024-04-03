@@ -11,6 +11,7 @@ public class MentorDao extends BaseDao<Mentor> {
         super("mentor");
     }
 
+
     public boolean insert(Mentor mentor) {
         Map<String, Object> map = mentor.toMap();
         boolean value = super.insert(map);
