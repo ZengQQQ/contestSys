@@ -1,6 +1,7 @@
 package com.game.domain;
 
 import com.game.utils.ReflectionUtils;
+import lombok.Data;
 
 import java.util.Map;
 
