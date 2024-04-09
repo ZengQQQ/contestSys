@@ -67,6 +67,12 @@ public class StudentDao extends BaseDao<Student> {
         return value;
     }
 
+
+    public int statistics(Student student) {
+        Map<String, Object> map=student.toMap();
+        return super.statistics(map);
+    }
+
     public static void main(String[] args) {
         Student s = new Student();
     }

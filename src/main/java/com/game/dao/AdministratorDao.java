@@ -58,13 +58,19 @@ public class AdministratorDao extends BaseDao<Administrator> {
     }
 
 
+    public int statistics(Administrator administrator) {
+        Map<String, Object> map=administrator.toMap();
+        return super.statistics(map);
+    }
+
     public static void main(String[] args) {
         AdministratorDao administratorDao = new AdministratorDao();
         Administrator administrator = new Administrator();
 //        administrator.setA_acc("123");
 //        administrator.setA_pwd("1234");
 //        System.out.println(administratorDao.checkPassword(administrator));
-        System.out.println(administratorDao.statistics());
+        Map<String,Object> map = new HashMap<>();
+        System.out.println(administratorDao.statistics(map));
         System.out.println(administratorDao.query(administrator,-1,-1));
     }
 

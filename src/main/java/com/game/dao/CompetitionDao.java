@@ -7,6 +7,7 @@ import com.game.utils.Level;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CompetitionDao
@@ -132,7 +133,7 @@ public class CompetitionDao extends BaseDao<Competition> {
     /**
      * 查询比赛
      */
-    public List<Competition> select(Competition competition, int current, int size) {
+    public List<Competition> query(Competition competition, int current, int size) {
         // 查询结果
         List<Competition> competitionList = null;
 
@@ -167,6 +168,11 @@ public class CompetitionDao extends BaseDao<Competition> {
         }
     }
 
+
+    public int statistics(Competition competition) {
+        Map<String, Object> map=competition.toMap();
+        return super.statistics(map);
+    }
 
     public static void main(String[] args) {
         CompetitionDao competitionDao = new CompetitionDao();

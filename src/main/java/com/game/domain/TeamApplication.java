@@ -1,6 +1,7 @@
 package com.game.domain;
 
 import com.game.utils.ReflectionUtils;
+import com.game.utils.TeamStatus;
 import lombok.Data;
 
 import java.util.Map;
@@ -11,12 +12,12 @@ public class TeamApplication extends ReflectionUtils {
     private Integer t_id;
     private String ta_reason;
     //枚举变量：“申请中”，“已拒绝”，“已同意”
-    private String ta_status;
+    private TeamStatus ta_status;
 
     public TeamApplication() {
     }
 
-    public TeamApplication(Integer ta_id, Integer s_id, Integer t_id, String ta_reason, String ta_status) {
+    public TeamApplication(Integer ta_id, Integer s_id, Integer t_id, String ta_reason, TeamStatus ta_status) {
         this.ta_id = ta_id;
         this.s_id = s_id;
         this.t_id = t_id;

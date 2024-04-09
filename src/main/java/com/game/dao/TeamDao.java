@@ -67,6 +67,11 @@ public class TeamDao extends BaseDao<Team> {
     }
 
 
+    public int statistics(Team team) {
+        Map<String, Object> map = team.toMap();
+        return super.statistics(map);
+    }
+
     public static void main(String[] args) {
         TeamDao teamdao = new TeamDao();
         teamdao.insertByAllinfos(1,"为了荣耀",1,1,"组队中");
