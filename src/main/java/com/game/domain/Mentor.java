@@ -27,6 +27,15 @@ public class Mentor extends ReflectionUtils {
         this.m_mail = m_mail;
     }
 
+    public Mentor(Mentor mentor){
+        this.m_id = mentor.getM_id();
+        this.m_acc = mentor.getM_acc();
+        this.m_name = mentor.getM_name();
+        this.m_pwd = mentor.getM_pwd();
+        this.m_direction = mentor.getM_direction();
+        this.m_tele = mentor.getM_tele();
+        this.m_mail = mentor.getM_mail();
+    }
 
     public Map<String, Object> toMap(){
         return mapFields(this);

@@ -18,6 +18,11 @@ public class TeamMentor extends ReflectionUtils {
         this.m_id = m_id;
     }
 
+    public TeamMentor(TeamMentor teamMentor){
+        this.t_id = teamMentor.getT_id();
+        this.m_id = teamMentor.getM_id();
+    }
+
     public Integer getT_id() {
         return t_id;
     }

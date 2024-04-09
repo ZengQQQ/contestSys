@@ -17,6 +17,10 @@ public class TeamStudent extends ReflectionUtils {
         this.m_id = m_id;
     }
 
+    public TeamStudent(TeamStudent teamStudent) {
+        this.t_id = teamStudent.getT_id();
+        this.m_id = teamStudent.getM_id();
+    }
     public Map<String, Object> toMap(){
         return mapFields(this);
     }

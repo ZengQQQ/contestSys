@@ -261,6 +261,11 @@ public class BaseDao<T> {
                 conut++;
             }
 
+            for (Map.Entry<String, Object> entry : condition.entrySet()) {
+                preparedStatement.setObject(conut, entry.getValue());
+                conut++;
+            }
+
             int res = preparedStatement.executeUpdate();
             if (res == 0) {
                 System.out.println("更新失败");

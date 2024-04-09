@@ -2,7 +2,6 @@ package com.game.serve;
 
 import com.game.dao.MentorDao;
 import com.game.domain.Mentor;
-
 import java.util.List;
 
 public class MentorServe extends MentorDao {

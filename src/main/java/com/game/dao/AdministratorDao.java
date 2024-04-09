@@ -37,6 +37,7 @@ public class AdministratorDao extends BaseDao<Administrator> {
 
     public int update(Administrator administrator, Administrator condition) {
         Map<String, Object> map = administrator.toMap();
+        map.remove("a_id");
         Map<String, Object> con = condition.toMap();
         return super.update(map, con);
     }

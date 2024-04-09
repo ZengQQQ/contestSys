@@ -54,6 +54,7 @@ public class StudentDao extends BaseDao<Student> {
 
     public int update(Student Student, Student mapCondition) {
         Map<String, Object> map = Student.toMap();
+        map.remove("s_id");
         Map<String, Object> condition = mapCondition.toMap();
         int value = super.update(map, condition);
         if (value == 0) {

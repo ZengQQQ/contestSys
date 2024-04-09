@@ -21,6 +21,13 @@ public class Register extends ReflectionUtils {
 
     public Register(){}
 
+    public Register(Register register){
+        this.r_id = register.getR_id();
+        this.s_xuehao = register.getS_xuehao();
+        this.r_name = register.getR_name();
+        this.r_major = register.getR_major();
+    }
+
     public Map<String, Object> toMap(){
         return mapFields(this);
     }
