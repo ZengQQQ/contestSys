@@ -8,7 +8,7 @@ import java.util.Map;
 @Data
 public class Administrator extends ReflectionUtils {
 
-    private int a_id;
+    private Integer a_id;
     private String a_acc;
     private String a_pwd;
 

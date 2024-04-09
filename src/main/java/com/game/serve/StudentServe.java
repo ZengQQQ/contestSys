@@ -15,4 +15,7 @@ public class StudentServe extends StudentDao {
             return false;
         }
     }
+    public List<Student> ByPage(){
+        return null;
+    }
 }

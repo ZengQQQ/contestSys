@@ -28,9 +28,9 @@ public class ReflectionUtils {
     public static void main(String[] args) {
         // 示例类
         class MyClass {
-            private int intValue = 10;
-            private String stringValue = "Hello";
-            private boolean booleanValue = true;
+            private Integer intValue ;
+            private String stringValue ;
+            private Boolean booleanValue;
         }
 
         // 创建示例对象

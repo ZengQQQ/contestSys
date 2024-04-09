@@ -275,4 +275,27 @@ public class BaseDao<T> {
             Druid.close(null, preparedStatement, connection);
         }
     }
+
+    public int statistics(){
+        StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(*) AS total_rows FROM "+tableName);
+        System.out.println("预制sql： " + sqlBuilder.toString());
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
+        try {
+            connection = Druid.getConnection();
+            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+            resultSet = preparedStatement.executeQuery();
+            // 遍历结果集
+            if (resultSet.next()) {
+                // 获取结果集中的数据条数
+                int totalRows = resultSet.getInt("total_rows");
+                System.out.println("Total rows in the table: " + totalRows);
+                return totalRows;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

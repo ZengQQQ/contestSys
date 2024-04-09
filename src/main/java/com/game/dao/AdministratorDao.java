@@ -5,6 +5,7 @@ import com.game.domain.Administrator;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 管理员表的增删改查
@@ -13,6 +14,31 @@ public class AdministratorDao extends BaseDao<Administrator> {
 
     public AdministratorDao() {
         super("administrator");
+    }
+
+
+
+    public boolean insert(Administrator administrator) {
+        Map<String, Object> map=administrator.toMap();
+        return super.insert(map);
+    }
+
+
+    public int delete(Administrator administrator) {
+        Map<String, Object> map=administrator.toMap();
+        return super.delete(map);
+    }
+
+
+    public List<Administrator> query( Administrator administrator, int start, int end) {
+        Map<String, Object> map=administrator.toMap();
+        return super.query(Administrator.class, map, start, end);
+    }
+
+    public int update(Administrator administrator, Administrator condition) {
+        Map<String, Object> map = administrator.toMap();
+        Map<String, Object> con = condition.toMap();
+        return super.update(map, con);
     }
 
     /**
@@ -34,9 +60,11 @@ public class AdministratorDao extends BaseDao<Administrator> {
     public static void main(String[] args) {
         AdministratorDao administratorDao = new AdministratorDao();
         Administrator administrator = new Administrator();
-        administrator.setA_acc("123");
-        administrator.setA_pwd("1234");
-        System.out.println(administratorDao.checkPassword(administrator));
+//        administrator.setA_acc("123");
+//        administrator.setA_pwd("1234");
+//        System.out.println(administratorDao.checkPassword(administrator));
+        System.out.println(administratorDao.statistics());
+        System.out.println(administratorDao.query(administrator,-1,-1));
     }
 
 }
