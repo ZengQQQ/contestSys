@@ -79,6 +79,12 @@ public class RegisterDao extends BaseDao<Register> {
         return super.query(Register.class,map,start,end);
     }
 
+
+    public int statistics(Register register) {
+        Map<String, Object> map = register.toMap();
+        return super.statistics(map);
+    }
+
     public static void main(String[] args) {
 
     }

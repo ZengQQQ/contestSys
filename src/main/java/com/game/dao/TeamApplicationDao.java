@@ -65,4 +65,10 @@ public class TeamApplicationDao extends BaseDao<TeamApplication> {
         }
         return value;
     }
+
+
+    public int statistics(TeamApplication teamApplication) {
+        Map<String, Object> map=teamApplication.toMap();
+        return super.statistics(map);
+    }
 }

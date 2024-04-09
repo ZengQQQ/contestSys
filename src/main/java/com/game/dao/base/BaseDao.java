@@ -281,8 +281,12 @@ public class BaseDao<T> {
         }
     }
 
-    public int statistics(){
-        StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(*) AS total_rows FROM "+tableName);
+    public int statistics(Map<String, Object> map){
+        StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(*) AS total_rows FROM "+tableName+" WHERE ");
+        for (String key : map.keySet()) {
+            sqlBuilder.append(key).append("=? AND ");
+        }
+        sqlBuilder.append("1=1");
         System.out.println("预制sql： " + sqlBuilder.toString());
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

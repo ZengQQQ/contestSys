@@ -64,4 +64,9 @@ public class TeamStudentDao extends BaseDao<TeamStudent> {
         }
         return value;
     }
+
+    public int statistics(TeamStudent teamStudent) {
+        Map<String, Object> map = teamStudent.toMap();
+        return super.statistics(map);
+    }
 }

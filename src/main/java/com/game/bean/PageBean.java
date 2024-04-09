@@ -10,9 +10,9 @@ import java.util.List;
 public class PageBean<T> {
     private Integer currentPage;
     private Integer totalPage;
-    private Integer numPage;
-    private Integer totalNum;
-    private Integer start;
+    private Integer pageSize;
+    private Integer totalSize;
+    private Integer begin;
     private Integer end;
     private List<Integer> optionalPages;
     @Setter
@@ -21,16 +21,22 @@ public class PageBean<T> {
     public PageBean() {
     }
 
-    public void setNumPage(Integer numPage) {
-        this.numPage = numPage;
-        this.totalPage = (int) Math.ceil((double)this.totalNum/numPage);
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+        this.totalPage = (int) Math.ceil((double)this.totalSize/pageSize);
         this.currentPage=1;
     }
 
-    public PageBean(Integer totalNum) {
-        this.totalNum = totalNum;
-        this.numPage = 16;
-        this.totalPage = (int) Math.ceil((double)totalNum/numPage);
+    public PageBean(Integer totalSize) {
+        this.totalSize = totalSize;
+        this.pageSize = 16;
+        this.totalPage = (int) Math.ceil((double)totalSize/pageSize);
+        this.currentPage=1;
+    }
+
+    public void setTotalSize(Integer totalSize) {
+        this.totalSize = totalSize;
+        this.totalPage = (int) Math.ceil((double)totalSize/pageSize);
         this.currentPage=1;
     }
 
@@ -42,8 +48,8 @@ public class PageBean<T> {
             current=1;
         }
         this.currentPage = current;
-        this.start = (current-1)*this.numPage;
-        this.end =(current*this.numPage<this.totalNum)? current*this.numPage:this.totalNum;
+        this.begin = (current-1)*this.pageSize;
+        this.end =(current*this.pageSize<this.totalSize)? current*this.pageSize:this.totalSize;
         this.optionalPages.add(currentPage);
         for(int turn=1 ,diff=1;turn<=5;diff++){
 

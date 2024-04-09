@@ -66,4 +66,10 @@ public class MentorDao extends BaseDao<Mentor> {
         }
         return value;
     }
+
+
+    public int statistics(Mentor mentor) {
+        Map<String, Object> map=mentor.toMap();
+        return super.statistics(map);
+    }
 }
