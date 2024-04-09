@@ -34,6 +34,15 @@ public class Competition extends ReflectionUtils {
         this.c_img = c_img;
     }
 
+    public Competition(Competition competition){
+        this.c_id = competition.getC_id();
+        this.c_name = competition.getC_name();
+        this.c_level = competition.getC_level();
+        this.c_sign_t = competition.getC_sign_t();
+        this.c_url = competition.getC_url();
+        this.c_img = competition.getC_img();
+    }
+
     public Map<String, Object> toMap() {
         return mapFields(this);
     }

@@ -54,6 +54,7 @@ public class MentorDao extends BaseDao<Mentor> {
 
     public int update(Mentor mentor, Mentor mapCondition) {
         Map<String, Object> map = mentor.toMap();
+        map.remove("m_id");
         Map<String, Object> condition = mapCondition.toMap();
         int value = super.update(map, condition);
         if (value == 0) {

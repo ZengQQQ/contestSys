@@ -23,7 +23,7 @@ public class CompetitionDao extends BaseDao<Competition> {
      * 添加比赛
      */
 
-    public boolean instert(Competition competition) {
+    public boolean insert(Competition competition) {
 
         HashMap<String, Object> map = new HashMap<>();
         if (competition.getC_id() != null) {
@@ -85,9 +85,7 @@ public class CompetitionDao extends BaseDao<Competition> {
 
         // 更新条件
         HashMap<String, Object> condition = new HashMap<>();
-        if (conditionCompetition.getC_id() != null) {
-            condition.put("c_id", conditionCompetition.getC_id());
-        }
+        //不用set id
         if (conditionCompetition.getC_name() != null) {
             condition.put("c_name", conditionCompetition.getC_name());
         }

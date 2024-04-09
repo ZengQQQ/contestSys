@@ -26,6 +26,15 @@ public class Team extends ReflectionUtils {
         this.t_status = t_status;
     }
 
+    public Team(Team team){
+        this.t_id = team.getT_id();
+        this.captain_id = team.getCaptain_id();
+        this.t_desc = team.getT_desc();
+        this.c_id = team.getC_id();
+        this.t_num = team.getT_num();
+        this.t_status = team.getT_status();
+    }
+
     public Map<String, Object> toMap(){
         return mapFields(this);
     }

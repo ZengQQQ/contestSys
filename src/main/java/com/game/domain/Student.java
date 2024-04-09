@@ -12,6 +12,7 @@ public class Student extends ReflectionUtils {
     private String s_major;
     private String s_pwd;
     private String s_tele;
+    //封禁：0， 正常：1
     private Integer s_status;
 
     public Student() {
@@ -27,6 +28,15 @@ public class Student extends ReflectionUtils {
         this.s_status = s_status;
     }
 
+    public Student(Student student){
+        this.s_id = student.getS_id();
+        this.s_xuehao = student.getS_xuehao();
+        this.s_name = student.getS_name();
+        this.s_major = student.getS_major();
+        this.s_pwd = student.getS_pwd();
+        this.s_tele = student.getS_tele();
+        this.s_status = student.getS_status();
+    }
     public Map<String, Object> toMap(){
         return mapFields(this);
     }

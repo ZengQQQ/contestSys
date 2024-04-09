@@ -53,6 +53,7 @@ public class TeamApplicationDao extends BaseDao<TeamApplication> {
 
     public int update(TeamApplication TeamApplication, TeamApplication mapCondition) {
         Map<String, Object> map = TeamApplication.toMap();
+        map.remove("ta_id");
         Map<String, Object> condition = mapCondition.toMap();
         int value = super.update(map, condition);
         if (value == 0) {

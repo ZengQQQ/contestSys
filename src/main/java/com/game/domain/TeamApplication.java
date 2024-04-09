@@ -24,6 +24,14 @@ public class TeamApplication extends ReflectionUtils {
         this.ta_status = ta_status;
     }
 
+    public TeamApplication(TeamApplication teamApplication){
+        this.ta_id = teamApplication.getTa_id();
+        this.s_id = teamApplication.getS_id();
+        this.t_id = teamApplication.getT_id();
+        this.ta_reason = teamApplication.getTa_reason();
+        this.ta_status = teamApplication.getTa_status();
+    }
+
     public Map<String, Object> toMap(){
         return mapFields(this);
     }
