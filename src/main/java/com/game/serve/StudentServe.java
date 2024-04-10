@@ -2,7 +2,10 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.StudentDao;
+import com.game.dao.TeamApplicationDao;
 import com.game.domain.Student;
+import com.game.domain.Team;
+import com.game.domain.TeamApplication;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -51,6 +54,22 @@ public class StudentServe extends StudentDao {
             System.out.println("该账号处于正常状态");
             return false;
         }
+    }
+
+    //申请入队
+    public boolean applyJoinTeam(TeamApplication teamApplication){
+        if(teamApplication.getS_id()!=null &&teamApplication.getT_id()!=null){
+            TeamApplicationDao teamApplicationDao = new TeamApplicationDao();
+            return teamApplicationDao.insert(teamApplication);
+        }else{
+            System.out.println("申请入队失败");
+            return false;
+        }
+    }
+
+    //邀请入队，队长才能做的，邀请某一个人,该人收到入队的请求，用状态设置为邀请中,与上个函数一样即可，具体数据传入为页面控制
+    public boolean inviteSomeoneToTeam(TeamApplication teamApplication){
+        return false;
     }
 
 }

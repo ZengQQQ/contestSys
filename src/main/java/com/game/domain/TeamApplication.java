@@ -7,10 +7,10 @@ import lombok.Data;
 import java.util.Map;
 @Data
 public class TeamApplication extends ReflectionUtils {
-    private Integer ta_id;
-    private Integer s_id;
-    private Integer t_id;
-    private String ta_reason;
+    private Integer ta_id;     //申请id
+    private Integer s_id;  //申请人ID
+    private Integer t_id;  //队伍ID
+    private String ta_reason;  //申请原因
     //枚举变量：“申请中”，“已拒绝”，“已同意”
     private TeamStatus ta_status;
 
