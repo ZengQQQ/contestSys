@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TeamApplicationServe extends TeamApplicationDao {
-    private final PageBean<TeamApplication> pageBean = new PageBean<TeamApplication>(statistics(new HashMap<>()));
+    private final PageBean<TeamApplication> pageBean = new PageBean<TeamApplication>();
 
     public PageBean<TeamApplication> queryByPage(Integer currentPage,TeamApplication object){
         List<TeamApplication> result = null;

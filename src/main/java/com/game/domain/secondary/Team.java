@@ -1,4 +1,4 @@
-package com.game.domain;
+package com.game.domain.secondary;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class Team extends ReflectionUtils {
     public Team() {
     }
 
-    public Team(Integer t_id, Integer captain_id, String t_desc, int c_id, int t_num, String t_status) {
+    public Team(Integer t_id, Integer captain_id, String t_desc, Integer c_id, Integer t_num, String t_status) {
         this.t_id = t_id;
         this.captain_id = captain_id;
         this.t_desc = t_desc;

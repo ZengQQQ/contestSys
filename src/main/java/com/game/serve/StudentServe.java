@@ -4,7 +4,6 @@ import com.game.bean.PageBean;
 import com.game.dao.StudentDao;
 import com.game.dao.TeamApplicationDao;
 import com.game.domain.Student;
-import com.game.domain.Team;
 import com.game.domain.TeamApplication;
 import lombok.Getter;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Getter
 public class StudentServe extends StudentDao {
-    private final PageBean<Student> pageBean = new PageBean<Student>(statistics(new HashMap<>()));
+    private final PageBean<Student> pageBean = new PageBean<Student>();
     public boolean checkPassword(Student student){
         if (student.getS_xuehao()!=null && student.getS_pwd()!=null) {
             List<Student> studentList;

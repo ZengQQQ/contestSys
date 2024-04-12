@@ -221,6 +221,101 @@ public class BaseDao<T> {
         }
     }
 
+    /**
+     *  左连接查询
+     * @param clazz 获取主要数据格式
+     * @param mainTable 主表
+     * @param map 查询的数据Map<String,Map<String,Object>>
+     * @param joinCondition 连接条件<表名，条件（需要带表名例如 team.tid=...）>
+     * @param start 开始
+     * @param end 结束
+     * @return 返回list
+     */
+    public List<T> leftQuery(Class<T> clazz,String mainTable,Map<String,Map<String, Object>> map,Map<String,String> joinCondition, int start, int end) {
+        // 构建 SQL 查询语句
+        // 构建？
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+
+        sqlBuilder.append(" SELECT ");
+        sqlBuilder.append(mainTable);
+        sqlBuilder.append(" .* FROM ");
+        sqlBuilder.append(mainTable);
+
+        for (String key: joinCondition.keySet()){
+            sqlBuilder.append(" LEFT JOIN ");
+            sqlBuilder.append(key);
+            sqlBuilder.append(" ON ");
+            sqlBuilder.append(joinCondition.get(key));
+
+        }
+        sqlBuilder.append(" WHERE ");
+        for (String key: map.keySet()) {
+            for (String key1 : map.get(key).keySet()) {
+                sqlBuilder.append(key).append(".").append(key1).append("=? AND ");
+            }
+        }
+        // 闭合and
+        sqlBuilder.append("1=1");
+        if (start>=0 && end >=start){
+            sqlBuilder.append(" LIMIT ?,?");
+        }
+
+
+        System.out.println("预制sql： " + sqlBuilder.toString());
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
+        try {
+            connection = Druid.getConnection();
+            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+
+            // 设置参数
+            int conut = 1;
+            // 设置值
+            for (Map.Entry<String, Map<String,Object>> map1 : map.entrySet()){
+                for (Map.Entry<String, Object> entry : map1.getValue().entrySet()) {
+                    preparedStatement.setObject(conut, entry.getValue());
+                    conut++;
+                }
+            }
+
+            // 设置limit（分页）
+            if (start>=0 && end >=start) {
+                preparedStatement.setObject(conut++, start);
+                preparedStatement.setObject(conut++, end);
+            }
+            resultSet = preparedStatement.executeQuery();
+
+            List<T> list = new ArrayList<>();
+            // 将结果集转换为对象
+            //list = resultSetToList(resultSet, (Class<T>) this.getClass());
+            while (resultSet.next()) {
+                // 根据泛型类的实际类型创建对象实例
+                T object = clazz.newInstance();
+                // 从 ResultSet 中读取数据，并设置到对象的属性中
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(columnName);
+                    // 使用反射设置对象的属性值
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(object, value);
+                }
+                list.add(object);
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            Druid.close(resultSet, preparedStatement, connection);
+        }
+    }
+
 
     public int update(Map<String, Object> map, Map<String, Object> condition) {
         // 构建 SQL 查询语句
