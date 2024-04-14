@@ -2,10 +2,8 @@ package com.game.dao.base;
 
 import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class BaseDao<T> {
     public String tableName;
@@ -46,6 +44,11 @@ public class BaseDao<T> {
             list.add(t);
         }
         return list;
+    }
+
+    public boolean insert(T object){
+        Map<String,Object> map = mapFields(object);
+        return insert(map);
     }
 
     /**
@@ -101,6 +104,11 @@ public class BaseDao<T> {
         }
     }
 
+    public int delete(T object){
+        Map<String,Object> map = mapFields(object);
+        return delete(map);
+    }
+
     /**
      * 删除数据
      * @param map 删除条件 "String, Object"
@@ -146,6 +154,13 @@ public class BaseDao<T> {
             Druid.close(null, preparedStatement, connection);
         }
     }
+
+    public List<T> query(T object, int start, int end){
+        Class<T> clazz= (Class<T>) object.getClass();
+        Map<String,Object> map = mapFields(object);
+        return query(clazz,map,start,end);
+    }
+
 
 
     /**
@@ -220,6 +235,12 @@ public class BaseDao<T> {
             Druid.close(resultSet, preparedStatement, connection);
         }
     }
+
+//    public List<T> leftQuery(T object){
+//        Class<T> clazz= (Class<T>) object.getClass();
+//        Map<String,Object> map = mapFields(object);
+//        return query(clazz,map,start,end);
+//    }
 
     /**
      *  左连接查询
@@ -316,7 +337,25 @@ public class BaseDao<T> {
         }
     }
 
+    /**
+     *
+     * @param object1 更新成什么元素
+     * @param object2 被更新的元素
+     * @return 1 对 0 错
+     */
+    public int update(T object1,T object2){
+        Map<String,Object> map1 = mapFields(object1);
+        Map<String,Object> map2 = mapFields(object2);
+        return update(map1,map2);
+    }
 
+    /**
+     *
+     *
+     * @param map 更新成什么元素
+     * @param condition 被更新的元素
+     * @return 1 对 0 错
+     */
     public int update(Map<String, Object> map, Map<String, Object> condition) {
         // 构建 SQL 查询语句
         // 构建？
@@ -376,6 +415,11 @@ public class BaseDao<T> {
         }
     }
 
+    public int statistics(T object){
+        Map<String, Object> map= mapFields(object);
+        return statistics(map);
+    }
+
     public int statistics(Map<String, Object> map){
         StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(*) AS total_rows FROM "+tableName+" WHERE ");
         for (String key : map.keySet()) {
@@ -401,5 +445,24 @@ public class BaseDao<T> {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static <E> Map<String, Object> mapFields(E object) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Class<?> clazz = object.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // 设置字段为可访问，即使是私有字段也可以访问
+            try {
+                Object value = field.get(object); // 获取字段的值
+                if (value != null){
+                    resultMap.put(field.getName(), value); // 将字段名和值映射到Map中
+                }
+            } catch (IllegalAccessException e) {
+                // 处理异常
+                e.printStackTrace();
+            }
+        }
+        return resultMap;
     }
 }
