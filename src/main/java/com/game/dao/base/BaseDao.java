@@ -236,14 +236,26 @@ public class BaseDao<T> {
         }
     }
 
+
+    /**
+     * 用于比较两个map参数是否长度一致
+     * @param map1 1
+     * @param map2 2
+     */
+    public static void compareMaps(Map<?, ?> map1, Map<?, ?> map2) {
+        if (map1.size() != map2.size()) {
+            throw new IllegalArgumentException("leftquery参数错误：两个map的大小不一样");
+        }
+    }
+
 //    public List<T> leftQuery(T object){
-//        Class<T> clazz= (Class<T>) object.getClass();
+//        Class<T> clazz= (Class<T>) this.getClass();
 //        Map<String,Object> map = mapFields(object);
-//        return query(clazz,map,start,end);
+//        return leftQuery(clazz,this.tableName,map,start,end);
 //    }
 
     /**
-     *  左连接查询
+     *  左连接查询,使用什么Dao就查该Dao对应的 table name 的主数据
      * @param clazz 获取主要数据格式
      * @param mainTable 主表
      * @param map 查询的数据Map<String,Map<String,Object>>
@@ -255,11 +267,16 @@ public class BaseDao<T> {
     public List<T> leftQuery(Class<T> clazz,String mainTable,Map<String,Map<String, Object>> map,Map<String,String> joinCondition, int start, int end) {
         // 构建 SQL 查询语句
         // 构建？
+        try {
+            compareMaps(map,joinCondition);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
 
         sqlBuilder.append(" SELECT ");
-        sqlBuilder.append(mainTable);
-        sqlBuilder.append(" .* FROM ");
+        sqlBuilder.append(this.tableName);
+        sqlBuilder.append(".* FROM ");
         sqlBuilder.append(mainTable);
 
         for (String key: joinCondition.keySet()){
