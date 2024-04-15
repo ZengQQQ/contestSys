@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class AdministratorServe extends AdministratorDao {
-    private final PageBean<Administrator> pageBean = new PageBean<Administrator>(statistics(new HashMap<>()));
+    private final PageBean<Administrator> pageBean = new PageBean<Administrator>();
 
     public boolean checkPassword(Administrator ad){
         if(ad.getA_acc()!=null && ad.getA_pwd()!=null){

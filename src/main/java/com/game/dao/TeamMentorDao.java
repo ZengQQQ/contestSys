@@ -1,7 +1,7 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.TeamMentor;
+import com.game.domain.secondary.TeamMentor;
 
 import java.util.List;
 import java.util.Map;

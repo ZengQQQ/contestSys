@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MentorServe extends MentorDao {
-    private final PageBean<Mentor> pageBean = new PageBean<Mentor>(statistics(new HashMap<>()));
+    private final PageBean<Mentor> pageBean = new PageBean<Mentor>();
     public boolean checkPassword(Mentor mentor){
         if (mentor.getM_acc()!=null && mentor.getM_pwd()!=null){
             List<Mentor> mentorList;

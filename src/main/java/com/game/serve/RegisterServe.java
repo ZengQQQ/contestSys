@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RegisterServe extends RegisterDao {
-    private final PageBean<Register> pageBean = new PageBean<Register>(statistics(new HashMap<>()));
+    private final PageBean<Register> pageBean = new PageBean<Register>();
 
     public PageBean<Register> queryByPage(Integer currentPage, Register object){
         List<Register> result = null;
