@@ -13,6 +13,7 @@ public class TeamApplication extends ReflectionUtils {
     private String ta_reason;  //申请原因
     //枚举变量：“申请中”，“已拒绝”，“已同意”
     private TeamStatus ta_status;
+    private static String table_name="team_application";
 
     public TeamApplication() {
     }

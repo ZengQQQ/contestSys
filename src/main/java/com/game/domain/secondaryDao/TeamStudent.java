@@ -1,4 +1,4 @@
-package com.game.domain.secondary;
+package com.game.domain.secondaryDao;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.Map;
 public class TeamStudent extends ReflectionUtils {
     private Integer t_id;
     private Integer m_id;
-
+    private static String table_name="team_student";
     public TeamStudent() {
     }
 

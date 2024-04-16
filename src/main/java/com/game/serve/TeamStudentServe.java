@@ -2,9 +2,8 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.TeamStudentDao;
-import com.game.domain.secondary.TeamStudent;
+import com.game.domain.secondaryDao.TeamStudent;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class TeamStudentServe extends TeamStudentDao {

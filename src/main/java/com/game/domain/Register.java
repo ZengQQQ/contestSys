@@ -10,6 +10,7 @@ public class Register extends ReflectionUtils {
     private String s_xuehao;
     private String r_name;
     private String r_major;
+    private static String table_name="register";
 
 
     public Register(Integer r_id, String s_xuehao, String r_name, String r_major) {

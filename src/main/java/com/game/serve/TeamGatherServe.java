@@ -5,18 +5,18 @@ import com.game.dao.*;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Mentor;
 import com.game.domain.Student;
-import com.game.domain.TeamRelation;
-import com.game.domain.secondary.Team;
+import com.game.domain.TeamGather;
+import com.game.domain.secondaryDao.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TeamRelationServe extends BaseDao<TeamRelation> {
-    private final PageBean<TeamRelation> pageBean = new PageBean<TeamRelation>();
-    public List<TeamRelation> query(Team team, Student student, Mentor mentor){
-        List<TeamRelation> teamRelationsList=new ArrayList<>();
+public class TeamGatherServe extends BaseDao<TeamGather> {
+    private final PageBean<TeamGather> pageBean = new PageBean<TeamGather>();
+    public List<TeamGather> query(Team team, Student student, Mentor mentor){
+        List<TeamGather> teamRelationsList=new ArrayList<>();
         TeamDao teamDao = new TeamDao();
         StudentDao studentDao = new StudentDao();
         MentorDao mentorDao = new MentorDao();
@@ -45,7 +45,7 @@ public class TeamRelationServe extends BaseDao<TeamRelation> {
                 joinConditionTem.put("mentor","team_mentor.m_id = mentor.m_id");
                 List<Student> studentList = studentDao.leftQuery(Student.class,mainTable,mapTem,joinConditionTem,-1,-1);
                 List<Mentor> mentorList = mentorDao.leftQuery(Mentor.class,mainTable,mapTem,joinConditionTem,-1,-1);
-                TeamRelation teamRelation = new TeamRelation(team1,mentorList,studentList);
+                TeamGather teamRelation = new TeamGather(team1,mentorList,studentList);
                 teamRelationsList.add(teamRelation);
             }catch (Exception e){
                 System.err.println(e.getMessage());
@@ -53,10 +53,10 @@ public class TeamRelationServe extends BaseDao<TeamRelation> {
         }
         return teamRelationsList;
     }
-    public PageBean<TeamRelation> queryByPage(Integer currentPage, Team team, Student student, Mentor mentor){
-        List<TeamRelation> result = null;
+    public PageBean<TeamGather> queryByPage(Integer currentPage, Team team, Student student, Mentor mentor){
+        List<TeamGather> result = null;
         pageBean.setCurrentPage(currentPage);
-        List<TeamRelation> teamRelationList =query(team, student, mentor);
+        List<TeamGather> teamRelationList =query(team, student, mentor);
         pageBean.setTotalSize(teamRelationList.size());
         result=query(team, student, mentor);
         pageBean.setListPage(result);

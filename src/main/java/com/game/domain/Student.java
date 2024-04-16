@@ -14,6 +14,7 @@ public class Student extends ReflectionUtils {
     private String s_tele;
     //封禁：0， 正常：1
     private Integer s_status;
+    private static String table_name="student";
 
     public Student() {
     }

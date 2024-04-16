@@ -1,14 +1,16 @@
-package com.game.domain.secondary;
+package com.game.domain.secondaryDao;
 
 import com.game.utils.ReflectionUtils;
+import lombok.Data;
 
 import java.util.Map;
-
+@Data
 public class TeamMentor extends ReflectionUtils {
     //队伍id
     private Integer t_id;
     //导师id
     private Integer m_id;
+    private static String table_name="team_mentor";
 
     public TeamMentor() {
     }

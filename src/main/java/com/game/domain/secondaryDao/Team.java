@@ -1,4 +1,4 @@
-package com.game.domain.secondary;
+package com.game.domain.secondaryDao;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
@@ -13,6 +13,7 @@ public class Team extends ReflectionUtils {
     private Integer t_num;
     //枚举变量，只有四个状态："组队中","参赛中","已完赛","已解散"
     private String t_status;
+    private static String table_name="team";
 
     public Team() {
     }

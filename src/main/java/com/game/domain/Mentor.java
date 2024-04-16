@@ -13,6 +13,7 @@ public class Mentor extends ReflectionUtils {
     private String m_direction;
     private String m_tele;
     private String m_mail;
+    private static String table_name="mentor";
 
     public Mentor() {
     }
@@ -25,6 +26,7 @@ public class Mentor extends ReflectionUtils {
         this.m_direction = m_direction;
         this.m_tele = m_tele;
         this.m_mail = m_mail;
+
     }
 
     public Mentor(Mentor mentor){

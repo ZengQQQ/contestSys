@@ -21,6 +21,7 @@ public class Competition extends ReflectionUtils {
     private LocalDateTime c_sign_t = null;
     private String c_url = null;
     private String c_img = null;
+    private static String table_name="competition";
 
     public Competition() {
     }
