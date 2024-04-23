@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet(value = "/login")
+@WebServlet(value = "/loginControl")
 public class LoginControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

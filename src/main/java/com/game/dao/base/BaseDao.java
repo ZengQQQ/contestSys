@@ -241,7 +241,7 @@ public class BaseDao<T> extends ReflectionUtils {
 
 
 
-    public List<T> leftQuery(List<Object> objects){
+    public List<T> leftQuery(List<Object> objects,int start,int end){
         Map<String,ConditionBean> conditions = new HashMap<>();
         Map<String,String> joinConditions = new HashMap<>();
         Map<String,Map<String,Object>> maps = new HashMap<>();
@@ -279,7 +279,7 @@ public class BaseDao<T> extends ReflectionUtils {
                 }
             }
         }
-        return leftQuery(clazz,this.tableName,maps,joinConditions,-1,-1);
+        return leftQuery(clazz,this.tableName,maps,joinConditions,start,end);
     }
 
 

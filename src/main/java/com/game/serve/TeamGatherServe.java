@@ -7,6 +7,8 @@ import com.game.domain.Mentor;
 import com.game.domain.Student;
 import com.game.domain.TeamGather;
 import com.game.domain.secondaryDao.Team;
+import com.game.domain.secondaryDao.TeamMentor;
+import com.game.domain.secondaryDao.TeamStudent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,31 +22,24 @@ public class TeamGatherServe extends BaseDao<TeamGather> {
         TeamDao teamDao = new TeamDao();
         StudentDao studentDao = new StudentDao();
         MentorDao mentorDao = new MentorDao();
-        Map<String,Map<String,Object>> map = new HashMap<String,Map<String,Object>>();
-        Map<String,String> joinCondition = new HashMap<String,String>();
-        String mainTable = "team";
-        map.put("team",team.toMap());
-        map.put("student",student.toMap());
-        map.put("mentor",mentor.toMap());
-        joinCondition.put("team_mentor","team_mentor.t_id = team.t_id");
-        joinCondition.put("team_student","team_student.t_id = team.t_id");
-        joinCondition.put("student","team_student.s_id = student.s_id");
-        joinCondition.put("mentor","team_mentor.m_id = mentor.m_id");
-        List<Team> teamList=teamDao.leftQuery(Team.class,mainTable,map,joinCondition,-1,-1);
+        TeamMentor teamMentor = new TeamMentor();
+        TeamStudent teamStudent = new TeamStudent();
+        List<Object> objectList = new ArrayList<>();
+        objectList.add(student);
+        objectList.add(teamStudent);
+        objectList.add(teamMentor);
+        objectList.add(mentor);
+        objectList.add(team);
+        List<Team> teamList=teamDao.leftQuery(objectList,-1,-1);
+        removeDuplicates(teamList);
         for (Team team1:teamList){
             try {
-                Map<String,Map<String,Object>> mapTem = new HashMap<String,Map<String,Object>>();
-                Map<String,String> joinConditionTem = new HashMap<String,String>();
-
-                mapTem.put("team",team1.toMap());
-                mapTem.put("student",student.toMap());
-                mapTem.put("mentor",mentor.toMap());
-                joinConditionTem.put("team_mentor","team_mentor.t_id = team.t_id");
-                joinConditionTem.put("team_student","team_student.t_id = team.t_id");
-                joinConditionTem.put("student","team_student.s_id = student.s_id");
-                joinConditionTem.put("mentor","team_mentor.m_id = mentor.m_id");
-                List<Student> studentList = studentDao.leftQuery(Student.class,mainTable,mapTem,joinConditionTem,-1,-1);
-                List<Mentor> mentorList = mentorDao.leftQuery(Mentor.class,mainTable,mapTem,joinConditionTem,-1,-1);
+                objectList.remove(objectList.size());
+                objectList.add(team1);
+                List<Student> studentList = studentDao.leftQuery(objectList,-1,-1);
+                List<Mentor> mentorList = mentorDao.leftQuery(objectList,-1,-1);
+                removeDuplicates(studentList);
+                removeDuplicates(mentorList);
                 TeamGather teamRelation = new TeamGather(team1,mentorList,studentList);
                 teamRelationsList.add(teamRelation);
             }catch (Exception e){
@@ -56,8 +51,8 @@ public class TeamGatherServe extends BaseDao<TeamGather> {
     public PageBean<TeamGather> queryByPage(Integer currentPage, Team team, Student student, Mentor mentor){
         List<TeamGather> result = null;
         pageBean.setCurrentPage(currentPage);
-        List<TeamGather> teamRelationList =query(team, student, mentor);
-        pageBean.setTotalSize(teamRelationList.size());
+        List<TeamGather> teamGatherList =query(team, student, mentor);
+        pageBean.setTotalSize(teamGatherList.size());
         result=query(team, student, mentor);
         pageBean.setListPage(result);
         pageBean.setCurrentPage(currentPage);
