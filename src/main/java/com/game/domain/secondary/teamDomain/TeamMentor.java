@@ -1,4 +1,4 @@
-package com.game.domain.secondaryDao;
+package com.game.domain.secondary.teamDomain;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;

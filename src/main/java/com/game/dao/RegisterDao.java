@@ -81,8 +81,7 @@ public class RegisterDao extends BaseDao<Register> {
 
 
     public int statistics(Register register) {
-        Map<String, Object> map = register.toMap();
-        return super.statistics(map);
+        return super.statistics(register);
     }
 
     public static void main(String[] args) {

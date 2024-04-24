@@ -2,10 +2,9 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.MentorDao;
-import com.game.domain.Mentor;
+import com.game.domain.secondary.userDomain.Mentor;
 
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MentorServe extends MentorDao {

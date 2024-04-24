@@ -1,7 +1,7 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.Student;
+import com.game.domain.secondary.userDomain.Student;
 
 import java.util.List;
 import java.util.Map;
@@ -69,8 +69,7 @@ public class StudentDao extends BaseDao<Student> {
 
 
     public int statistics(Student student) {
-        Map<String, Object> map=student.toMap();
-        return super.statistics(map);
+        return super.statistics(student);
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package com.game.domain;
+package com.game.domain.secondary.userDomain;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
@@ -10,6 +10,7 @@ public class College extends ReflectionUtils {
     private Integer co_id;
     private String co_name;
     private String co_info;
+    private static String table_name="college";
 
     public College() {
     }

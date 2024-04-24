@@ -1,7 +1,7 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.Competition;
+import com.game.domain.secondary.workDomain.Competition;
 import com.game.utils.Level;
 
 import java.time.LocalDateTime;
@@ -26,26 +26,7 @@ public class CompetitionDao extends BaseDao<Competition> {
 
     public boolean insert(Competition competition) {
 
-        HashMap<String, Object> map = new HashMap<>();
-        if (competition.getC_id() != null) {
-            map.put("c_id", competition.getC_id());
-        }
-        if (competition.getC_name() != null) {
-            map.put("c_name", competition.getC_name());
-        }
-        if (competition.getC_sign_t() != null) {
-            map.put("c_sign_t", competition.getC_sign_t());
-        }
-        if (competition.getC_url() != null) {
-            map.put("c_url", competition.getC_url());
-        }
-        if (competition.getC_img() != null) {
-            map.put("c_img", competition.getC_img());
-        }
-        if (competition.getC_level() != null) {
-            map.put("c_level", competition.getC_level());
-        }
-
+        Map<String, Object> map = competition.toMap();
         boolean inserted = super.insert(map);
         if (!inserted) {
             System.out.println("添加比赛失败");
@@ -83,42 +64,14 @@ public class CompetitionDao extends BaseDao<Competition> {
      * @return 更新的条数
      */
     public int update(Competition competition, Competition conditionCompetition) {
-
+        Competition competition1 =new Competition(competition);
+        competition1.setC_id(null);
         // 更新条件
-        HashMap<String, Object> condition = new HashMap<>();
-        //不用set id
-        if (conditionCompetition.getC_name() != null) {
-            condition.put("c_name", conditionCompetition.getC_name());
-        }
-        if (conditionCompetition.getC_sign_t() != null) {
-            condition.put("c_sign_t", conditionCompetition.getC_sign_t());
-        }
-        if (conditionCompetition.getC_url() != null) {
-            condition.put("c_url", conditionCompetition.getC_url());
-        }
-        if (conditionCompetition.getC_img() != null) {
-            condition.put("c_img", conditionCompetition.getC_img());
-        }
+        Map<String, Object> condition = competition1.toMap();
 
-
-        // 更新内容
-        HashMap<String, Object> map = new HashMap<>();
-        if (competition.getC_name() != null) {
-            map.put("c_name", competition.getC_name());
-        }
-        if (competition.getC_sign_t() != null) {
-            map.put("c_sign_t", competition.getC_sign_t());
-        }
-        if (competition.getC_url() != null) {
-            map.put("c_url", competition.getC_url());
-        }
-        if (competition.getC_img() != null) {
-            map.put("c_img", competition.getC_img());
-        }
-
+        Map<String, Object> map = conditionCompetition.toMap();
 
         int updated = super.update(map, condition);
-
 
         if (updated == 0) {
             System.out.println("更新比赛失败");
@@ -136,24 +89,7 @@ public class CompetitionDao extends BaseDao<Competition> {
     public List<Competition> query(Competition competition, int current, int size) {
         // 查询结果
         List<Competition> competitionList = null;
-
-        // 查询条件
-        HashMap<String, Object> map = new HashMap<>();
-        if (competition.getC_id() != null) {
-            map.put("c_id", competition.getC_id());
-        }
-        if (competition.getC_name() != null) {
-            map.put("c_name", competition.getC_name());
-        }
-        if (competition.getC_sign_t() != null) {
-            map.put("c_sign_t", competition.getC_sign_t());
-        }
-        if (competition.getC_url() != null) {
-            map.put("c_url", competition.getC_url());
-        }
-        if (competition.getC_img() != null) {
-            map.put("c_img", competition.getC_img());
-        }
+        Map<String, Object> map = competition.toMap();
 
         competitionList = super.query(Competition.class, map, current, size);
         if (competitionList.isEmpty()) {
@@ -170,8 +106,7 @@ public class CompetitionDao extends BaseDao<Competition> {
 
 
     public int statistics(Competition competition) {
-        Map<String, Object> map=competition.toMap();
-        return super.statistics(map);
+        return super.statistics(competition);
     }
 
     public static void main(String[] args) {

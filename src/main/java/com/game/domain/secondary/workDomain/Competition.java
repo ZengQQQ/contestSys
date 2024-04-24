@@ -1,4 +1,4 @@
-package com.game.domain;
+package com.game.domain.secondary.workDomain;
 
 import com.game.utils.ReflectionUtils;
 import com.game.utils.Level;

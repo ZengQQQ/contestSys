@@ -1,6 +1,8 @@
 package com.game.domain;
 
-import com.game.domain.secondaryDao.Team;
+import com.game.domain.secondary.teamDomain.Team;
+import com.game.domain.secondary.userDomain.Mentor;
+import com.game.domain.secondary.userDomain.Student;
 import lombok.Data;
 
 import java.util.List;

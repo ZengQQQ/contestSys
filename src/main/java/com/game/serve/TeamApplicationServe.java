@@ -2,10 +2,9 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.TeamApplicationDao;
-import com.game.domain.TeamApplication;
+import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import com.game.utils.TeamStatus;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class TeamApplicationServe extends TeamApplicationDao {

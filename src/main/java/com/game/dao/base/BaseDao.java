@@ -484,12 +484,11 @@ public class BaseDao<T> extends ReflectionUtils {
 
     public int statistics(T object){
         Map<String, Object> map= mapFields(object);
-
-        return statistics(map);
+        Class<T> clazz = (Class<T>) object.getClass();
+        return statistics(clazz,map);
     }
 
-    public int statistics(Map<String, Object> map){
-        Class<T> clazz= (Class<T>) this.getClass();
+    public int statistics(Class<T> clazz,Map<String, Object> map){
         return query(clazz,map,-1,-1).size();
     }
 

@@ -1,17 +1,16 @@
 package com.game.serve;
 
 import com.game.bean.PageBean;
-import com.game.dao.RegisterDao;
-import com.game.domain.Register;
-
+import com.game.dao.ProjectDao;
+import com.game.domain.secondary.workDomain.Project;
 
 import java.util.List;
 
-public class RegisterServe extends RegisterDao {
-    private final PageBean<Register> pageBean = new PageBean<Register>();
+public class ProjectServe extends ProjectDao {
+    private final PageBean<Project> pageBean = new PageBean<>();
 
-    public PageBean<Register> queryByPage(Integer currentPage, Register object){
-        List<Register> result = null;
+    public PageBean<Project> queryByPage(Integer currentPage, Project object){
+        List<Project> result = null;
         pageBean.setCurrentPage(currentPage);
         pageBean.setTotalSize(statistics(object));
         result=query(object,pageBean.getBegin(),pageBean.getEnd());
@@ -19,13 +18,12 @@ public class RegisterServe extends RegisterDao {
         pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
-
-    public boolean addRegisterInfo(List<Register> registers) {
+    public boolean addProjectInfo(List<Project> Projects) {
         boolean success = true; // 初始化一个标志以跟踪整体成功情况
-        for (Register register : registers) {
+        for (Project Project : Projects) {
             try {
                 // 尝试添加竞赛信息
-                insert(register);
+                insert(Project);
             } catch (Exception e) {
                 // 记录错误并继续处理其他竞赛
                 // 你可能想要记录具体失败的竞赛
@@ -34,9 +32,5 @@ public class RegisterServe extends RegisterDao {
             }
         }
         return success; // 返回整体成功标志
-    }
-
-    public boolean addRegisterInfo(Register register){
-        return insert(register);
     }
 }

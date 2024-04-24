@@ -1,7 +1,7 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.secondaryDao.Team;
+import com.game.domain.secondary.teamDomain.Team;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +68,7 @@ public class TeamDao extends BaseDao<Team> {
 
 
     public int statistics(Team team) {
-        Map<String, Object> map = team.toMap();
-        return super.statistics(map);
+        return super.statistics(team);
     }
 
     public static void main(String[] args) {

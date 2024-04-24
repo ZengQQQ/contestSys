@@ -2,14 +2,8 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.AdministratorDao;
-import com.game.dao.CompetitionDao;
-import com.game.dao.StudentDao;
 import com.game.domain.Administrator;
-import com.game.domain.Competition;
-import com.game.domain.Student;
 
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 

@@ -3,8 +3,8 @@ package com.game.serve;
 import com.game.bean.PageBean;
 import com.game.dao.StudentDao;
 import com.game.dao.TeamApplicationDao;
-import com.game.domain.Student;
-import com.game.domain.TeamApplication;
+import com.game.domain.secondary.userDomain.Student;
+import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import lombok.Getter;
 
 import java.util.HashMap;

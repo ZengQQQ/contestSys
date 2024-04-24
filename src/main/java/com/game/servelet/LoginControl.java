@@ -1,8 +1,8 @@
 package com.game.servelet;
 
 import com.game.domain.Administrator;
-import com.game.domain.Mentor;
-import com.game.domain.Student;
+import com.game.domain.secondary.userDomain.Mentor;
+import com.game.domain.secondary.userDomain.Student;
 import com.game.serve.AdministratorServe;
 import com.game.serve.MentorServe;
 import com.game.serve.StudentServe;

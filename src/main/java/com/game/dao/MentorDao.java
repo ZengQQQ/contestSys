@@ -1,7 +1,7 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.Mentor;
+import com.game.domain.secondary.userDomain.Mentor;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,6 @@ public class MentorDao extends BaseDao<Mentor> {
 
 
     public int statistics(Mentor mentor) {
-        Map<String, Object> map=mentor.toMap();
-        return super.statistics(map);
+        return super.statistics(mentor);
     }
 }

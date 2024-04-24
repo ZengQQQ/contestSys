@@ -1,8 +1,8 @@
 package com.game.dao;
 
 import com.game.dao.base.BaseDao;
-import com.game.domain.TeamApplication;
 
+import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +68,6 @@ public class TeamApplicationDao extends BaseDao<TeamApplication> {
 
 
     public int statistics(TeamApplication teamApplication) {
-        Map<String, Object> map=teamApplication.toMap();
-        return super.statistics(map);
+        return super.statistics(teamApplication);
     }
 }

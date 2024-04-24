@@ -1,4 +1,4 @@
-package com.game.domain;
+package com.game.domain.secondary.teamMessageDomain;
 
 import com.game.utils.ReflectionUtils;
 import com.game.utils.TeamStatus;

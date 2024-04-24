@@ -1,9 +1,8 @@
-package com.game.domain;
+package com.game.domain.secondary.workDomain;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
