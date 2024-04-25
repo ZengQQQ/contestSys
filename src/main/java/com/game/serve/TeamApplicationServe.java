@@ -8,17 +8,7 @@ import com.game.utils.TeamStatus;
 import java.util.List;
 
 public class TeamApplicationServe extends TeamApplicationDao {
-    private final PageBean<TeamApplication> pageBean = new PageBean<TeamApplication>();
 
-    public PageBean<TeamApplication> queryByPage(Integer currentPage,TeamApplication object){
-        List<TeamApplication> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result=query(object,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
 
     public boolean approve(TeamApplication teamApplication){
         try {

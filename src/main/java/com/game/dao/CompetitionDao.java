@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.workDomain.Competition;
 import com.game.utils.Level;
@@ -107,6 +108,18 @@ public class CompetitionDao extends BaseDao<Competition> {
 
     public int statistics(Competition competition) {
         return super.statistics(competition);
+    }
+
+    private final PageBean<Competition> pageBean = new PageBean<Competition>();
+
+    public PageBean<Competition> queryByPage(Integer currentPage, Competition object){
+        List<Competition> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 
     public static void main(String[] args) {

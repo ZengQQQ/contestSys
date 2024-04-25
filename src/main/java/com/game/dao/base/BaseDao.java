@@ -239,6 +239,70 @@ public class BaseDao<T> extends ReflectionUtils {
         }
     }
 
+    public T querySingle(T object){
+        Class<T> clazz= (Class<T>) object.getClass();
+        Map<String,Object> map = mapFields(object);
+        return querySingle(clazz,map);
+    }
+
+    public T querySingle(Class<T> clazz, Map<String, Object> map) {
+        // 构建 SQL 查询语句
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+        for (String key : map.keySet()) {
+            sqlBuilder.append(key).append("=? AND ");
+        }
+        // 闭合and
+        sqlBuilder.append("1=1");
+
+        System.out.println("预制sql： " + sqlBuilder.toString());
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
+        try {
+            connection = Druid.getConnection();
+            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+
+            // 设置参数
+            int count = 1;
+            // 设置值
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                preparedStatement.setObject(count, entry.getValue());
+                count++;
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            // 如果结果集中存在数据，则将其转换为对象并返回
+            if (resultSet.next()) {
+                // 根据泛型类的实际类型创建对象实例
+                T object = clazz.newInstance();
+                // 从 ResultSet 中读取数据，并设置到对象的属性中
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(columnName);
+                    // 使用反射设置对象的属性值
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(object, value);
+                }
+                return object;
+            } else {
+                // 如果结果集中没有数据，则返回null
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            Druid.close(resultSet, preparedStatement, connection);
+        }
+    }
+
+
 
 
     public List<T> leftQuery(List<Object> objects,int start,int end){
@@ -494,6 +558,10 @@ public class BaseDao<T> extends ReflectionUtils {
 
     public int statistics(List<Object> list){
         return list.size();
+    }
+
+    public static List<Object> formList(Object ... eles){
+        return new ArrayList<>(Arrays.asList(eles));
     }
 
 

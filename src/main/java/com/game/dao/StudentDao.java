@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.userDomain.Student;
 
@@ -65,6 +66,16 @@ public class StudentDao extends BaseDao<Student> {
 
         }
         return value;
+    }
+    private final PageBean<Student> pageBean = new PageBean<Student>();
+    public PageBean<Student> queryByPage(Integer currentPage,Student student){
+        List<Student> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(student));
+        result=query(student,pageBean.getBegin(),pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 
 

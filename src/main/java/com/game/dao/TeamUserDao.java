@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.teamDomain.TeamUser;
 
@@ -56,5 +57,16 @@ public class TeamUserDao extends BaseDao<TeamUser> {
             System.out.println("更新了"+value+"条信息");
         }
         return value;
+    }
+    private final PageBean<TeamUser> pageBean = new PageBean<TeamUser>();
+
+    public PageBean<TeamUser> queryByPage(Integer currentPage,TeamUser object) {
+        List<TeamUser> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 }

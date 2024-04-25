@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.userDomain.College;
 import java.util.List;
@@ -56,5 +57,16 @@ public class CollegeDao extends BaseDao<College> {
             System.out.println("更新了"+value+"条信息");
         }
         return value;
+    }
+    private final PageBean<College> pageBean = new PageBean<College>();
+
+    public PageBean<College> queryByPage(Integer currentPage,College object) {
+        List<College> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 }

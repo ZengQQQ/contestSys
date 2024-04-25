@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.teamDomain.Team;
 
@@ -71,6 +72,19 @@ public class TeamDao extends BaseDao<Team> {
         return super.statistics(team);
     }
 
+    private final PageBean<Team> pageBean = new PageBean<Team>();
+
+    public PageBean<Team> queryByPage(Integer currentPage, Team object){
+        List<Team> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
+    }
+
+
     public static void main(String[] args) {
         TeamDao teamdao = new TeamDao();
         teamdao.insertByAllinfos(1,"为了荣耀",1,1,"组队中");
@@ -79,4 +93,6 @@ public class TeamDao extends BaseDao<Team> {
             System.out.println(team);
         }
     }
+
+
 }

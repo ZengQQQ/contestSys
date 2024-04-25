@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 
 import com.game.domain.secondary.teamMessageDomain.TeamApplication;
@@ -64,6 +65,18 @@ public class TeamApplicationDao extends BaseDao<TeamApplication> {
 
         }
         return value;
+    }
+
+    private final PageBean<TeamApplication> pageBean = new PageBean<TeamApplication>();
+
+    public PageBean<TeamApplication> queryByPage(Integer currentPage,TeamApplication object){
+        List<TeamApplication> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 
 

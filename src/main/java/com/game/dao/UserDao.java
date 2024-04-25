@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.User;
 import java.util.List;
@@ -55,5 +56,16 @@ public class UserDao extends BaseDao<User> {
             System.out.println("更新了"+value+"条信息");
         }
         return value;
+    }
+    private final PageBean<User> pageBean = new PageBean<User>();
+
+    public PageBean<User> queryByPage(Integer currentPage,User object) {
+        List<User> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 }

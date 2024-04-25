@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.workDomain.Task;
 
@@ -57,5 +58,17 @@ public class TaskDao extends BaseDao<Task> {
             System.out.println("更新了"+value+"条信息");
         }
         return value;
+    }
+
+    private final PageBean<Task> pageBean = new PageBean<Task>();
+
+    public PageBean<Task> queryByPage(Integer currentPage,Task object) {
+        List<Task> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 }

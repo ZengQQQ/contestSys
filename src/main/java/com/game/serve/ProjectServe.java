@@ -7,17 +7,7 @@ import com.game.domain.secondary.workDomain.Project;
 import java.util.List;
 
 public class ProjectServe extends ProjectDao {
-    private final PageBean<Project> pageBean = new PageBean<>();
 
-    public PageBean<Project> queryByPage(Integer currentPage, Project object){
-        List<Project> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result=query(object,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
     public boolean addProjectInfo(List<Project> Projects) {
         boolean success = true; // 初始化一个标志以跟踪整体成功情况
         for (Project Project : Projects) {

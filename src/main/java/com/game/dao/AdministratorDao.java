@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Administrator;
 
@@ -52,15 +53,26 @@ public class AdministratorDao extends BaseDao<Administrator> {
         HashMap<String, Object> map = new HashMap<>();
         map.put("a_acc", administrator.getA_acc());
         map.put("a_pwd", administrator.getA_pwd());
-        ads= super
-                .query(Administrator.class, map, 0, 1);
+        ads= super.query(Administrator.class, map, 0, 1);
         return !ads.isEmpty();
     }
 
 
     public int statistics(Administrator administrator) {
         Map<String, Object> map=administrator.toMap();
-        return super.statistics(map);
+        return super.statistics(Administrator.class,map);
+    }
+
+    private final PageBean<Administrator> pageBean = new PageBean<Administrator>();
+
+    public PageBean<Administrator> queryByPage(Integer currentPage,Administrator object) {
+        List<Administrator> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 
     public static void main(String[] args) {
@@ -70,7 +82,7 @@ public class AdministratorDao extends BaseDao<Administrator> {
 //        administrator.setA_pwd("1234");
 //        System.out.println(administratorDao.checkPassword(administrator));
         Map<String,Object> map = new HashMap<>();
-        System.out.println(administratorDao.statistics(map));
+        System.out.println(administratorDao.statistics(Administrator.class,map));
         System.out.println(administratorDao.query(administrator,-1,-1));
     }
 

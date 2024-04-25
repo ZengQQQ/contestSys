@@ -19,6 +19,4 @@ public class TeamMentorServe extends TeamMentorDao {
         return pageBean;
     }
 
-
-
 }

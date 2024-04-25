@@ -1,5 +1,6 @@
 package com.game.dao;
 
+import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.secondary.teamMessageDomain.TeamInvite;
 
@@ -57,5 +58,17 @@ public class TeamInviteDao extends BaseDao<TeamInvite> {
             System.out.println("更新了"+value+"条信息");
         }
         return value;
+    }
+
+    private final PageBean<TeamInvite> pageBean = new PageBean<TeamInvite>();
+
+    public PageBean<TeamInvite> queryByPage(Integer currentPage,TeamInvite object) {
+        List<TeamInvite> result = null;
+        pageBean.setCurrentPage(currentPage);
+        pageBean.setTotalSize(statistics(object));
+        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        pageBean.setListPage(result);
+        pageBean.setCurrentPage(currentPage);
+        return pageBean;
     }
 }
