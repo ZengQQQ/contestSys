@@ -43,19 +43,6 @@ public class AdministratorDao extends BaseDao<Administrator> {
         return super.update(map, con);
     }
 
-    /**
-     * 检查管理员账号密码是否正确
-     * @param administrator 管理员对象，包含账号密码
-     * @return 是否正确
-     */
-    public boolean checkPassword(Administrator administrator) {
-        List<Administrator> ads = null;
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("a_acc", administrator.getA_acc());
-        map.put("a_pwd", administrator.getA_pwd());
-        ads= super.query(Administrator.class, map, 0, 1);
-        return !ads.isEmpty();
-    }
 
 
     public int statistics(Administrator administrator) {

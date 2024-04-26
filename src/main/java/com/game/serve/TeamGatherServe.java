@@ -6,7 +6,7 @@
 //import com.game.domain.secondary.userDomain.Mentor;
 //import com.game.domain.secondary.userDomain.Student;
 //import com.game.domain.TeamGather;
-//import com.game.domain.secondary.teamDomain.Team;
+//import com.game.domain.Team;
 //import com.game.domain.secondary.teamDomain.TeamMentor;
 //
 //import java.util.ArrayList;

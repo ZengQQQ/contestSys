@@ -12,13 +12,13 @@ public class TeamApplication extends ReflectionUtils {
     private Integer t_id;  //队伍ID
     private String ta_reason;  //申请原因
     //枚举变量：“申请中”，“已拒绝”，“已同意”
-    private TeamStatus ta_status;
+    private Integer ta_status;
     private static String table_name="team_application";
 
     public TeamApplication() {
     }
 
-    public TeamApplication(Integer ta_id, Integer u_id, Integer t_id, String ta_reason, TeamStatus ta_status) {
+    public TeamApplication(Integer ta_id, Integer u_id, Integer t_id, String ta_reason, Integer ta_status) {
         this.ta_id = ta_id;
         this.u_id = u_id;
         this.t_id = t_id;

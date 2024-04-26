@@ -2,7 +2,7 @@ package com.game.dao;
 
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
-import com.game.domain.secondary.teamDomain.Team;
+import com.game.domain.Team;
 
 import java.util.HashMap;
 import java.util.List;

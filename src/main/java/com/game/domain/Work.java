@@ -19,11 +19,12 @@ public class Work extends ReflectionUtils {
     private LocalDateTime w_st;
     private LocalDateTime w_ddl;
     private Integer w_status;
+    private static String table_name="work";
 
     public Work() {
     }
 
-    public Work(Integer w_id, Integer w_apprestrict, Integer c_id, Integer p_id, Integer tk_id, Integer w_countlimit, Integer w_teammin, Integer w_teammax, LocalDateTime w_st, LocalDateTime w_ddl, Integer w_status) {
+    public Work(Integer w_id, Integer w_apprestrict,Integer c_id, Integer p_id, Integer tk_id, Integer w_countlimit, Integer w_teammin, Integer w_teammax, LocalDateTime w_st, LocalDateTime w_ddl, Integer w_status) {
         this.w_id = w_id;
         this.w_apprestrict = w_apprestrict;
         this.c_id = c_id;
