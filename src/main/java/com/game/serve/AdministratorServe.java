@@ -91,101 +91,444 @@ public class AdministratorServe {
     }
 
     public int update(College ele, College con) {
+        ele.setCo_id(null);
+        if(ele.getCo_status()==0&&con.getCo_status()!=0){
+            List<User> users = userDao.leftQuery(BaseDao.formList(con,new User()),-1,-1);
+            for(User user:users){
+                User user1 = new User(user);
+                user1.setU_status(0);
+                update(user1,user);
+            }
+        }
         return collegeDao.update(ele, con);
     }
 
     public int update(Competition ele, Competition con) {
+        ele.setC_id(null);
         return competitionDao.update(ele, con);
     }
 
     public int update(Mentor ele, Mentor con) {
+        ele.setM_id(null);
+        if(ele.getM_status()==0&&con.getM_status()!=0){
+            List<User> users = userDao.leftQuery(BaseDao.formList(con,new User()),-1,-1);
+            for(User user:users){
+                User user1 = new User(user);
+                user1.setU_status(0);
+                update(user1,user);
+            }
+        }
         return mentorDao.update(ele, con);
     }
 
     public int update(Project ele, Project con) {
-        return projectDao.update(ele, con);
+        ele.setP_id(null);
+        boolean value =false;
+        if (ele.getM_id()!=null) {
+            Mentor mentor = new Mentor();
+            mentor.setM_id(ele.getM_id());
+            List<Mentor> mentors = mentorDao.query(mentor,-1,-1);
+            if(!mentors.isEmpty()){
+                value=true;
+            }
+        }else {
+            value =true;
+        }
+        if(value){
+            if(ele.getP_status()==0&&con.getP_status()!=0){
+                List<Work> works = workDao.leftQuery(BaseDao.formList(con,new Work()),-1,-1);
+                for(Work u:works){
+                    Work u1 = new Work(u);
+                    u1.setW_status(0);
+                    update(u1,u);
+                }
+            }
+            return projectDao.update(ele, con);
+        }else {
+            return 0;
+        }
     }
 
     public int update(Student ele, Student con) {
+        ele.setS_id(null);
+        if(ele.getS_status()==0&&con.getS_status()!=0){
+            List<User> users = userDao.leftQuery(BaseDao.formList(con,new User()),-1,-1);
+            for(User user:users){
+                User user1 = new User(user);
+                user1.setU_status(0);
+                update(user1,user);
+            }
+        }
         return studentDao.update(ele, con);
     }
 
     public int update(Task ele, Task con) {
-        return taskDao.update(ele, con);
+        ele.setTk_id(null);
+        boolean value =false;
+        if (ele.getU_id()!=null) {
+            User user = new User();
+            user.setU_id(ele.getU_id());
+            List<User> users = userDao.query(user,-1,-1);
+            if(!users.isEmpty()){
+                value = true;
+            }
+        }else {
+            value=true;
+        }
+        if(value){
+            if(ele.getTk_status()==0&&con.getTk_status()!=0){
+                List<Work> works = workDao.leftQuery(BaseDao.formList(con,new Work()),-1,-1);
+                for(Work u:works){
+                    Work u1 = new Work(u);
+                    u1.setW_status(0);
+                    update(u1,u);
+                }
+            }
+            return taskDao.update(ele, con);
+        }else {
+            return 0;
+        }
     }
 
     public int update(TeamApplication ele, TeamApplication con) {
-        return teamApplicationDao.update(ele, con);
+        boolean value = false;
+        boolean value1 = false;
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getU_id()!=null) {
+            User user = new User();
+            user.setU_id(ele.getU_id());
+            List<User> users = userDao.query(user,-1,-1);
+            if(!users.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getU_id()!=null)){
+            return teamApplicationDao.update(ele, con);
+        }else {
+            return 0;
+        }
+
     }
 
     public int update(Team ele, Team con) {
-        return teamDao.update(ele, con);
+        ele.setT_id(null);
+        boolean value = false;
+        if (ele.getCaptain_id()!=null) {
+            User user = new User();
+            user.setU_id(ele.getCaptain_id());
+            List<User> users = userDao.query(user,-1,-1);
+            if(!users.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+        if (value){
+            if(ele.getT_status()==0&&con.getT_status()!=0){
+                List<TeamApplication> teamApplications = teamApplicationDao.leftQuery(BaseDao.formList(con,new TeamApplication()),-1,-1);
+                List<TeamInvite> teamInvites = teamInviteDao.leftQuery(BaseDao.formList(con,new TeamInvite()),-1,-1);
+                List<WorkApplication> workApplications =workApplicationDao.leftQuery(BaseDao.formList(con,new WorkApplication()),-1,-1);
+                for(TeamApplication u:teamApplications){
+                    TeamApplication u1 = new TeamApplication(u);
+                    u1.setTa_status(99);
+                    update(u1,u);
+                }
+                for(TeamInvite u:teamInvites){
+                    TeamInvite u1 = new TeamInvite(u);
+                    u1.setTi_status(99);
+                    update(u1,u);
+                }
+                for(WorkApplication u:workApplications){
+                    WorkApplication u1 = new WorkApplication(u);
+                    u1.setWa_status(99);
+                    update(u1,u);
+                }
+            }
+            return teamDao.update(ele, con);
+        }
+        return 0;
     }
 
     public int update(TeamInvite ele, TeamInvite con) {
-        return teamInviteDao.update(ele, con);
+        boolean value = false;
+        boolean value1 = false;
+
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getU_id()!=null) {
+            User user = new User();
+            user.setU_id(ele.getU_id());
+            List<User> users = userDao.query(user,-1,-1);
+            if(!users.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getU_id()!=null)){
+            return teamInviteDao.update(ele, con);
+        }else {
+            return 0;
+        }
+
     }
 
     public int update(TeamMentor ele, TeamMentor con) {
-        return teamMentorDao.update(ele, con);
+
+        boolean value = false;
+        boolean value1 = false;
+
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getM_id()!=null) {
+            Mentor mentor =new Mentor();
+            mentor.setM_id(ele.getM_id());
+            List<Mentor> mentors = mentorDao.query(mentor,-1,-1);
+            if(!mentors.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getM_id()!=null)){
+            return teamMentorDao.update(ele, con);
+        }else {
+            return 0;
+        }
     }
 
     public int update(TeamUser ele, TeamUser con) {
-        return teamUserDao.update(ele, con);
+        boolean value = false;
+        boolean value1 = false;
+
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getU_id()!=null) {
+            User user = new User();
+            user.setU_id(ele.getU_id());
+            List<User> users = userDao.query(user,-1,-1);
+            if(!users.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getU_id()!=null)){
+            return teamUserDao.update(ele, con);
+        }else {
+            return 0;
+        }
+
     }
 
     public int update(User ele, User con) {
-        return userDao.update(ele, con);
+        ele.setS_id(null);
+        boolean value = false;
+        boolean value1 = false;
+        boolean value2 =false;
+
+        if (ele.getS_id()!=null) {
+            Student student = new Student();
+            student.setS_id(ele.getS_id());
+            List<Student> students = studentDao.query(student,-1,-1);
+            if (!students.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getM_id()!=null) {
+            Mentor mentor = new Mentor();
+            mentor.setM_id(ele.getM_id());
+            List<Mentor> mentors = mentorDao.query(mentor,-1,-1);
+            if(!mentors.isEmpty()&&ele.getS_id()==null){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if (ele.getCo_id()!=null) {
+            College college = new College();
+            college.setCo_id(ele.getCo_id());
+            List<College> colleges = collegeDao.query(college,-1,-1);
+            if(!colleges.isEmpty()&&ele.getS_id()==null&&ele.getM_id()==null){
+                value2=true;
+            }
+        }else {
+            value2=true;
+        }
+        if(value1&&value&&value2&&(ele.getS_id()!=null||ele.getM_id()!=null||ele.getCo_id()!=null)){
+            if(ele.getU_status()==0&&con.getU_status()!=0){
+                List<TeamApplication> teamApplications = teamApplicationDao.leftQuery(BaseDao.formList(con,new TeamApplication()),-1,-1);
+                List<TeamInvite> teamInvites = teamInviteDao.leftQuery(BaseDao.formList(con,new TeamInvite()),-1,-1);
+                for(TeamApplication u:teamApplications){
+                    TeamApplication u1 = new TeamApplication(u);
+                    u1.setTa_status(99);
+                    update(u1,u);
+                }
+                for(TeamInvite u:teamInvites){
+                    TeamInvite u1 = new TeamInvite(u);
+                    u1.setTi_status(99);
+                    update(u1,u);
+                }
+            }
+            return userDao.update(ele,con);
+        }else {
+            return 0;
+        }
     }
 
     public int update(Work ele, Work con) {
-        return workDao.update(ele, con);
+        boolean value = false;
+        boolean value1 = false;
+        boolean value2 =false;
+
+        if (ele.getC_id()!=null) {
+            Competition competition = new Competition();
+            competition.setC_id(ele.getC_id());
+            List<Competition> competitions = competitionDao.query(competition,-1,-1);
+            if (!competitions.isEmpty()){
+                value=true;
+            }
+        }else {
+            value = true;
+        }
+
+        if (ele.getP_id()!=null) {
+            Project project = new Project();
+            project.setP_id(ele.getP_id());
+            List<Project> projects = projectDao.query(project,-1,-1);
+            if(!projects.isEmpty()&&ele.getC_id()==null){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if (ele.getTk_id()!=null) {
+            Task task = new Task();
+            task.setTk_id(ele.getTk_id());
+            List<Task> tasks = taskDao.query(task,-1,-1);
+            if(!tasks.isEmpty()&&ele.getP_id()==null&&ele.getC_id()==null){
+                value2=true;
+            }
+        }else {
+            value2=true;
+        }
+        if(value1&&value&&value2&&(ele.getP_id()!=null||ele.getW_id()!=null||ele.getTk_id()!=null)){
+            if(ele.getW_status()==0&&con.getW_status()!=0){
+                List<WorkApplication> workApplications =workApplicationDao.leftQuery(BaseDao.formList(con,new WorkApplication()),-1,-1);
+                for(WorkApplication u:workApplications){
+                    WorkApplication u1 = new WorkApplication(u);
+                    u1.setWa_status(99);
+                    update(u1,u);
+                }
+            }
+            return workDao.update(ele,con);
+        }else {
+            return 0;
+        }
     }
     public int update(WorkApplication ele,WorkApplication con){
-        if (ele.getW_id()!=null) {
-            List<Work> works = workDao.leftQuery(BaseDao.formList(ele, new Work()), -1, -1);
-            if(!works.isEmpty()){
-                if (ele.getT_id()!=null) {
-                    List<Team> teams= teamDao.leftQuery(BaseDao.formList(ele,new Team()),-1,-1);
-                    if (!teams.isEmpty()){
-                        return workApplicationDao.update(ele,con);
-                    }
-                }else {
-                    return workApplicationDao.update(ele,con);
-                }
+        boolean value = false;
+        boolean value1 = false;
+
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
             }
-        } else {
-            if (ele.getT_id()!=null) {
-                List<Team> teams= teamDao.leftQuery(BaseDao.formList(ele,new Team()),-1,-1);
-                if (!teams.isEmpty()){
-                    return workApplicationDao.update(ele,con);
-                }
-            }
+        }else {
+            value = true;
         }
-        return 0;
+
+        if (ele.getW_id()!=null) {
+            Work work = new Work();
+            work.setW_id(ele.getW_id());
+            List<Work> works = workDao.query(work,-1,-1);
+            if(!works.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getW_id()!=null)){
+            return workApplicationDao.update(ele,con);
+        }else {
+            return 0;
+        }
     }
     public int update(TeamWork ele,TeamWork con){
-        if (ele.getW_id()!=null) {
-            List<Work> works = workDao.leftQuery(BaseDao.formList(ele, new Work()), -1, -1);
-            if(!works.isEmpty()){
-                if (ele.getT_id()!=null) {
-                    List<Team> teams= teamDao.leftQuery(BaseDao.formList(ele,new Team()),-1,-1);
-                    if (!teams.isEmpty()){
-                        return teamWorkDao.update(ele,con);
-                    }
-                }else {
-                    return teamWorkDao.update(ele,con);
-                }
+        boolean value = false;
+        boolean value1 = false;
+
+        if (ele.getT_id()!=null) {
+            Team team = new Team();
+            team.setT_id(ele.getT_id());
+            List<Team> teams= teamDao.query(team,-1,-1);
+            if (!teams.isEmpty()){
+                value=true;
             }
-        } else {
-            if (ele.getT_id()!=null) {
-                List<Team> teams= teamDao.leftQuery(BaseDao.formList(ele,new Team()),-1,-1);
-                if (!teams.isEmpty()){
-                    return teamWorkDao.update(ele,con);
-                }
-            }
+        }else {
+            value = true;
         }
-        return 0;
+
+        if (ele.getW_id()!=null) {
+            Work work = new Work();
+            work.setW_id(ele.getW_id());
+            List<Work> works = workDao.query(work,-1,-1);
+            if(!works.isEmpty()){
+                value1=true;
+            }
+        }else {
+            value1=true;
+        }
+        if(value1&&value&&(ele.getT_id()!=null||ele.getW_id()!=null)){
+            return teamWorkDao.update(ele,con);
+        }else {
+            return 0;
+        }
     }
 
     public boolean insert(College ele) {
@@ -362,7 +705,7 @@ public class AdministratorServe {
     public int delete(College ele) {
         List<User> users = userDao.leftQuery(BaseDao.formList(ele, new User()), -1, -1);
         for (User u : users) {
-            userDao.delete(u);
+            delete(u);
         }
         return collegeDao.delete(ele);
     }
@@ -370,7 +713,7 @@ public class AdministratorServe {
     public int delete(Competition ele) {
         List<Work> works = workDao.leftQuery(BaseDao.formList(ele, new Work()), -1, -1);
         for (Work work : works) {
-            workDao.delete(work);
+            delete(work);
         }
         return competitionDao.delete(ele);
     }
@@ -378,7 +721,7 @@ public class AdministratorServe {
     public int delete(Mentor ele) {
         List<User> users = userDao.leftQuery(BaseDao.formList(ele, new User()), -1, -1);
         for (User u : users) {
-            userDao.delete(u);
+            delete(u);
         }
         return mentorDao.delete(ele);
     }
@@ -394,7 +737,7 @@ public class AdministratorServe {
     public int delete(Student ele) {
         List<User> users = userDao.leftQuery(BaseDao.formList(ele, new User()), -1, -1);
         for (User u : users) {
-            userDao.delete(u);
+            delete(u);
         }
         return studentDao.delete(ele);
     }
@@ -508,50 +851,6 @@ public class AdministratorServe {
 
     public int delete(TeamWork ele){
         return teamWorkDao.delete(ele);
-    }
-
-
-    public int banStudentUser(Student stu) {
-        User user = new User();
-        int count = 0;
-        List<User> userList = userDao.leftQuery(BaseDao.formList(user, stu), -1, -1);
-        for (User ele : userList) {
-            if (ele.getU_status() == 0) {
-                User user1 = new User();
-                user1.setU_status(0);
-                count++;
-            } else {
-                System.out.println("该账号处于封禁状态");
-                count++;
-            }
-        }
-        return count;
-    }
-
-    //解封学生账号
-    public int unBanStudentUser(Student stu) {
-        User user = new User();
-        int count = 0;
-        List<User> userList = userDao.leftQuery(BaseDao.formList(user, stu), -1, -1);
-        for (User ele : userList) {
-            if (ele.getU_status() != 0) {
-                User user1 = new User();
-                user1.setU_status(1);
-                count++;
-            } else {
-                System.out.println("该账号处于正常状态");
-                count++;
-            }
-        }
-        return count;
-    }
-
-    //添加比赛信息
-
-
-    //删除帖子
-    public boolean deletePostings() {
-        return true;
     }
 
 

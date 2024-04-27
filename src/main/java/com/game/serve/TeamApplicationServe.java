@@ -13,7 +13,7 @@ public class TeamApplicationServe extends TeamApplicationDao {
     public boolean approve(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.approve);
+            teamApplication1.setTa_status(1);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){
@@ -24,7 +24,7 @@ public class TeamApplicationServe extends TeamApplicationDao {
     public boolean refuse(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.refuse);
+            teamApplication1.setTa_status(2);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){
@@ -35,7 +35,7 @@ public class TeamApplicationServe extends TeamApplicationDao {
     public boolean unread(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.unread);
+            teamApplication1.setTa_status(0);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){
