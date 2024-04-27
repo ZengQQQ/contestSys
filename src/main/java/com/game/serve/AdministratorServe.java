@@ -40,6 +40,9 @@ public class AdministratorServe {
     WorkApplicationDao workApplicationDao = new WorkApplicationDao();
     TeamWorkDao teamWorkDao = new TeamWorkDao();
 
+    public PageBean<Administrator> query(Integer currentPage, Administrator ele) {
+        return administratorDao.queryByPage(currentPage, ele);
+    }
     public PageBean<College> query(Integer currentPage, College ele) {
         return collegeDao.queryByPage(currentPage, ele);
     }
