@@ -27,6 +27,19 @@ public class Result<T> {
         return new Result<T>(200, "success", data);
     }
 
+    public static <T> Result<T> fail(String message, T data) {
+        return new Result<T>(400, message, data);
+    }
+
+    public static <T> Result<T> unAuth(T data) {
+        return new Result<T>(401, "未登录", data);
+    }
+
+    public static <T> Result<T> unPri() {
+        return new Result<T>(403, "无权限", null);
+    }
+
+
     /**
      * 业务失败
      * @param message 失败信息

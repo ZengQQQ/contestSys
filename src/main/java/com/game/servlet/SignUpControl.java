@@ -1,10 +1,7 @@
-package com.game.servelet;
-import com.game.domain.Mentor;
-import com.game.domain.Student;
+package com.game.servlet;
 import com.game.domain.User;
 import com.game.serve.SignUpControlServe;
 import com.google.gson.Gson;
-import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +15,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/loginControl")
+@WebServlet(value = "/signUpControl")
 public class SignUpControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

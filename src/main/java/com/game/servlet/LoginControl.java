@@ -1,4 +1,4 @@
-package com.game.servelet;
+package com.game.servlet;
 
 import com.game.domain.Administrator;
 import com.game.domain.User;

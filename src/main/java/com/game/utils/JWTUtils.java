@@ -73,18 +73,13 @@ public class JWTUtils {
 
     /**
      * 验证token 是否为管理员
-     * @param token token
+     * @param decodedJWT 解码后的token
      * @return 是管理员返回true，否则返回false
      */
 
-    public static boolean verifyAdmin(String token) {
-        DecodedJWT decodedJWT = decodedJWT(token);
-        // 检查签名
+    public static boolean verifyAdmin(DecodedJWT decodedJWT) {
+
         if (decodedJWT == null) {
-            return false;
-        }
-        // 检查是否过期
-        if (isExpire(decodedJWT)) {
             return false;
         }
         // 检查是否为管理员
@@ -94,39 +89,38 @@ public class JWTUtils {
     }
 
     /**
-     * 验证token 是否为用户
-     * @param token token
+     * 验证token 是否为导师
+     * @param decodedJWT 解码后的token
      * @return 是用户返回true，否则返回false
      */
-    public static boolean verifyUser(String token) {
-        DecodedJWT decodedJWT = decodedJWT(token);
+    public static boolean verifyUser(DecodedJWT decodedJWT) {
+
         // 检查签名
         if (decodedJWT == null) {
             return false;
         }
-        // 检查是否过期
-        if (isExpire(decodedJWT)) {
-            return false;
-        }
-        // 检查是否为用户
+        // 检查是否为导师
         Role role = null;
         role = Role.valueOf(decodedJWT.getClaim("role").asString());
-        return role == Role.student || role == Role.mentor;
+        return role == Role.mentor;
     }
 
+    /**
+     * 验证token 是否为学生
+     * @param decodedJWT 解码后的token
+     * @return 是用户返回true，否则返回false
+     */
+    public static boolean verifyStudent(DecodedJWT decodedJWT) {
 
-
-    public static void main(String[] args) {
-        JwtData jwtData = new JwtData(
-                "admin",
-                "123456",
-                Role.admin
-        );
-
-        String token = encodeJwt(jwtData);
-        System.out.println(token);
-        System.out.println(verifyAdmin(token));
-
+        // 检查签名
+        if (decodedJWT == null) {
+            return false;
+        }
+        // 检查是否为学生
+        Role role = null;
+        role = Role.valueOf(decodedJWT.getClaim("role").asString());
+        return role == Role.student;
     }
+
 }
 
