@@ -2,7 +2,7 @@ package com.game.dao;
 
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
-import com.game.domain.secondary.workDomain.Task;
+import com.game.domain.Task;
 
 import java.util.List;
 

@@ -12,11 +12,11 @@ import com.game.domain.secondary.teamDomain.WorkApplication;
 import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import com.game.domain.secondary.teamMessageDomain.TeamInvite;
 import com.game.domain.secondary.userDomain.College;
-import com.game.domain.secondary.userDomain.Mentor;
-import com.game.domain.secondary.userDomain.Student;
-import com.game.domain.secondary.workDomain.Competition;
+import com.game.domain.Mentor;
+import com.game.domain.Student;
+import com.game.domain.Competition;
 import com.game.domain.secondary.workDomain.Project;
-import com.game.domain.secondary.workDomain.Task;
+import com.game.domain.Task;
 
 import java.util.List;
 

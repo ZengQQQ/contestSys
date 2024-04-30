@@ -4,8 +4,8 @@ import com.game.dao.*;
 import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.domain.secondary.userDomain.College;
-import com.game.domain.secondary.userDomain.Mentor;
-import com.game.domain.secondary.userDomain.Student;
+import com.game.domain.Mentor;
+import com.game.domain.Student;
 
 import java.util.ArrayList;
 import java.util.List;

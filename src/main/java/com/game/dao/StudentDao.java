@@ -2,7 +2,7 @@ package com.game.dao;
 
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
-import com.game.domain.secondary.userDomain.Student;
+import com.game.domain.Student;
 
 import java.util.List;
 import java.util.Map;

@@ -5,6 +5,8 @@ import com.game.utils.ReflectionUtils;
 import com.google.gson.Gson;
 import lombok.Data;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 @Data
 public class Administrator extends ReflectionUtils{
@@ -34,11 +36,34 @@ public class Administrator extends ReflectionUtils{
         return mapFields(this);
     }
 
+    public Administrator mapToClass(Map<String, Object> map) {
+        Class<?> clazz = this.getClass();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            // 使用反射找到类的属性并设置值
+            try {
+                Field field = clazz.getDeclaredField(key);
+                field.setAccessible(true); // 设置可访问私有属性
+                field.set(this, value);
+            } catch (NoSuchFieldException e) {
+                // 如果Map中的key不存在对应的类属性，可以选择忽略或者进行其他处理
+                System.out.println("No such field: " + key);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return this;
+    }
+
     public static void main(String[] args) {
-        Administrator administrator = new Administrator(1,"11","11");
-        Gson gson = new Gson();
-        String json = gson.toJson(administrator);
-        System.out.println(json);
+        Map<String,Object> map = new HashMap<>();
+        map.put("a_acc","123456");
+        map.put("a_id",123456);
+        map.put("a_pwd","123456");
+        Administrator administrator = (new  Administrator()).mapToClass(map);
+
+        System.out.println(administrator);
     }
 
 }

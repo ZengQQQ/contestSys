@@ -2,7 +2,7 @@ package com.game.dao;
 
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
-import com.game.domain.secondary.workDomain.Competition;
+import com.game.domain.Competition;
 import com.game.utils.Level;
 
 import java.time.LocalDateTime;

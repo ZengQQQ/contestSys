@@ -6,36 +6,40 @@ import lombok.Data;
 import java.lang.reflect.Field;
 import java.util.Map;
 @Data
-public class Team extends ReflectionUtils {
+public class MentorTeamCompLink extends ReflectionUtils {
+    private Integer m_id;
     private Integer t_id;
-    private Integer captain_id;
-    private String t_desc;
-    private Integer t_cnum;
-    private Integer t_maxnum;
-    //枚举变量，只有四个状态："组队中","参赛中","已完赛","已解散"
-    private Integer t_status;
-    private static String table_name="team";
+    private Integer c_id;
+    private Integer pass;
+    private Integer for_team;
+    private Integer info;
+    private Integer mtc_id;
+    private static String table_name = "mentor_team_comp_link";
 
-    public Team() {
+    public MentorTeamCompLink() {
     }
 
-    public Team(Integer t_id, Integer captain_id, String t_desc, Integer t_cnum, Integer t_maxnum, Integer t_status) {
+    public MentorTeamCompLink(Integer m_id, Integer t_id, Integer c_id, Integer pass, Integer for_team, Integer info, Integer mtc_id) {
+        this.m_id = m_id;
         this.t_id = t_id;
-        this.captain_id = captain_id;
-        this.t_desc = t_desc;
-        this.t_maxnum = t_maxnum;
-        this.t_status = t_status;
+        this.c_id = c_id;
+        this.pass = pass;
+        this.for_team = for_team;
+        this.info = info;
+        this.mtc_id = mtc_id;
     }
 
-    public Team(Team team){
-        this.t_id = team.getT_id();
-        this.captain_id = team.getCaptain_id();
-        this.t_desc = team.getT_desc();
-        this.t_cnum = team.getT_cnum();
-        this.t_maxnum = team.getT_maxnum();
-        this.t_status = team.getT_status();
+    public MentorTeamCompLink(MentorTeamCompLink m) {
+        this.m_id = m.getM_id();
+        this.t_id = m.getT_id();
+        this.c_id = m.getC_id();
+        this.pass = m.getPass();
+        this.for_team = m.getFor_team();
+        this.info = m.getInfo();
+        this.mtc_id = m.getMtc_id();
     }
-    public Team mapToClass(Map<String, Object> map) {
+
+    public MentorTeamCompLink mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();

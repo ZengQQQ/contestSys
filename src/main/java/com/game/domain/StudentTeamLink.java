@@ -6,36 +6,37 @@ import lombok.Data;
 import java.lang.reflect.Field;
 import java.util.Map;
 @Data
-public class Team extends ReflectionUtils {
+public class StudentTeamLink extends ReflectionUtils {
+    private Integer s_id;
     private Integer t_id;
-    private Integer captain_id;
-    private String t_desc;
-    private Integer t_cnum;
-    private Integer t_maxnum;
-    //枚举变量，只有四个状态："组队中","参赛中","已完赛","已解散"
-    private Integer t_status;
-    private static String table_name="team";
+    private Integer pass;
+    private Integer invite;
+    private String info;
+    private Integer st_id;
+    private static String table_name="student_team_link";
 
-    public Team() {
+    public StudentTeamLink() {
     }
 
-    public Team(Integer t_id, Integer captain_id, String t_desc, Integer t_cnum, Integer t_maxnum, Integer t_status) {
+    public StudentTeamLink(Integer s_id, Integer t_id, Integer pass, Integer invite, String info, Integer st_id) {
+        this.s_id = s_id;
         this.t_id = t_id;
-        this.captain_id = captain_id;
-        this.t_desc = t_desc;
-        this.t_maxnum = t_maxnum;
-        this.t_status = t_status;
+        this.pass = pass;
+        this.invite = invite;
+        this.info = info;
+        this.st_id = st_id;
     }
 
-    public Team(Team team){
-        this.t_id = team.getT_id();
-        this.captain_id = team.getCaptain_id();
-        this.t_desc = team.getT_desc();
-        this.t_cnum = team.getT_cnum();
-        this.t_maxnum = team.getT_maxnum();
-        this.t_status = team.getT_status();
+    public StudentTeamLink(StudentTeamLink s) {
+        this.s_id = s.getS_id();
+        this.t_id = s.getT_id();
+        this.pass = s.getPass();
+        this.invite = s.getInvite();
+        this.info = s.getInfo();
+        this.st_id = s.getSt_id();
     }
-    public Team mapToClass(Map<String, Object> map) {
+
+    public StudentTeamLink mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -54,7 +55,6 @@ public class Team extends ReflectionUtils {
         }
         return this;
     }
-
     public Map<String, Object> toMap(){
         return mapFields(this);
     }

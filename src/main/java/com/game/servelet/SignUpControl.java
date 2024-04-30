@@ -1,11 +1,13 @@
 //package com.game.servelet;
 //
+//
 //import com.game.domain.Administrator;
 //import com.game.domain.Mentor;
 //import com.game.domain.Student;
 //import com.game.serve.AdministratorServe;
 //import com.game.serve.MentorServe;
 //import com.game.serve.StudentServe;
+//import com.game.servelet.letInterface.SignUp;
 //import com.google.gson.Gson;
 //import org.json.simple.JSONObject;
 //
@@ -20,22 +22,12 @@
 //import java.time.format.DateTimeFormatter;
 //
 //@WebServlet(value = "/loginControl")
-//public class LoginControl extends HttpServlet {
+//public class SignUpControl extends HttpServlet implements SignUp {
+//
+//
 //    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setCharacterEncoding("UTF-8");
-//        resp.setContentType("application/json;charset=UTF-8");
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String formattedDateTime = now.format(formatter);
-//
-//        String account = req.getParameter("account");
-//        String password = req.getParameter("password");
-//        String identity = req.getParameter("identity");
-//        boolean loginResult = false;
-//
-//        switch (identity) {
+//    public Integer signUp(String acc, String pwd, String userClass, String name, String info, String tele, String mail, String qq) {
+//        switch () {
 //            case "student":
 //                StudentServe studentServe = new StudentServe();
 //                Student student = new Student();
@@ -57,6 +49,23 @@
 //                administrator.setA_pwd(password);
 //                loginResult = administratorServe.checkPassword(administrator);
 //        }
+//    }
+//
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        req.setCharacterEncoding("UTF-8");
+//        resp.setContentType("application/json;charset=UTF-8");
+//
+//        LocalDateTime now = LocalDateTime.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String formattedDateTime = now.format(formatter);
+//
+//        String account = req.getParameter("account");
+//        String password = req.getParameter("password");
+//        String identity = req.getParameter("identity");
+//        boolean loginResult = false;
+//
+//
 //
 //        Gson gson = new Gson();
 //        JSONObject responseJson = new JSONObject();
@@ -85,4 +94,7 @@
 //    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        super.doGet(req, resp);
 //    }
+//
+//
 //}
+//
