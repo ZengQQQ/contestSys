@@ -7,54 +7,82 @@ import com.game.domain.Mentor;
 import com.game.domain.Student;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LoginControlServe {
 
-    public boolean studentLogin(String s_xuehao,String u_pwd){
-        if (s_xuehao!=null && u_pwd!=null) {
-            Student student =new Student();
-            User user = new User();
-            List<Object> list = new ArrayList<>();
-            student.setS_xuehao(s_xuehao);
-            user.setU_pwd(u_pwd);
-            user.setU_status(1);
-            list.add(student);
-            list.add(user);
-            List<Student> studentList = (new StudentDao()).leftQuery(list, -1, -1);
-            return !studentList.isEmpty();
+    public Map<String,String> studentLogin(User user){
+        Map<String,String> map = new HashMap<>();
+        if (user.getU_acc()!=null && user.getU_pwd()!=null) {
+            User user1 = new User();
+            user1.setU_acc(user.getU_acc());
+            user1.setU_pwd(user.getU_pwd());
+            User user2 = (new UserDao()).querySingle(user1);
+            if(user2!=null){
+                if(user2.getU_status()!=0){
+                    map.put("code","1");
+                    map.put("message","用户成功登录");
+                }else {
+                    map.put("code","0");
+                    map.put("message","用户封禁中");
+                }
+            }else{
+                map.put("code","0");
+                map.put("message","账号或密码错误");
+            }
         }else {
-            return false;
+            map.put("code","0");
+            map.put("message","输入内容错误");
         }
+        return map;
     }
 
-    public boolean administratorLogin(String a_acc,String a_pwd){
-        if(a_acc!=null&&a_pwd!=null){
-            Administrator administrator = new Administrator();
-            administrator.setA_acc(a_acc);
-            administrator.setA_pwd(a_pwd);
+    public Map<String,String> administratorLogin(Administrator administrator){
+        Map<String,String> map =new HashMap<>();
+        if(administrator.getA_acc()!=null&&administrator.getA_pwd()!=null){
+            administrator.setA_acc(administrator.getA_acc());
+            administrator.setA_pwd(administrator.getA_pwd());
             List<Administrator> administratorList =(new AdministratorDao()).query(administrator,-1,-1);
-            return !administratorList.isEmpty();
+            if(!administratorList.isEmpty()){
+                map.put("code","1");
+                map.put("message","管理员登录成功");
+            }else {
+                map.put("code","0");
+                map.put("message","账号或密码错误");
+            }
         }else {
-            return false;
+            map.put("code","0");
+            map.put("message","输入内容错误");
         }
+        return map;
     }
 
-    public boolean mentorLogin(String m_acc,String u_pwd){
-        if (m_acc!=null && u_pwd!=null) {
-            Mentor mentor =new Mentor();
-            User user = new User();
-            List<Object> list = new ArrayList<>();
-            mentor.setM_acc(m_acc);
-            user.setU_pwd(u_pwd);
-            user.setU_status(1);
-            list.add(mentor);
-            list.add(user);
-            List<Mentor> mentors = (new MentorDao()).leftQuery(list, -1, -1);
-            return !mentors.isEmpty();
+    public Map<String, String> mentorLogin(User user){
+        Map<String,String> map = new HashMap<>();
+        if (user.getU_acc()!=null && user.getU_pwd()!=null) {
+            User user1 = new User();
+            user1.setU_acc(user.getU_acc());
+            user1.setU_pwd(user.getU_pwd());
+            User user2 = (new UserDao()).querySingle(user1);
+            if(user2!=null){
+                if(user2.getU_status()!=0){
+                    map.put("code","1");
+                    map.put("message","教师成功登录");
+                }else {
+                    map.put("code","0");
+                    map.put("message","用户封禁中");
+                }
+            }else{
+                map.put("code","0");
+                map.put("message","账号或密码错误");
+            }
         }else {
-            return false;
+            map.put("code","0");
+            map.put("message","输入错误内容");
         }
+        return map;
     }
 
 

@@ -19,7 +19,7 @@ public class Team extends ReflectionUtils {
     public Team() {
     }
 
-    public Team(Integer t_id, Integer captain_id, String t_desc, Integer t_cnum, Integer t_maxnum, Integer t_status) {
+    public Team(Integer t_id, Integer captain_id, String t_desc, Integer t_maxnum, Integer t_status) {
         this.t_id = t_id;
         this.captain_id = captain_id;
         this.t_desc = t_desc;

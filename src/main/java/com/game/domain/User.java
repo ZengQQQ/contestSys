@@ -26,7 +26,7 @@ public class User extends ReflectionUtils {
     public User() {
     }
 
-    public User(Integer u_id,String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, Integer u_status, Integer s_id, Integer m_id, Integer co_id) {
+    public User(Integer u_id,String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, Integer u_status, Integer s_id, Integer m_id) {
         this.u_id = u_id;
         this.u_acc = u_acc;
         this.u_pwd = u_pwd;
@@ -38,7 +38,6 @@ public class User extends ReflectionUtils {
         this.u_status = u_status;
         this.s_id = s_id;
         this.m_id = m_id;
-        this.co_id = co_id;
     }
 
     public User(User user) {
@@ -53,7 +52,6 @@ public class User extends ReflectionUtils {
         this.u_status = user.getU_status();
         this.s_id = user.getS_id();
         this.m_id = user.getM_id();
-        this.co_id = user.getCo_id();
     }
     public User mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();

@@ -1,9 +1,11 @@
 package com.game.domain;
 
+import com.game.bean.PageBean;
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Map;
 @Data
 public class MentorTeamCompLink extends ReflectionUtils {
@@ -14,12 +16,14 @@ public class MentorTeamCompLink extends ReflectionUtils {
     private Integer for_team;
     private Integer info;
     private Integer mtc_id;
+    private LocalDateTime mtc_st;
+    private LocalDateTime mtc_ddl;
     private static String table_name = "mentor_team_comp_link";
 
     public MentorTeamCompLink() {
     }
 
-    public MentorTeamCompLink(Integer m_id, Integer t_id, Integer c_id, Integer pass, Integer for_team, Integer info, Integer mtc_id) {
+    public MentorTeamCompLink(Integer m_id, Integer t_id, Integer c_id, Integer pass, Integer for_team, Integer info, Integer mtc_id,LocalDateTime mtc_st,LocalDateTime mtc_ddl) {
         this.m_id = m_id;
         this.t_id = t_id;
         this.c_id = c_id;
@@ -27,6 +31,8 @@ public class MentorTeamCompLink extends ReflectionUtils {
         this.for_team = for_team;
         this.info = info;
         this.mtc_id = mtc_id;
+        this.mtc_st = mtc_st;
+        this.mtc_ddl=mtc_ddl;
     }
 
     public MentorTeamCompLink(MentorTeamCompLink m) {
@@ -37,6 +43,9 @@ public class MentorTeamCompLink extends ReflectionUtils {
         this.for_team = m.getFor_team();
         this.info = m.getInfo();
         this.mtc_id = m.getMtc_id();
+        this.mtc_st = m.getMtc_st();
+        this.mtc_ddl = m.getMtc_ddl();
+
     }
 
     public MentorTeamCompLink mapToClass(Map<String, Object> map) {

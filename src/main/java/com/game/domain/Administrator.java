@@ -26,7 +26,7 @@ public class Administrator extends ReflectionUtils{
         this.a_pwd = administrator.getA_pwd();
     }
 
-    public Administrator(int a_id, String a_acc, String a_pwd) {
+    public Administrator(Integer a_id, String a_acc, String a_pwd) {
         this.a_id = a_id;
         this.a_acc = a_acc;
         this.a_pwd = a_pwd;
@@ -60,7 +60,7 @@ public class Administrator extends ReflectionUtils{
         Map<String,Object> map = new HashMap<>();
         map.put("a_acc","123456");
         map.put("a_id",123456);
-        map.put("a_pwd","123456");
+        map.put("M_id",123456);
         Administrator administrator = (new  Administrator()).mapToClass(map);
 
         System.out.println(administrator);
