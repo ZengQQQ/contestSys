@@ -1,6 +1,5 @@
 package com.game.bean;
 
-import com.game.domain.Student;
 import lombok.Data;
 import lombok.Setter;
 

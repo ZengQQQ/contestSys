@@ -1,11 +1,14 @@
 package com.game.dao.base;
 
+import com.game.bean.ConditionBean;
+import com.game.utils.ReflectionUtils;
+
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
 
-public class BaseDao<T> {
+public class BaseDao<T> extends ReflectionUtils {
     public String tableName;
 
     public BaseDao() {}
@@ -236,6 +239,113 @@ public class BaseDao<T> {
         }
     }
 
+    public T querySingle(T object){
+        Class<T> clazz= (Class<T>) object.getClass();
+        Map<String,Object> map = mapFields(object);
+        return querySingle(clazz,map);
+    }
+
+    public T querySingle(Class<T> clazz, Map<String, Object> map) {
+        // 构建 SQL 查询语句
+        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+        for (String key : map.keySet()) {
+            sqlBuilder.append(key).append("=? AND ");
+        }
+        // 闭合and
+        sqlBuilder.append("1=1");
+
+        System.out.println("预制sql： " + sqlBuilder.toString());
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
+        try {
+            connection = Druid.getConnection();
+            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+
+            // 设置参数
+            int count = 1;
+            // 设置值
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                preparedStatement.setObject(count, entry.getValue());
+                count++;
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            // 如果结果集中存在数据，则将其转换为对象并返回
+            if (resultSet.next()) {
+                // 根据泛型类的实际类型创建对象实例
+                T object = clazz.newInstance();
+                // 从 ResultSet 中读取数据，并设置到对象的属性中
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(columnName);
+                    // 使用反射设置对象的属性值
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(object, value);
+                }
+                return object;
+            } else {
+                // 如果结果集中没有数据，则返回null
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            Druid.close(resultSet, preparedStatement, connection);
+        }
+    }
+
+
+
+
+    public List<T> leftQuery(List<Object> objects,int start,int end){
+        Map<String,ConditionBean> conditions = new HashMap<>();
+        Map<String,String> joinConditions = new HashMap<>();
+        Map<String,Map<String,Object>> maps = new HashMap<>();
+        for(Object object:objects){
+            ConditionBean tem = mapFieldsKey(object);
+            conditions.put(tem.getTableName(), tem);
+            maps.put(tem.getTableName(),mapFields(object));
+        }
+        Class<T> clazz= (Class<T>) this.getClass();
+        ArrayDeque<ConditionBean> arrayDeque = new ArrayDeque<>();
+        arrayDeque.add(new ConditionBean(tableName, conditions.get(tableName).getKeys()));
+        conditions.remove(tableName);
+        while (true){
+            if (conditions.isEmpty()){
+                break;
+            }
+            ConditionBean leftTable=arrayDeque.pop();
+            conditions.remove(leftTable.getTableName());
+            for (Map.Entry<String, ConditionBean> entry : conditions.entrySet()){
+                Set<String> intersection = new HashSet<>(entry.getValue().getKeys());
+                intersection.retainAll(leftTable.getKeys());
+                if(!intersection.isEmpty()){
+                    arrayDeque.add(entry.getValue());
+                    for(String tem :intersection){
+                        StringBuilder conditionText = new StringBuilder();
+                        conditionText.append(leftTable.getTableName());
+                        conditionText.append(".");
+                        conditionText.append(tem);
+                        conditionText.append("=");
+                        conditionText.append(entry.getKey());
+                        conditionText.append(".");
+                        conditionText.append(tem);
+                        joinConditions.put(entry.getKey(),conditionText.toString());
+                    }
+                }
+            }
+        }
+        return leftQuery(clazz,this.tableName,maps,joinConditions,start,end);
+    }
+
 
     /**
      * 用于比较两个map参数是否长度一致
@@ -244,15 +354,19 @@ public class BaseDao<T> {
      */
     public static void compareMaps(Map<?, ?> map1, Map<?, ?> map2) {
         if (map1.size() != map2.size()) {
-            throw new IllegalArgumentException("leftquery参数错误：两个map的大小不一样");
+            throw new IllegalArgumentException("left_query参数错误：两个map的大小不一样");
         }
     }
-
-//    public List<T> leftQuery(T object){
-//        Class<T> clazz= (Class<T>) this.getClass();
-//        Map<String,Object> map = mapFields(object);
-//        return leftQuery(clazz,this.tableName,map,start,end);
-//    }
+    public static <T> void removeDuplicates(List<T> list) {
+        int size = list.size();
+        for (int i = 0; i < size - 1; i++) {
+            if (list.get(i).equals(list.get(i + 1))) {
+                list.remove(i);
+                size--;
+                i--; // 每次移除一个元素后，需要回退一步，重新检查当前位置
+            }
+        }
+    }
 
     /**
      *  左连接查询,使用什么Dao就查该Dao对应的 table name 的主数据
@@ -434,52 +548,22 @@ public class BaseDao<T> {
 
     public int statistics(T object){
         Map<String, Object> map= mapFields(object);
-        return statistics(map);
+        Class<T> clazz = (Class<T>) object.getClass();
+        return statistics(clazz,map);
     }
 
-    public int statistics(Map<String, Object> map){
-        StringBuilder sqlBuilder = new StringBuilder("SELECT COUNT(*) AS total_rows FROM "+tableName+" WHERE ");
-        for (String key : map.keySet()) {
-            sqlBuilder.append(key).append("=? AND ");
-        }
-        sqlBuilder.append("1=1");
-        System.out.println("预制sql： " + sqlBuilder.toString());
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Connection connection = null;
-        try {
-            connection = Druid.getConnection();
-            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
-            resultSet = preparedStatement.executeQuery();
-            // 遍历结果集
-            if (resultSet.next()) {
-                // 获取结果集中的数据条数
-                int totalRows = resultSet.getInt("total_rows");
-                System.out.println("Total rows in the table: " + totalRows);
-                return totalRows;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+    public int statistics(Class<T> clazz,Map<String, Object> map){
+        return query(clazz,map,-1,-1).size();
     }
 
-    public static <E> Map<String, Object> mapFields(E object) {
-        Map<String, Object> resultMap = new HashMap<>();
-        Class<?> clazz = object.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // 设置字段为可访问，即使是私有字段也可以访问
-            try {
-                Object value = field.get(object); // 获取字段的值
-                if (value != null){
-                    resultMap.put(field.getName(), value); // 将字段名和值映射到Map中
-                }
-            } catch (IllegalAccessException e) {
-                // 处理异常
-                e.printStackTrace();
-            }
-        }
-        return resultMap;
+    public int statistics(List<Object> list){
+        return list.size();
     }
+
+    public static List<Object> formList(Object ... eles){
+        return new ArrayList<>(Arrays.asList(eles));
+    }
+
+
+
 }

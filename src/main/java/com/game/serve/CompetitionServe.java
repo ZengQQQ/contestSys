@@ -2,13 +2,12 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.CompetitionDao;
-import com.game.domain.Competition;
+import com.game.domain.secondary.workDomain.Competition;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CompetitionServe extends CompetitionDao {
-    private final PageBean<Competition> pageBean = new PageBean<Competition>(statistics(new HashMap<>()));
 
     public boolean addCompetitionInfo(Competition competition){
         if(competition.getC_name() !=null && competition.getC_level()!=null){
@@ -36,15 +35,6 @@ public class CompetitionServe extends CompetitionDao {
         return success; // 返回整体成功标志
     }
 
-    public PageBean<Competition> queryByPage(Integer currentPage, Competition object){
-        List<Competition> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result=query(object,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
 
 
 }

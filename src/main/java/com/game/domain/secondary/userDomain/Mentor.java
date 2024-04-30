@@ -1,4 +1,4 @@
-package com.game.domain;
+package com.game.domain.secondary.userDomain;
 
 import com.game.utils.ReflectionUtils;
 import lombok.Data;
@@ -9,32 +9,24 @@ public class Mentor extends ReflectionUtils {
     private Integer m_id;
     private String m_acc;
     private String m_name;
-    private String m_pwd;
-    private String m_direction;
-    private String m_tele;
-    private String m_mail;
+    private Integer m_status;
+    private static String table_name="mentor";
 
     public Mentor() {
     }
 
-    public Mentor(Integer m_id, String m_acc, String m_name, String m_pwd, String m_direction, String m_tele, String m_mail) {
+    public Mentor(Integer m_id, String m_acc, String m_name,Integer m_status) {
         this.m_id = m_id;
         this.m_acc = m_acc;
         this.m_name = m_name;
-        this.m_pwd = m_pwd;
-        this.m_direction = m_direction;
-        this.m_tele = m_tele;
-        this.m_mail = m_mail;
+        this.m_status=m_status;
     }
 
     public Mentor(Mentor mentor){
         this.m_id = mentor.getM_id();
         this.m_acc = mentor.getM_acc();
         this.m_name = mentor.getM_name();
-        this.m_pwd = mentor.getM_pwd();
-        this.m_direction = mentor.getM_direction();
-        this.m_tele = mentor.getM_tele();
-        this.m_mail = mentor.getM_mail();
+        this.m_status=mentor.getM_status();
     }
 
     public Map<String, Object> toMap(){
@@ -42,7 +34,7 @@ public class Mentor extends ReflectionUtils {
     }
 
     public static void main(String[] args) {
-        Mentor m = new Mentor(null,"123",null,null,null,null,null);
+        Mentor m = new Mentor(null,"123",null,null);
         System.out.println(m.getM_id());
     }
 }

@@ -2,9 +2,8 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.TeamMentorDao;
-import com.game.domain.secondary.TeamMentor;
+import com.game.domain.secondary.teamDomain.TeamMentor;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class TeamMentorServe extends TeamMentorDao {
@@ -19,7 +18,5 @@ public class TeamMentorServe extends TeamMentorDao {
         pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
-
-
 
 }

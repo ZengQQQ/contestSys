@@ -2,29 +2,18 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.TeamApplicationDao;
-import com.game.domain.TeamApplication;
+import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import com.game.utils.TeamStatus;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class TeamApplicationServe extends TeamApplicationDao {
-    private final PageBean<TeamApplication> pageBean = new PageBean<TeamApplication>();
 
-    public PageBean<TeamApplication> queryByPage(Integer currentPage,TeamApplication object){
-        List<TeamApplication> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result=query(object,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
 
     public boolean approve(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.approve);
+            teamApplication1.setTa_status(1);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){
@@ -35,7 +24,7 @@ public class TeamApplicationServe extends TeamApplicationDao {
     public boolean refuse(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.refuse);
+            teamApplication1.setTa_status(2);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){
@@ -46,7 +35,7 @@ public class TeamApplicationServe extends TeamApplicationDao {
     public boolean unread(TeamApplication teamApplication){
         try {
             TeamApplication teamApplication1=new TeamApplication(teamApplication);
-            teamApplication1.setTa_status(TeamStatus.unread);
+            teamApplication1.setTa_status(0);
             update(teamApplication,teamApplication);
             return true;
         }catch (Exception e){

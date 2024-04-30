@@ -2,30 +2,30 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.MentorDao;
-import com.game.domain.Mentor;
+import com.game.domain.User;
+import com.game.domain.secondary.userDomain.Mentor;
 
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MentorServe extends MentorDao {
-    private final PageBean<Mentor> pageBean = new PageBean<Mentor>();
-    public boolean checkPassword(Mentor mentor){
-        if (mentor.getM_acc()!=null && mentor.getM_pwd()!=null){
+
+    public boolean checkPassword(String u_pwd, String m_acc){
+        if (m_acc!=null && u_pwd!=null){
+            Mentor mentor = new Mentor();
+            User user = new User();
+            mentor.setM_acc(m_acc);
+            user.setU_pwd(u_pwd);
             List<Mentor> mentorList;
-            mentorList = this.query(mentor,-1,-1);
+            List<Object> list =new ArrayList<>();
+            list.add(user);
+            list.add(mentor);
+            mentorList = this.leftQuery(list,-1,-1);
             return !mentorList.isEmpty();
         }else {
             return false;
         }
     }
-    public PageBean<Mentor> queryByPage(Integer currentPage,Mentor object){
-        List<Mentor> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result=query(object,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
+
 }

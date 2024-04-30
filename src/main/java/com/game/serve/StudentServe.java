@@ -3,61 +3,40 @@ package com.game.serve;
 import com.game.bean.PageBean;
 import com.game.dao.StudentDao;
 import com.game.dao.TeamApplicationDao;
-import com.game.domain.Student;
-import com.game.domain.TeamApplication;
+import com.game.dao.UserDao;
+import com.game.domain.User;
+import com.game.domain.secondary.userDomain.Student;
+import com.game.domain.secondary.teamMessageDomain.TeamApplication;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Getter
 public class StudentServe extends StudentDao {
-    private final PageBean<Student> pageBean = new PageBean<Student>();
-    public boolean checkPassword(Student student){
-        if (student.getS_xuehao()!=null && student.getS_pwd()!=null) {
+    public boolean checkPassword(String s_xuehao,String u_pwd){
+        if (s_xuehao!=null && u_pwd!=null) {
+            Student student =new Student();
+            User user = new User();
+            List<Object> list = new ArrayList<>();
+            student.setS_xuehao(s_xuehao);
+            user.setU_pwd(u_pwd);
+            list.add(student);
+            list.add(user);
             List<Student> studentList;
-            studentList = this.query(student, -1, -1);
+            studentList = this.leftQuery(list, -1, -1);
             return !studentList.isEmpty();
         }else {
             return false;
         }
     }
-    public PageBean<Student> queryByPage(Integer currentPage,Student student){
-        List<Student> result = null;
-        pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(student));
-        result=query(student,pageBean.getBegin(),pageBean.getEnd());
-        pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
-        return pageBean;
-    }
-    public boolean banStudentAccount(Student stu){
-        if(stu.getS_status()!=1){
-            HashMap<String,Object> newStatus = new HashMap<>();
-            newStatus.put("s_status", 0);
-            StudentDao studentDao = new StudentDao();
-            return studentDao.update(newStatus, stu.toMap()) != 0;
-        }else{
-            System.out.println("该账号目前已经被封禁");
-            return false;
-        }
-    }
-    //解封学生账号
-    public boolean unBanStudentAccount(Student stu){
-        if(stu.getS_status()!=0){
-            HashMap<String,Object> newStatus = new HashMap<>();
-            newStatus.put("s_status", 1);
-            StudentDao studentDao = new StudentDao();
-            return studentDao.update(newStatus, stu.toMap()) != 0;
-        }else{
-            System.out.println("该账号处于正常状态");
-            return false;
-        }
-    }
+
+
 
     //申请入队
     public boolean applyJoinTeam(TeamApplication teamApplication){
-        if(teamApplication.getS_id()!=null &&teamApplication.getT_id()!=null){
+        if(teamApplication.getU_id()!=null &&teamApplication.getT_id()!=null){
             TeamApplicationDao teamApplicationDao = new TeamApplicationDao();
             return teamApplicationDao.insert(teamApplication);
         }else{
