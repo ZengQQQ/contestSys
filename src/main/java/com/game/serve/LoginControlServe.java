@@ -3,7 +3,6 @@ package com.game.serve;
 import com.game.dao.*;
 import com.game.domain.Administrator;
 import com.game.domain.User;
-import com.game.domain.secondary.userDomain.College;
 import com.game.domain.Mentor;
 import com.game.domain.Student;
 
@@ -58,21 +57,5 @@ public class LoginControlServe {
         }
     }
 
-    public boolean collegeLogin(String co_acc,String u_pwd){
-        if (co_acc!=null && u_pwd!=null) {
-            College college =new College();
-            User user = new User();
-            List<Object> list = new ArrayList<>();
-            college.setCo_acc(co_acc);
-            user.setU_pwd(u_pwd);
-            user.setU_status(1);
-            list.add(college);
-            list.add(user);
-            List<College> colleges = (new CollegeDao()).leftQuery(list, -1, -1);
-            return !colleges.isEmpty();
-        }else {
-            return false;
-        }
-    }
 
 }
