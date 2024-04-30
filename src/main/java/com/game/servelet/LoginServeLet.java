@@ -24,7 +24,7 @@ public class LoginServeLet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html;charset=UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
         LocalDateTime now = LocalDateTime.now();
 
         // 定义日期时间格式
@@ -88,6 +88,66 @@ public class LoginServeLet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        super.doGet(req, resp);
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
+        System.out.println(req);
+
+        // 解析请求参数
+        String account = req.getParameter("account");
+        String password = req.getParameter("password");
+        String identity = req.getParameter("identity");
+        Boolean loginResult = false;
+
+        //检查数据
+        if(account==null||password==null||identity==null){
+            System.out.println("变量为空");
+            return;
+        }
+
+
+        // 登录逻辑
+        switch (identity) {
+            case "student":
+                StudentServe studentServe = new StudentServe();
+                Student student = new Student();
+                student.setS_xuehao(account);
+                student.setS_pwd(password);
+                loginResult = studentServe.checkPassword(student);
+                break;
+            case "mentor":
+                MentorServe mentorServe = new MentorServe();
+                Mentor mentor = new Mentor();
+                mentor.setM_acc(account);
+                mentor.setM_pwd(password);
+                loginResult = mentorServe.checkPassword(mentor);
+                break;
+            case "admin":
+                AdministratorServe administratorServe = new AdministratorServe();
+                Administrator administrator = new Administrator();
+                administrator.setA_acc(account);
+                administrator.setA_pwd(password);
+                loginResult = administratorServe.checkPassword(administrator);
+                break;
+            default:
+                // Handle unknown identity or error
+                break;
+        }
+
+        // 构建JSON响应
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("loginSuccess", loginResult);
+        responseJson.put("account", account);
+        responseJson.put("identity", identity);
+
+        if (loginResult) {
+            responseJson.put("message", "登录成功");
+        } else {
+            responseJson.put("message", "登录失败");
+        }
+
+        // 发送响应
+        PrintWriter out = resp.getWriter();
+        out.print(responseJson.toString());
+        out.flush();
     }
 }
