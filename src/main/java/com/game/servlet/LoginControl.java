@@ -56,6 +56,7 @@ public class LoginControl extends HttpServlet {
                 break;
             case "admin":
                 responseData = loginControlServe.administratorLogin(administrator);
+                break;
             default:
                 responseData.put("code","0");
                 responseData.put("message","身份选择错误");

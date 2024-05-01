@@ -19,8 +19,6 @@ import java.util.Map;
 public class SignUpControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json;charset=UTF-8");
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -38,13 +36,10 @@ public class SignUpControl extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
 
-//        String account = req.getParameter("account");
-//        String password = req.getParameter("password");
+
         String identity = req.getParameter("identity");
         SignUpControlServe signUpControlServe = new SignUpControlServe();
         User user = (new User()).mapToClass(paramMap);
-//        user.setU_acc(account);
-//        user.setU_pwd(password);
         Map<String, String> responseData = new HashMap<>();
         switch (identity) {
             case "student":
