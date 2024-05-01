@@ -176,6 +176,7 @@ public class BaseDao<T> extends ReflectionUtils {
     public List<T> query(Class<T> clazz,Map<String, Object> map, int start, int end) {
         // 构建 SQL 查询语句
         // 构建？
+
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM "+tableName+" WHERE ");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append("=? AND ");
@@ -305,7 +306,7 @@ public class BaseDao<T> extends ReflectionUtils {
 
 
 
-    public List<T> leftQuery(List<Object> objects,int start,int end){
+    public List<T> leftQuery(Class<T> clazz,List<Object> objects,int start,int end){
         Map<String,ConditionBean> conditions = new HashMap<>();
         Map<String,String> joinConditions = new HashMap<>();
         Map<String,Map<String,Object>> maps = new HashMap<>();
@@ -314,7 +315,6 @@ public class BaseDao<T> extends ReflectionUtils {
             conditions.put(tem.getTableName(), tem);
             maps.put(tem.getTableName(),mapFields(object));
         }
-        Class<T> clazz= (Class<T>) this.getClass();
         ArrayDeque<ConditionBean> arrayDeque = new ArrayDeque<>();
         arrayDeque.add(new ConditionBean(tableName, conditions.get(tableName).getKeys()));
         conditions.remove(tableName);
@@ -353,7 +353,7 @@ public class BaseDao<T> extends ReflectionUtils {
      * @param map2 2
      */
     public static void compareMaps(Map<?, ?> map1, Map<?, ?> map2) {
-        if (map1.size() != map2.size()) {
+        if (map1.size() -1!= map2.size()) {
             throw new IllegalArgumentException("left_query参数错误：两个map的大小不一样");
         }
     }
@@ -386,7 +386,7 @@ public class BaseDao<T> extends ReflectionUtils {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM ");
+        StringBuilder sqlBuilder = new StringBuilder();
 
         sqlBuilder.append(" SELECT ");
         sqlBuilder.append(this.tableName);

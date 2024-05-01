@@ -20,7 +20,6 @@ public class User extends ReflectionUtils {
     private Integer u_status;
     private Integer s_id;
     private Integer m_id;
-    private Integer co_id;
     private static String table_name = "user";
 
     public User() {
@@ -52,6 +51,29 @@ public class User extends ReflectionUtils {
         this.u_status = user.getU_status();
         this.s_id = user.getS_id();
         this.m_id = user.getM_id();
+    }
+    public User(MentorUser user) {
+        this.u_id = user.getM_id();
+        this.u_acc = user.getM_acc();
+        this.u_pwd = user.getM_pwd();
+        this.u_name = user.getM_name();
+        this.u_tele = user.getM_tele();
+        this.u_mail = user.getM_mail();
+        this.u_wechat = user.getM_wechat();
+        this.u_qq = user.getM_qq();
+        this.u_status = user.getM_status();
+    }
+
+    public User(Captain user) {
+        this.u_id = user.getUc_id();
+        this.u_acc = user.getUc_acc();
+        this.u_pwd = user.getUc_pwd();
+        this.u_name = user.getUc_name();
+        this.u_tele = user.getUc_tele();
+        this.u_mail = user.getUc_mail();
+        this.u_wechat = user.getUc_wechat();
+        this.u_qq = user.getUc_qq();
+        this.u_status = user.getUc_status();
     }
     public User mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();
