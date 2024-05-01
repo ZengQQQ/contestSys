@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -34,6 +35,26 @@ public class JWTUtils {
 
         // payload
         Map<String, String> map = jwtData.toMap();
+        map.forEach(builder::withClaim);
+        return builder.withExpiresAt(instance.getTime())  //指定令牌过期时间
+                .sign(Algorithm.HMAC256(SING));
+    }
+
+    public static String encodeJwt(String account, String password,String identity) {
+
+        Calendar instance = Calendar.getInstance();
+        // 默认1天过期
+        instance.add(Calendar.DATE, 1);
+
+        //创建jwt builder
+        JWTCreator.Builder builder = JWT.create();
+
+        // payload
+        Map<String, String> map = new HashMap<>();
+        map.put("account", account);
+        map.put("password", password);
+        map.put("identity", identity);
+
         map.forEach(builder::withClaim);
         return builder.withExpiresAt(instance.getTime())  //指定令牌过期时间
                 .sign(Algorithm.HMAC256(SING));
@@ -83,9 +104,9 @@ public class JWTUtils {
             return false;
         }
         // 检查是否为管理员
-        Role role = null;
-        role = Role.valueOf(decodedJWT.getClaim("role").asString());
-        return role == Role.admin;
+        identity identity = null;
+        identity = identity.valueOf(decodedJWT.getClaim("identity").asString());
+        return identity == identity.admin;
     }
 
     /**
@@ -100,9 +121,9 @@ public class JWTUtils {
             return false;
         }
         // 检查是否为导师
-        Role role = null;
-        role = Role.valueOf(decodedJWT.getClaim("role").asString());
-        return role == Role.mentor;
+        identity identity = null;
+        identity = identity.valueOf(decodedJWT.getClaim("identity").asString());
+        return identity == identity.mentor;
     }
 
     /**
@@ -117,9 +138,9 @@ public class JWTUtils {
             return false;
         }
         // 检查是否为学生
-        Role role = null;
-        role = Role.valueOf(decodedJWT.getClaim("role").asString());
-        return role == Role.student;
+        identity identity = null;
+        identity = identity.valueOf(decodedJWT.getClaim("identity").asString());
+        return identity == identity.student;
     }
 
 }

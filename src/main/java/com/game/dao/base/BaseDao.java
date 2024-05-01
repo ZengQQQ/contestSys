@@ -274,6 +274,9 @@ public class BaseDao<T> extends ReflectionUtils {
             resultSet = preparedStatement.executeQuery();
 
             // 如果结果集中存在数据，则将其转换为对象并返回
+            // todo 应该根据类属性搜寻map中的值
+            // 或者保证数据库中列与实体类完整对应
+            // todo 此处修正user缺少u_info 造成的错误； 检查所有实体类的对应关系
             if (resultSet.next()) {
                 // 根据泛型类的实际类型创建对象实例
                 T object = clazz.newInstance();

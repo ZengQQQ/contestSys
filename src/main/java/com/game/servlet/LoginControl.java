@@ -20,7 +20,7 @@ import java.util.Map;
 @WebServlet(value = "/loginControl")
 public class LoginControl extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json;charset=UTF-8");
 
@@ -42,8 +42,6 @@ public class LoginControl extends HttpServlet {
         Administrator administrator = new Administrator(null,user.getU_acc(),user.getU_pwd());
 
         LoginControlServe loginControlServe = new LoginControlServe();
-//        String account = req.getParameter("account");
-//        String password = req.getParameter("password");
         String identity = req.getParameter("identity");
         Map<String, String> responseData = new HashMap<>();
 
@@ -69,7 +67,7 @@ public class LoginControl extends HttpServlet {
         resp.getWriter().flush();
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        super.doGet(req, resp);
+//    }
 }

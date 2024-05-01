@@ -17,6 +17,7 @@ public class User extends ReflectionUtils {
     private String u_mail;
     private String u_wechat;
     private String u_qq;
+    private String u_info;
     private Integer u_status;
     private Integer s_id;
     private Integer m_id;
