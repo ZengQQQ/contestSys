@@ -2,17 +2,19 @@ package com.game.utils;
 
 import com.alibaba.fastjson2.JSON;
 
+import java.util.Map;
+
 
 public class Result<T> {
-    public int status = 200;
+    public int code = 200;
     public String message = "success";
     public T data = null;
 
     public Result() {
     }
 
-    public Result(int status, String message, T data) {
-        this.status = status;
+    public Result(int code, String message, T data) {
+        this.code = code;
         this.message = message;
         this.data = data;
     }
@@ -64,11 +66,22 @@ public class Result<T> {
     }
 
 
-    public static void main(String[] args) {
-        JwtData jwtData = new JwtData("admin", "admin", Role.admin);
-
-        Result<JwtData> res = Result.success(jwtData);
-        System.out.println(Result.toJson(res));
+    /**
+     * 将map转换为结果类
+     *
+     */
+    public static <T> Result<T> fromMap(Map<String, Object> map) {
+        Result<T> res = new Result<T>();
+        if (map.containsKey("code")) {
+            res.code = (int) map.get("code");
+        }
+        if (map.containsKey("message")) {
+            res.message = (String) map.get("message");
+        }
+        if (map.containsKey("data")) {
+            res.data = (T) map.get("data");
+        }
+        return res;
     }
 
 

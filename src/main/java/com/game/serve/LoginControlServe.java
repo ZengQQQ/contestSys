@@ -13,6 +13,13 @@ import java.util.Map;
 
 public class LoginControlServe {
 
+    /**
+     * 学生登录
+     * @param user 用户：账号 密码
+     * @return 业务消息：code message
+        code 0:失败 1:成功
+        message 提示消息
+     */
     public Map<String,String> studentLogin(User user){
         Map<String,String> map = new HashMap<>();
         if (user.getU_acc()!=null && user.getU_pwd()!=null) {
@@ -42,6 +49,7 @@ public class LoginControlServe {
     public Map<String,String> administratorLogin(Administrator administrator){
         Map<String,String> map =new HashMap<>();
         if(administrator.getA_acc()!=null&&administrator.getA_pwd()!=null){
+            // todo 为什么新建一个对象
             administrator.setA_acc(administrator.getA_acc());
             administrator.setA_pwd(administrator.getA_pwd());
             List<Administrator> administratorList =(new AdministratorDao()).query(administrator,-1,-1);

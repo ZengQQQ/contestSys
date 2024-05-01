@@ -1,8 +1,11 @@
 package com.game.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
+@WebFilter("/*")
 public class EncodeChage implements Filter {
 
     @Override
