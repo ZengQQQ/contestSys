@@ -4,6 +4,7 @@ package com.game.servlet;
 import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.serve.LoginControlServe;
+import com.game.utils.JWTUtils;
 import com.game.utils.JsonParams;
 
 import javax.servlet.ServletException;
@@ -53,6 +54,11 @@ public class Login extends HttpServlet {
                 break;
         }
         if (responseData != null) {
+            // 登录成功
+            // 制作token
+
+            String token = JWTUtils.encodeJwt(user.getU_acc(), user.getU_pwd(), identity);
+            responseData.put("data", token);
             resp.getWriter().write(JSON.toJSONString(responseData));
         } else {
             resp.getWriter().write(Result.toJson(Result.error("登录失败", null)));

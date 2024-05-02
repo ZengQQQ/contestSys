@@ -9,13 +9,13 @@ import java.util.Map;
 public class JwtData {
     private String username;
     private String password;
-    private Role role = null;
+    private identity identity = null;
 
 
-    public JwtData(String username, String password, Role role) {
+    public JwtData(String username, String password, identity identity) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.identity = identity;
     }
 
 
@@ -23,7 +23,7 @@ public class JwtData {
         Map<String, String> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
-        map.put("role", role.name());
+        map.put("identity", identity.name());
         return map;
     }
 

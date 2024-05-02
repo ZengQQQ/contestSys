@@ -1,5 +1,5 @@
 package com.game.utils;
 
-public enum Role {
+public enum identity {
     student,mentor,admin
 }
