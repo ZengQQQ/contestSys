@@ -2,20 +2,23 @@ package com.game.serve;
 
 import com.game.dao.StallDao;
 import com.game.domain.Stall;
+import com.game.domain.TeamUserMessage;
 import com.game.utils.Result;
+import com.game.dao.TeamUserMessageDao;
+
 import com.alibaba.fastjson2.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RelationshipServe {
-    TeamUserLinkDao teamUserLinkDao = new TeamUserLinkDao();
+    TeamUserMessageDao teamUserMessageDao = new TeamUserMessageDao();
     StallDao stallDao = new StallDao();
 
     public Result<String> buildTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
-        TeamUserLink teamUserLink = JSON.parseObject(jsonString,TeamUserLink.class);
-        boolean result=teamUserLinkDao.insert(teamUserLink);
+        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
+        boolean result=teamUserMessageDao.insert(teamUserMessage);
         if(!result){
             return Result.fail("添加关系失败","队伍关系创建失败");
         }
@@ -24,8 +27,8 @@ public class RelationshipServe {
 
     public Result<String> deleteTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
-        TeamUserLink teamUserLink = JSON.parseObject(jsonString,TeamUserLink.class);
-        int result=teamUserLinkDao.delete(teamUserLink);
+        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
+        int result=teamUserMessageDao.delete(teamUserMessage);
         if(result==0){
             return Result.fail("删除关系失败","队伍关系删除失败");
         }
