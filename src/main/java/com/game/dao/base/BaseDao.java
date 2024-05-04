@@ -309,7 +309,34 @@ public class BaseDao<T> extends ReflectionUtils {
 
 
 
-    public List<T> leftQuery(Class<T> clazz,List<Object> objects,int start,int end){
+
+
+
+
+
+
+    /**
+     * 用于比较两个map参数是否长度一致
+     * @param map1 1
+     * @param map2 2
+     */
+    public static void compareMaps(Map<?, ?> map1, Map<?, ?> map2) {
+        if (map1.size() -1!= map2.size()) {
+            throw new IllegalArgumentException("left_query参数错误：两个map的大小不一样");
+        }
+    }
+    public static <T> void removeDuplicates(List<T> list) {
+        int size = list.size();
+        for (int i = 0; i < size - 1; i++) {
+            if (list.get(i).equals(list.get(i + 1))) {
+                list.remove(i);
+                size--;
+                i--; // 每次移除一个元素后，需要回退一步，重新检查当前位置
+            }
+        }
+    }
+
+    public List<T> joinQuery(Class<T> clazz,String mainTable,List<Object> objects,int start,int end){
         Map<String,ConditionBean> conditions = new HashMap<>();
         Map<String,String> joinConditions = new HashMap<>();
         Map<String,Map<String,Object>> maps = new HashMap<>();
@@ -319,8 +346,8 @@ public class BaseDao<T> extends ReflectionUtils {
             maps.put(tem.getTableName(),mapFields(object));
         }
         ArrayDeque<ConditionBean> arrayDeque = new ArrayDeque<>();
-        arrayDeque.add(new ConditionBean(tableName, conditions.get(tableName).getKeys()));
-        conditions.remove(tableName);
+        arrayDeque.add(new ConditionBean(mainTable, conditions.get(mainTable).getKeys()));
+        conditions.remove(mainTable);
         while (true){
             if (conditions.isEmpty()){
                 break;
@@ -346,29 +373,164 @@ public class BaseDao<T> extends ReflectionUtils {
                 }
             }
         }
-        return leftQuery(clazz,this.tableName,maps,joinConditions,start,end);
+        return joinQuery(clazz,mainTable,maps,joinConditions,start,end);
     }
 
 
-    /**
-     * 用于比较两个map参数是否长度一致
-     * @param map1 1
-     * @param map2 2
-     */
-    public static void compareMaps(Map<?, ?> map1, Map<?, ?> map2) {
-        if (map1.size() -1!= map2.size()) {
-            throw new IllegalArgumentException("left_query参数错误：两个map的大小不一样");
+    public List<T> joinQuery(Class<T> clazz,String mainTable,List<Object> objects,Map<String,String> joinConditions,int start,int end){
+        Map<String,ConditionBean> conditions = new HashMap<>();
+        Map<String,Map<String,Object>> maps = new HashMap<>();
+        for(Object object:objects){
+            ConditionBean tem = mapFieldsKey(object);
+            conditions.put(tem.getTableName(), tem);
+            maps.put(tem.getTableName(),mapFields(object));
         }
+        return joinQuery(clazz,mainTable,maps,joinConditions,start,end);
     }
-    public static <T> void removeDuplicates(List<T> list) {
-        int size = list.size();
-        for (int i = 0; i < size - 1; i++) {
-            if (list.get(i).equals(list.get(i + 1))) {
-                list.remove(i);
-                size--;
-                i--; // 每次移除一个元素后，需要回退一步，重新检查当前位置
+
+
+    public List<T> joinQuery(Class<T> clazz,String mainTable,Map<String,Map<String, Object>> map,Map<String,String> joinCondition, int start, int end) {
+        // 构建 SQL 查询语句
+        // 构建？
+        try {
+            compareMaps(map,joinCondition);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        StringBuilder sqlBuilder = new StringBuilder();
+
+        sqlBuilder.append(" SELECT ");
+        sqlBuilder.append(this.tableName);
+        sqlBuilder.append(".* FROM ");
+        sqlBuilder.append(mainTable);
+
+        for (String key: joinCondition.keySet()){
+            sqlBuilder.append(" JOIN ");
+            sqlBuilder.append(key);
+            sqlBuilder.append(" ON ");
+            sqlBuilder.append(joinCondition.get(key));
+
+        }
+        sqlBuilder.append(" WHERE ");
+        for (String key: map.keySet()) {
+            for (String key1 : map.get(key).keySet()) {
+                sqlBuilder.append(key).append(".").append(key1).append("=? AND ");
             }
         }
+        // 闭合and
+        sqlBuilder.append("1=1");
+        if (start>=0 && end >=start){
+            sqlBuilder.append(" LIMIT ?,?");
+        }
+
+
+        System.out.println("预制sql： " + sqlBuilder.toString());
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Connection connection = null;
+        try {
+            connection = Druid.getConnection();
+            preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+
+            // 设置参数
+            int conut = 1;
+            // 设置值
+            for (Map.Entry<String, Map<String,Object>> map1 : map.entrySet()){
+                for (Map.Entry<String, Object> entry : map1.getValue().entrySet()) {
+                    preparedStatement.setObject(conut, entry.getValue());
+                    conut++;
+                }
+            }
+
+            // 设置limit（分页）
+            if (start>=0 && end >=start) {
+                preparedStatement.setObject(conut++, start);
+                preparedStatement.setObject(conut++, end);
+            }
+            resultSet = preparedStatement.executeQuery();
+
+            List<T> list = new ArrayList<>();
+            // 将结果集转换为对象
+            //list = resultSetToList(resultSet, (Class<T>) this.getClass());
+            while (resultSet.next()) {
+                // 根据泛型类的实际类型创建对象实例
+                T object = clazz.newInstance();
+                // 从 ResultSet 中读取数据，并设置到对象的属性中
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    Object value = resultSet.getObject(columnName);
+                    // 使用反射设置对象的属性值
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(object, value);
+                }
+                list.add(object);
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            Druid.close(resultSet, preparedStatement, connection);
+        }
+    }
+
+
+
+    public List<T> leftQuery(Class<T> clazz,String mainTable,List<Object> objects,int start,int end){
+        Map<String,ConditionBean> conditions = new HashMap<>();
+        Map<String,String> joinConditions = new HashMap<>();
+        Map<String,Map<String,Object>> maps = new HashMap<>();
+        for(Object object:objects){
+            ConditionBean tem = mapFieldsKey(object);
+            conditions.put(tem.getTableName(), tem);
+            maps.put(tem.getTableName(),mapFields(object));
+        }
+        ArrayDeque<ConditionBean> arrayDeque = new ArrayDeque<>();
+        arrayDeque.add(new ConditionBean(mainTable, conditions.get(mainTable).getKeys()));
+        conditions.remove(mainTable);
+        while (true){
+            if (conditions.isEmpty()){
+                break;
+            }
+            ConditionBean leftTable=arrayDeque.pop();
+            conditions.remove(leftTable.getTableName());
+            for (Map.Entry<String, ConditionBean> entry : conditions.entrySet()){
+                Set<String> intersection = new HashSet<>(entry.getValue().getKeys());
+                intersection.retainAll(leftTable.getKeys());
+                if(!intersection.isEmpty()){
+                    arrayDeque.add(entry.getValue());
+                    for(String tem :intersection){
+                        StringBuilder conditionText = new StringBuilder();
+                        conditionText.append(leftTable.getTableName());
+                        conditionText.append(".");
+                        conditionText.append(tem);
+                        conditionText.append("=");
+                        conditionText.append(entry.getKey());
+                        conditionText.append(".");
+                        conditionText.append(tem);
+                        joinConditions.put(entry.getKey(),conditionText.toString());
+                    }
+                }
+            }
+        }
+        return leftQuery(clazz,mainTable,maps,joinConditions,start,end);
+    }
+
+
+    public List<T> leftQuery(Class<T> clazz,String mainTable,List<Object> objects,Map<String,String> joinConditions,int start,int end){
+        Map<String,ConditionBean> conditions = new HashMap<>();
+        Map<String,Map<String,Object>> maps = new HashMap<>();
+        for(Object object:objects){
+            ConditionBean tem = mapFieldsKey(object);
+            conditions.put(tem.getTableName(), tem);
+            maps.put(tem.getTableName(),mapFields(object));
+        }
+        return leftQuery(clazz,mainTable,maps,joinConditions,start,end);
     }
 
     /**

@@ -51,7 +51,6 @@ public class PageBean<T> {
         this.end =(current*this.pageSize<this.totalSize)? current*this.pageSize:this.totalSize;
         this.optionalPages.add(currentPage);
         for(int turn=1 ,diff=1;turn<=5;diff++){
-
             if (current-diff>=1){
                 this.optionalPages.add(0,current-diff);
                 turn++;

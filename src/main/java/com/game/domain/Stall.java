@@ -4,42 +4,38 @@ import com.game.utils.ReflectionUtils;
 import lombok.Data;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Map;
-
 @Data
-public class Task extends ReflectionUtils {
-    private Integer tk_id;
-    private String tk_name;
-    private String tk_info;
-    private String tk_r;
-    private String tk_cc;
-    private Integer u_id;
-    private Integer tk_status;
-    private static String table_name = "task";
+public class Stall extends ReflectionUtils {
+    private Integer st_id;
+    private String st_name;
+    private String st_info;
+    private String u_acc;
+    private Integer st_status;
+    private static String table_name = "stall";
 
-    public Task() {
+    public Stall() {
     }
 
-    public Task(Integer tk_id, String tk_name, String tk_info, String tk_r, String tk_cc,Integer u_id ,Integer tk_status) {
-        this.tk_id = tk_id;
-        this.tk_name = tk_name;
-        this.tk_info = tk_info;
-        this.tk_r = tk_r;
-        this.tk_cc = tk_cc;
-        this.u_id = u_id;
-        this.tk_status = tk_status;
+    public Stall(Integer st_id, String st_name, String st_info, String u_acc, Integer st_status) {
+        this.st_id = st_id;
+        this.st_name = st_name;
+        this.st_info = st_info;
+        this.u_acc = u_acc;
+        this.st_status = st_status;
     }
 
-    public Task(Task task){
-        this.tk_id = task.tk_id;
-        this.tk_name = task.getTk_name();
-        this.tk_info = task.getTk_info();
-        this.tk_r = task.getTk_r();
-        this.tk_cc = task.getTk_cc();
-        this.u_id = task.getU_id();
-        this.tk_status = task.getTk_status();
+    public Stall(Stall s) {
+        this.st_id = s.getSt_id();
+        this.u_acc = s.getU_acc();
+        this.st_info = s.getSt_info();
+        this.st_name=s.getSt_name();
+        this.st_status = s.getSt_status();
+
     }
-    public Task mapToClass(Map<String, Object> map) {
+
+    public Stall mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -58,6 +54,7 @@ public class Task extends ReflectionUtils {
         }
         return this;
     }
+
     public Map<String, Object> toMap(){
         return mapFields(this);
     }

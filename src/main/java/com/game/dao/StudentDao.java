@@ -3,8 +3,10 @@ package com.game.dao;
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Student;
+
 import com.game.domain.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,14 +70,19 @@ public class StudentDao extends BaseDao<Student> {
         }
         return value;
     }
-    private final PageBean<Student> pageBean = new PageBean<Student>();
-    public PageBean<Student> queryByPage(Integer currentPage,Student student){
+    private PageBean<Student> pageBean = new PageBean<Student>();
+
+
+    public void initPage(Integer currentPage, Student object){
+        List<Student> total =query(object,-1,-1);
+        pageBean.setTotalSize(total.size());
+    }
+
+    public PageBean<Student> queryByPage(Integer currentPage, Student object){
         List<Student> result = null;
         pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(student));
-        result=query(student,pageBean.getBegin(),pageBean.getEnd());
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
         pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
 
@@ -86,7 +93,9 @@ public class StudentDao extends BaseDao<Student> {
 
     public static void main(String[] args) {
         StudentDao dao =new StudentDao();
-        List<Student> students=dao.leftQuery(Student.class,BaseDao.formList(new Student(),new User()),-1,-1);
+        Map<String,String> map = new HashMap<>();
+        map.put("user","student.s_acc=user.u_acc");
+        List<Student> students=dao.leftQuery(Student.class,"student",BaseDao.formList(new Student(),new User()),map,-1,-1);
         for (Student s:students){
             System.out.println(s);
         }

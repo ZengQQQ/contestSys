@@ -19,14 +19,14 @@ public class User extends ReflectionUtils {
     private String u_qq;
     private String u_info;
     private Integer u_status;
-    private Integer s_id;
-    private Integer m_id;
+    private Integer u_power;
+    private Integer u_identity;
     private static String table_name = "user";
 
     public User() {
     }
 
-    public User(Integer u_id,String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, Integer u_status, Integer s_id, Integer m_id) {
+    public User(Integer u_id, String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, String u_info, Integer u_status, Integer u_power, Integer u_identity) {
         this.u_id = u_id;
         this.u_acc = u_acc;
         this.u_pwd = u_pwd;
@@ -35,9 +35,10 @@ public class User extends ReflectionUtils {
         this.u_mail = u_mail;
         this.u_wechat = u_wechat;
         this.u_qq = u_qq;
+        this.u_info = u_info;
         this.u_status = u_status;
-        this.s_id = s_id;
-        this.m_id = m_id;
+        this.u_power = u_power;
+        this.u_identity = u_identity;
     }
 
     public User(User user) {
@@ -50,32 +51,11 @@ public class User extends ReflectionUtils {
         this.u_wechat = user.getU_wechat();
         this.u_qq = user.getU_qq();
         this.u_status = user.getU_status();
-        this.s_id = user.getS_id();
-        this.m_id = user.getM_id();
-    }
-    public User(MentorUser user) {
-        this.u_id = user.getM_id();
-        this.u_acc = user.getM_acc();
-        this.u_pwd = user.getM_pwd();
-        this.u_name = user.getM_name();
-        this.u_tele = user.getM_tele();
-        this.u_mail = user.getM_mail();
-        this.u_wechat = user.getM_wechat();
-        this.u_qq = user.getM_qq();
-        this.u_status = user.getM_status();
+        this.u_power = user.getU_power();
+        this.u_identity=user.getU_identity();
     }
 
-    public User(Captain user) {
-        this.u_id = user.getUc_id();
-        this.u_acc = user.getUc_acc();
-        this.u_pwd = user.getUc_pwd();
-        this.u_name = user.getUc_name();
-        this.u_tele = user.getUc_tele();
-        this.u_mail = user.getUc_mail();
-        this.u_wechat = user.getUc_wechat();
-        this.u_qq = user.getUc_qq();
-        this.u_status = user.getUc_status();
-    }
+
     public User mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();
         for (Map.Entry<String, Object> entry : map.entrySet()) {

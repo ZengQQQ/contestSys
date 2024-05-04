@@ -3,6 +3,7 @@ package com.game.dao;
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Administrator;
+import com.game.domain.Stall;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,15 +51,19 @@ public class AdministratorDao extends BaseDao<Administrator> {
         return super.statistics(Administrator.class,map);
     }
 
-    private final PageBean<Administrator> pageBean = new PageBean<Administrator>();
+    private PageBean<Administrator> pageBean = new PageBean<Administrator>();
 
-    public PageBean<Administrator> queryByPage(Integer currentPage,Administrator object) {
+
+    public void initPage(Integer currentPage, Administrator object){
+        List<Administrator> total =query(object,-1,-1);
+        pageBean.setTotalSize(total.size());
+    }
+
+    public PageBean<Administrator> queryByPage(Integer currentPage, Administrator object){
         List<Administrator> result = null;
         pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
         pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
 

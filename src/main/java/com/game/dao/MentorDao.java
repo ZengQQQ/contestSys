@@ -4,6 +4,7 @@ import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Mentor;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -69,18 +70,20 @@ public class MentorDao extends BaseDao<Mentor> {
     }
 
 
-    public int statistics(Mentor mentor) {
-        return super.statistics(mentor);
+
+    private PageBean<Mentor> pageBean = new PageBean<Mentor>();
+
+
+    public void initPage(Integer currentPage, Mentor object){
+        List<Mentor> total =query(object,-1,-1);
+        pageBean.setTotalSize(total.size());
     }
 
-    private final PageBean<Mentor> pageBean = new PageBean<Mentor>();
-    public PageBean<Mentor> queryByPage(Integer currentPage,Mentor object){
+    public PageBean<Mentor> queryByPage(Integer currentPage, Mentor object){
         List<Mentor> result = null;
         pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
         result=query(object,pageBean.getBegin(),pageBean.getEnd());
         pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
 }

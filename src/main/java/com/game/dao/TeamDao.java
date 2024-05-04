@@ -68,19 +68,19 @@ public class TeamDao extends BaseDao<Team> {
     }
 
 
-    public int statistics(Team team) {
-        return super.statistics(team);
-    }
+    private PageBean<Team> pageBean = new PageBean<Team>();
 
-    private final PageBean<Team> pageBean = new PageBean<Team>();
+
+    public void initPage(Integer currentPage, Team object){
+        List<Team> total =query(object,-1,-1);
+        pageBean.setTotalSize(total.size());
+    }
 
     public PageBean<Team> queryByPage(Integer currentPage, Team object){
         List<Team> result = null;
         pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
         result=query(object,pageBean.getBegin(),pageBean.getEnd());
         pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
 

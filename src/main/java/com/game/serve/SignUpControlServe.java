@@ -18,7 +18,7 @@ public class SignUpControlServe {
         user.setU_id(null);
         if(user.getU_acc()!=null){
             Student student = new Student();
-            student.setS_xuehao(user.getU_acc());
+            student.setS_acc(user.getU_acc());
             List<Student> students =(new StudentDao()).query(student,-1,-1);
             return !students.isEmpty();
         }else {
@@ -42,11 +42,12 @@ public class SignUpControlServe {
             if (studentCheckRegistered(user)) {
                 if (user.getU_acc() != null && user.getU_pwd() != null) {
                     Student student = new Student();
-                    student.setS_xuehao(user.getU_acc());
+                    student.setS_acc(user.getU_acc());
                     Student student1 = (new StudentDao()).querySingle(student);
                     if (student1.getS_status() != 0) {
                         map.put("code", "1");
                         map.put("message", "用户成功注册");
+                        user.setU_identity(0);
                         (new UserDao()).insert(user);
                     } else {
                         map.put("code", "0");
@@ -98,6 +99,7 @@ public class SignUpControlServe {
                     if (mentor1.getM_status() != 0) {
                         map.put("code", "1");
                         map.put("message", "用户成功注册");
+                        user.setU_identity(1);
                         (new UserDao()).insert(user);
                     } else {
                         map.put("code", "0");

@@ -57,15 +57,19 @@ public class UserDao extends BaseDao<User> {
         }
         return value;
     }
-    private final PageBean<User> pageBean = new PageBean<User>();
+    private PageBean<User> pageBean = new PageBean<User>();
 
-    public PageBean<User> queryByPage(Integer currentPage,User object) {
+
+    public void initPage(Integer currentPage, User object){
+        List<User> total =query(object,-1,-1);
+        pageBean.setTotalSize(total.size());
+    }
+
+    public PageBean<User> queryByPage(Integer currentPage, User object){
         List<User> result = null;
         pageBean.setCurrentPage(currentPage);
-        pageBean.setTotalSize(statistics(object));
-        result = query(object, pageBean.getBegin(), pageBean.getEnd());
+        result=query(object,pageBean.getBegin(),pageBean.getEnd());
         pageBean.setListPage(result);
-        pageBean.setCurrentPage(currentPage);
         return pageBean;
     }
 }
