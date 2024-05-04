@@ -1,5 +1,6 @@
 package com.game.serve;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.game.dao.*;
 import com.game.domain.Stall;
 import com.game.domain.StallProjectMessage;
@@ -23,6 +24,17 @@ public class RelationshipServe {
     StallMentorMessageDao stallMentorMessageDao = new StallMentorMessageDao();
 
 
+    public Result<String> insertTeamRelation(Object ele){
+        String jsonString = JSON.toJSONString(ele);
+        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
+        boolean result = teamUserMessageDao.insert(teamUserMessage);
+        if(!result){
+            return Result.fail("添加关系失败","队伍关系添加失败");
+        }
+        return Result.success("队伍关系添加成功");
+    }
+
+
     public Result<String> updateTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
         List<TeamUserMessage> teamUserMessageList = JSON.parseArray(jsonString,TeamUserMessage.class);
@@ -33,6 +45,17 @@ public class RelationshipServe {
             return Result.fail("更新关系失败","队伍关系更新失败");
         }
         return Result.success("队伍关系更新成功");
+    }
+
+
+    public Result<String> insertStallProjectRelation(Object ele){
+        String jsonString = JSON.toJSONString(ele);
+        StallProjectMessage stallProjectMessage = JSON.parseObject(jsonString,StallProjectMessage.class);
+        boolean result = stallProjectMessageDao.insert(stallProjectMessage);
+        if(!result){
+            return Result.fail("添加房间任务关系失败","房间任务关系添加失败");
+        }
+        return Result.success("房间任务关系添加成功");
     }
 
 
@@ -49,6 +72,16 @@ public class RelationshipServe {
     }
 
 
+    public Result<String> insertStallTeamRelation(Object ele){
+        String jsonString = JSON.toJSONString(ele);
+        StallTeamMessage stallTeamMessage = JSON.parseObject(jsonString,StallTeamMessage.class);
+        boolean result = stallTeamMessageDao.insert(stallTeamMessage);
+        if(!result){
+            return Result.fail("添加房间队伍关系失败","房间队伍关系添加失败");
+        }
+        return Result.success("房间队伍关系添加成功");
+    }
+
 
     public Result<String> updateStallTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
@@ -60,6 +93,17 @@ public class RelationshipServe {
             return Result.fail("更新房间队伍关系失败","房间队伍关系更新失败");
         }
         return Result.success("房间队伍关系更新成功");
+    }
+
+
+    public Result<String> insertStallMentorRelation(Object ele){
+        String jsonString = JSON.toJSONString(ele);
+        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
+        boolean result = stallMentorMessageDao.insert(stallMentorMessage);
+        if(!result){
+            return Result.fail("添加房间导师关系失败","房间导师关系添加失败");
+        }
+        return Result.success("房间导师关系添加成功");
     }
 
 
