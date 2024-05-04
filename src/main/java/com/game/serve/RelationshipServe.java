@@ -1,98 +1,78 @@
 package com.game.serve;
 
-import com.game.dao.StallDao;
+import com.game.dao.*;
 import com.game.domain.Stall;
+import com.game.domain.StallProjectMessage;
+import com.game.domain.StallTeamMessage;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.TeamUserMessage;
 import com.game.utils.Result;
-import com.game.dao.TeamUserMessageDao;
 
 import com.alibaba.fastjson2.JSON;
+import org.json.simple.JSONArray;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RelationshipServe {
     TeamUserMessageDao teamUserMessageDao = new TeamUserMessageDao();
     StallDao stallDao = new StallDao();
+    StallProjectMessageDao stallProjectMessageDao = new StallProjectMessageDao();
+    StallTeamMessageDao stallTeamMessageDao = new StallTeamMessageDao();
+    StallMentorMessageDao stallMentorMessageDao = new StallMentorMessageDao();
 
-    public Result<String> buildTeamRelation(Object ele){
+
+    public Result<String> updateTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
-        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
-        boolean result=teamUserMessageDao.insert(teamUserMessage);
-        if(!result){
-            return Result.fail("添加关系失败","队伍关系创建失败");
+        List<TeamUserMessage> teamUserMessageList = JSON.parseArray(jsonString,TeamUserMessage.class);
+        TeamUserMessage teamUserMessage = teamUserMessageList.get(0);
+        TeamUserMessage mapCondition = teamUserMessageList.get(1);
+        int result=teamUserMessageDao.update(teamUserMessage,mapCondition);
+        if(result == 0){
+            return Result.fail("更新关系失败","队伍关系更新失败");
         }
-        return Result.success("队伍关系创建成功");
+        return Result.success("队伍关系更新成功");
     }
 
-    public Result<String> deleteTeamRelation(Object ele){
+
+    public Result<String> updateStallProjectRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
-        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
-        int result=teamUserMessageDao.delete(teamUserMessage);
-        if(result==0){
-            return Result.fail("删除关系失败","队伍关系删除失败");
+        List<StallProjectMessage> stallProjectMessageList = JSON.parseArray(jsonString,StallProjectMessage.class);
+        StallProjectMessage spm = stallProjectMessageList.get(0);
+        StallProjectMessage con = stallProjectMessageList.get(1);
+        int result=stallProjectMessageDao.update(spm,con);
+        if(result==0||spm.getSt_id()==null){
+            return Result.fail("更新房间任务关系失败","房间任务关系更新失败");
         }
-        return Result.success("队伍关系删除成功");
+        return Result.success("房间任务关系更新成功");
     }
 
 
 
-
-    public Result<String> buildStallRelation(Object ele){
-        Stall con = new Stall();
+    public Result<String> updateStallTeamRelation(Object ele){
         String jsonString = JSON.toJSONString(ele);
-        Stall stall= JSON.parseObject(jsonString, Stall.class);
-        con.setSt_id(stall.getSt_id());
-        int result=stallDao.update(stall,con);
-        if(result==0||con.getSt_id()==null){
-            return Result.fail("添加关系失败","地摊关系创建失败");
+        List<StallTeamMessage> stallTeamMessageList = JSON.parseArray(jsonString,StallTeamMessage.class);
+        StallTeamMessage stm = stallTeamMessageList.get(0);
+        StallTeamMessage con = stallTeamMessageList.get(1);
+        int result=stallTeamMessageDao.update(stm,con);
+        if(result==0||stm.getSt_id()==null){
+            return Result.fail("更新房间队伍关系失败","房间队伍关系更新失败");
         }
-        return Result.success("地摊关系创建成功");
+        return Result.success("房间队伍关系更新成功");
     }
 
 
-    public Result<String> deleteStallMentorRelation(Object tem){
-        Stall con = new Stall();
-        Stall ele = new Stall();
-        String jsonString = JSON.toJSONString(tem);
-        Stall stall= JSON.parseObject(jsonString, Stall.class);
-        ele.setSt_id(stall.getSt_id());
-        con.setSt_id(stall.getSt_id());
-        Map<String,Object> eleMap = ele.toMap();
-        Map<String,Object> conMap = con.toMap();
-        eleMap.put("m_acc",null);
-        int result=stallDao.update(eleMap,conMap);
-        if(result!=0||con.getSt_id()==null){
-            return Result.fail("删除关系失败","删除地摊导师关系失败");
+    public Result<String> updateStallMentorRelation(Object ele){
+        String jsonString = JSON.toJSONString(ele);
+        List<StallMentorMessage> stallMentorMessageList = JSON.parseArray(jsonString,StallMentorMessage.class);
+        StallMentorMessage smm = stallMentorMessageList.get(0);
+        StallMentorMessage con = stallMentorMessageList.get(1);
+        int result=stallMentorMessageDao.update(smm,con);
+        if(result==0||smm.getSt_id()==null){
+            return Result.fail("更新房间导师关系失败","房间导师关系更新失败");
         }
-        return Result.success("地摊导师关系删除成功");
+        return Result.success("房间导师关系更新成功");
     }
-    public Result<String> deleteStallTaskRelation(Object tem){
-        String jsonString = JSON.toJSONString(tem);
-        Stall stall= JSON.parseObject(jsonString, Stall.class);
-        Map<String,Object> eleMap = new HashMap<>();
-        Map<String,Object> conMap = new HashMap<>();
-        conMap.put("st_id",stall.getSt_id());
-        eleMap.put("st_id",stall.getSt_id());
-        eleMap.put("p_id",null);
-        int result=stallDao.update(eleMap,conMap);
-        if(result!=0||stall.getSt_id()==null){
-            return Result.fail("删除关系失败","地摊项目创建失败");
-        }
-        return Result.success("地摊关系创建成功");
-    }
-    public Result<String> deleteStallTeamRelation(Object tem){
-        String jsonString = JSON.toJSONString(tem);
-        Stall stall= JSON.parseObject(jsonString, Stall.class);
-        Map<String,Object> eleMap = new HashMap<>();
-        Map<String,Object> conMap = new HashMap<>();
-        conMap.put("st_id",stall.getSt_id());
-        eleMap.put("st_id",stall.getSt_id());
-        eleMap.put("t_id",null);
-        int result=stallDao.update(eleMap,conMap);
-        if(result!=0||stall.getSt_id()==null){
-            return Result.fail("添加关系失败","地摊关系创建失败");
-        }
-        return Result.success("地摊关系创建成功");
-    }
+
 }

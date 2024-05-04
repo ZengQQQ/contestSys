@@ -55,8 +55,8 @@ public class TeamUserMessageDao extends BaseDao<TeamUserMessage> {
     }
 
 
-    public int update(TeamUserMessage TeamUserMessage, TeamUserMessage mapCondition) {
-        Map<String, Object> map = TeamUserMessage.toMap();
+    public int update(TeamUserMessage teamUserMessage, TeamUserMessage mapCondition) {
+        Map<String, Object> map = teamUserMessage.toMap();
         map.remove("s_id");
         Map<String, Object> condition = mapCondition.toMap();
         int value = super.update(map, condition);
