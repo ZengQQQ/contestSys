@@ -17,6 +17,7 @@ public class AdministratorDao extends BaseDao<Administrator> {
     public AdministratorDao() {
         super("administrator");
     }
+    private Administrator model;
 
 
 
@@ -54,12 +55,16 @@ public class AdministratorDao extends BaseDao<Administrator> {
     private PageBean<Administrator> pageBean = new PageBean<Administrator>();
 
 
-    public void initPage(Integer currentPage, Administrator object){
+    public void initPage( Administrator object){
+        this.model=object;
         List<Administrator> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Administrator> queryByPage(Integer currentPage, Administrator object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Administrator> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

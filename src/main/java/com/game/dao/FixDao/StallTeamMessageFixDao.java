@@ -18,16 +18,21 @@ public class StallTeamMessageFixDao {
     TeamDao teamDao = new TeamDao();
     StallDao stallDao = new StallDao();
     StallFixDao stallFixDao = new StallFixDao();
+    private StallTeamMessage model;
     StallTeamMessageDao messageDao = new StallTeamMessageDao();
     private PageBean<StallTeamMessageFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, StallTeamMessage object){
+    public void initPage(StallTeamMessage object){
+        this.model=object;
         List<StallTeamMessage> total =messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallTeamMessageFix> queryByPage(Integer currentPage, StallTeamMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallTeamMessage> temresult = new ArrayList<>();
         List<StallTeamMessageFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);

@@ -12,6 +12,8 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
         super("stall_task_message");
     }
 
+    private StallProjectMessage model;
+
 
     /**
      * 添加StallTaskMessage
@@ -99,12 +101,16 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
     private PageBean<StallProjectMessage> pageBean = new PageBean<StallProjectMessage>();
 
 
-    public void initPage(Integer currentPage, StallProjectMessage object){
+    public void initPage(StallProjectMessage object){
+        this.model=object;
         List<StallProjectMessage> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallProjectMessage> queryByPage(Integer currentPage, StallProjectMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallProjectMessage> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

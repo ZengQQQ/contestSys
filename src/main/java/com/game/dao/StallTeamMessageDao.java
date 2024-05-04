@@ -12,6 +12,8 @@ public class StallTeamMessageDao extends BaseDao<StallTeamMessage> {
         super("stall_team_message");
     }
 
+    private StallTeamMessage model;
+
 
     /**
      * 添加StallTeamMessage
@@ -99,12 +101,16 @@ public class StallTeamMessageDao extends BaseDao<StallTeamMessage> {
     private PageBean<StallTeamMessage> pageBean = new PageBean<StallTeamMessage>();
 
 
-    public void initPage(Integer currentPage, StallTeamMessage object){
+    public void initPage( StallTeamMessage object){
+        this.model=object;
         List<StallTeamMessage> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallTeamMessage> queryByPage(Integer currentPage, StallTeamMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallTeamMessage> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

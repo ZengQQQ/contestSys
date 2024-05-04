@@ -21,15 +21,20 @@ public class TeamMessageFixDao {
     UserDao userDao = new UserDao();
     TeamFIxDao teamFIxDao = new TeamFIxDao();
     TeamUserMessageDao messageDao = new TeamUserMessageDao();
+    private TeamUserMessage model;
     private PageBean<TeamMessageFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, TeamUserMessage object){
+    public void initPage(TeamUserMessage object){
+        this.model=object;
         List<TeamUserMessage> total =messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<TeamMessageFix> queryByPage(Integer currentPage, TeamUserMessage object){
+        if(!object.equals(model)){
+            initPage(object);
+        }
         List<TeamUserMessage> temresult = new ArrayList<>();
         List<TeamMessageFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);

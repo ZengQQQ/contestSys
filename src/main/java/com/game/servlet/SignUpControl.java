@@ -1,6 +1,7 @@
 package com.game.servlet;
 import com.game.domain.User;
 import com.game.serve.SignUpControlServe;
+import com.game.utils.Result;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -20,9 +21,6 @@ public class SignUpControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = now.format(formatter);
 
         Enumeration<String> parameterNames = req.getParameterNames();
 
@@ -36,23 +34,11 @@ public class SignUpControl extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
 
-
         String identity = req.getParameter("identity");
         SignUpControlServe signUpControlServe = new SignUpControlServe();
         User user = (new User()).mapToClass(paramMap);
-        Map<String, String> responseData = new HashMap<>();
-        switch (identity) {
-            case "student":
-                responseData = signUpControlServe.studentSignUp(user);
-                break;
-            case "mentor":
-                responseData = signUpControlServe.mentorSignUp(user);
-                break;
-            default:
-                responseData.put("code", "0");
-                responseData.put("message", "身份选择错误");
-                break;
-        }
+        Result<String> responseData = new Result<>();
+        responseData = signUpControlServe.SignUp(user);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

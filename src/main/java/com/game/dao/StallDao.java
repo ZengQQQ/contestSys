@@ -10,6 +10,7 @@ public class StallDao extends BaseDao<Stall> {
     public StallDao() {
         super("stall");
     }
+    private Stall model;
 
 
     /**
@@ -94,12 +95,16 @@ public class StallDao extends BaseDao<Stall> {
     private PageBean<Stall> pageBean = new PageBean<Stall>();
 
 
-    public void initPage(Integer currentPage, Stall object){
+    public void initPage( Stall object){
+        this.model=object;
         List<Stall> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Stall> queryByPage(Integer currentPage, Stall object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Stall> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

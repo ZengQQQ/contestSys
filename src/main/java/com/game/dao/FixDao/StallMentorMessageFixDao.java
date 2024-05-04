@@ -18,16 +18,21 @@ public class StallMentorMessageFixDao {
     UserDao userDao = new UserDao();
     StallDao stallDao = new StallDao();
     StallFixDao stallFixDao = new StallFixDao();
+    private StallMentorMessage model;
     StallMentorMessageDao messageDao = new StallMentorMessageDao();
     private PageBean<StallMentorMessageFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, StallMentorMessage object){
+    public void initPage( StallMentorMessage object){
+        this.model=object;
         List<StallMentorMessage> total =messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallMentorMessageFix> queryByPage(Integer currentPage, StallMentorMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallMentorMessage> temresult = new ArrayList<>();
         List<StallMentorMessageFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);

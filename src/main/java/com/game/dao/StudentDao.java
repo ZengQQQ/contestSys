@@ -15,7 +15,7 @@ public class StudentDao extends BaseDao<Student> {
         super("student");
     }
 
-
+    private Student model;
     public boolean insert(Student Student) {
         Map<String, Object> map = Student.toMap();
         boolean value = super.insert(map);
@@ -73,12 +73,16 @@ public class StudentDao extends BaseDao<Student> {
     private PageBean<Student> pageBean = new PageBean<Student>();
 
 
-    public void initPage(Integer currentPage, Student object){
+    public void initPage(Student object){
+        this.model=object;
         List<Student> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Student> queryByPage(Integer currentPage, Student object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Student> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

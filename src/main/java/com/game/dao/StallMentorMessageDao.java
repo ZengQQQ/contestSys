@@ -11,6 +11,7 @@ public class StallMentorMessageDao extends BaseDao<StallMentorMessage> {
     public StallMentorMessageDao() {
         super("stall_mentor_message");
     }
+    private StallMentorMessage model;
 
 
     /**
@@ -95,12 +96,16 @@ public class StallMentorMessageDao extends BaseDao<StallMentorMessage> {
     private PageBean<StallMentorMessage> pageBean = new PageBean<StallMentorMessage>();
 
 
-    public void initPage(Integer currentPage, StallMentorMessage object){
+    public void initPage( StallMentorMessage object){
+        this.model = object;
         List<StallMentorMessage> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallMentorMessage> queryByPage(Integer currentPage, StallMentorMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallMentorMessage> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

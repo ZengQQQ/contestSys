@@ -5,6 +5,7 @@ import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.domain.Mentor;
 import com.game.domain.Student;
+import com.game.utils.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,78 +21,38 @@ public class LoginControlServe {
         code 0:失败 1:成功
         message 提示消息
      */
-    public Map<String,String> studentLogin(User user){
-        Map<String,String> map = new HashMap<>();
-        if (user.getU_acc()!=null && user.getU_pwd()!=null) {
-            User user1 = new User();
-            user1.setU_acc(user.getU_acc());
-            user1.setU_pwd(user.getU_pwd());
-            User user2 = (new UserDao()).querySingle(user1);
+    public Result<String> login(User user){
+        if (user.getU_acc()!=null && user.getU_pwd()!=null &&user.getU_identity()!=null) {
+            User user2 = (new UserDao()).querySingle(user);
             if(user2!=null){
-                if(user2.getU_status()!=0){
-                    map.put("code","1");
-                    map.put("message","用户成功登录");
+                if(user2.getU_status()==0){
+                    return Result.success("用户登录成功");
+                }else if(user2.getU_status()==1){
+                    return Result.fail("用户登录失败","用户已注销");
+                }else if(user2.getU_status()==2) {
+                    return Result.fail("用户登录失败", "用户违规");
                 }else {
-                    map.put("code","0");
-                    map.put("message","用户封禁中");
+                    return Result.fail("用户登录失败", "用户封禁");
                 }
             }else{
-                map.put("code","0");
-                map.put("message","账号或密码错误");
+                return Result.fail("用户登录失败", "账号或密码错误");
             }
         }else {
-            map.put("code","0");
-            map.put("message","输入内容错误");
+            return Result.fail("用户登录失败", "输入内容异常");
         }
-        return map;
     }
 
-    public Map<String,String> administratorLogin(Administrator administrator){
-        Map<String,String> map =new HashMap<>();
+    public Result<String> administratorLogin(Administrator administrator){
         if(administrator.getA_acc()!=null&&administrator.getA_pwd()!=null){
-            // todo 为什么新建一个对象
-            administrator.setA_acc(administrator.getA_acc());
-            administrator.setA_pwd(administrator.getA_pwd());
             List<Administrator> administratorList =(new AdministratorDao()).query(administrator,-1,-1);
             if(!administratorList.isEmpty()){
-                map.put("code","1");
-                map.put("message","管理员登录成功");
+                return Result.success("管理员登录成功");
             }else {
-                map.put("code","0");
-                map.put("message","账号或密码错误");
+                return Result.fail("管理员登录失败", "账号或密码错误");
             }
         }else {
-            map.put("code","0");
-            map.put("message","输入内容错误");
+            return Result.fail("管理员登录失败", "输入内容异常");
         }
-        return map;
     }
-
-    public Map<String, String> mentorLogin(User user){
-        Map<String,String> map = new HashMap<>();
-        if (user.getU_acc()!=null && user.getU_pwd()!=null) {
-            User user1 = new User();
-            user1.setU_acc(user.getU_acc());
-            user1.setU_pwd(user.getU_pwd());
-            User user2 = (new UserDao()).querySingle(user1);
-            if(user2!=null){
-                if(user2.getU_status()!=0){
-                    map.put("code","1");
-                    map.put("message","教师成功登录");
-                }else {
-                    map.put("code","0");
-                    map.put("message","用户封禁中");
-                }
-            }else{
-                map.put("code","0");
-                map.put("message","账号或密码错误");
-            }
-        }else {
-            map.put("code","0");
-            map.put("message","输入错误内容");
-        }
-        return map;
-    }
-
 
 }
