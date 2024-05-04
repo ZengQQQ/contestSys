@@ -37,8 +37,7 @@ public class SignUpControl extends HttpServlet {
         String identity = req.getParameter("identity");
         SignUpControlServe signUpControlServe = new SignUpControlServe();
         User user = (new User()).mapToClass(paramMap);
-        Result<String> responseData = new Result<>();
-        responseData = signUpControlServe.SignUp(user);
+        Result<String> responseData= signUpControlServe.SignUp(user);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

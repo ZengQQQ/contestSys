@@ -19,7 +19,7 @@ public class StallFixDao {
     UserDao userDao = new UserDao();
     TeamDao teamDao = new TeamDao();
     ProjectDao projectDao = new ProjectDao();
-    TeamFIxDao teamFIxDao =new TeamFIxDao();
+    TeamFixDao teamFIxDao =new TeamFixDao();
     private Stall model;
 
     private PageBean<StallFix> pageBean = new PageBean<>();

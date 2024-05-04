@@ -1,7 +1,6 @@
 package com.game.dao.FixDao;
 
 import com.game.bean.PageBean;
-import com.game.dao.ProjectDao;
 import com.game.dao.TeamDao;
 import com.game.dao.UserDao;
 import com.game.dao.base.BaseDao;
@@ -11,7 +10,7 @@ import com.game.domain.fixDomain.TeamFix;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamFIxDao {
+public class TeamFixDao {
 
     UserDao userDao = new UserDao();
     TeamDao teamDao = new TeamDao();

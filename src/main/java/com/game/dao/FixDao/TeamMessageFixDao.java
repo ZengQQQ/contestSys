@@ -19,7 +19,7 @@ public class TeamMessageFixDao {
 
     TeamDao teamDao = new TeamDao();
     UserDao userDao = new UserDao();
-    TeamFIxDao teamFIxDao = new TeamFIxDao();
+    TeamFixDao teamFIxDao = new TeamFixDao();
     TeamUserMessageDao messageDao = new TeamUserMessageDao();
     private TeamUserMessage model;
     private PageBean<TeamMessageFix> pageBean = new PageBean<>();
