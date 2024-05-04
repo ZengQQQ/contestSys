@@ -31,12 +31,14 @@ public class StallProjectMessageFixDao {
         pageBean.setCurrentPage(currentPage);
         temresult=messageDao.query(object,pageBean.getBegin(),pageBean.getEnd());
         for(StallProjectMessage s :temresult){
-            Stall stall = stallDao.querySingle(new Stall(null,null,null,s.getSt_id(),null,null));
+            Stall tem =  new Stall();
+            tem.setSt_id(s.getSt_id());
+            Stall stall = stallDao.querySingle(tem);
             Project p =new Project();
             p.setP_id(s.getP_id());
             Project project= projectDao.querySingle(p);
             StallFix stallFix = stallFixDao.singToFix(stall);
-            StallProjectMessageFix em = new StallProjectMessageFix(s.getSmm_id(),stallFix,project,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s);
+            StallProjectMessageFix em = new StallProjectMessageFix(s.getSmm_id(),stallFix,project,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s.getSmm_time(),s.getStall_view(),s.getProject_view(),s.getJoin_status());
             result.add(em);
         }
         pageBean.setListPage(result);

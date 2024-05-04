@@ -33,10 +33,14 @@ public class StallMentorMessageFixDao {
         pageBean.setCurrentPage(currentPage);
         temresult=messageDao.query(object,pageBean.getBegin(),pageBean.getEnd());
         for(StallMentorMessage s :temresult){
-            Stall stall = stallDao.querySingle(new Stall(null,null,null,s.getSt_id(),null,null));
-            User mentor = userDao.querySingle(new User(null,s.getM_acc(),null,null,null,null,null,null,null,null,null));
+            Stall tem =  new Stall();
+            tem.setSt_id(s.getSt_id());
+            Stall stall = stallDao.querySingle(tem);
+            User ele = new User();
+            ele.setU_acc(s.getU_acc());
+            User mentor = userDao.querySingle(ele);
             StallFix stallFix = stallFixDao.singToFix(stall);
-            StallMentorMessageFix em = new StallMentorMessageFix(s.getSmm_id(),stallFix,mentor,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s.getSmm_time());
+            StallMentorMessageFix em = new StallMentorMessageFix(s.getSmm_id(),stallFix,mentor,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s.getSmm_time(),s.getStall_view(),s.getMentor_view(),s.getJoin_status());
             result.add(em);
         }
         pageBean.setListPage(result);

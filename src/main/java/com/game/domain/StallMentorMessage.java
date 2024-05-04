@@ -11,7 +11,7 @@ import java.util.Map;
 public class StallMentorMessage extends ReflectionUtils {
     private Integer smm_id;
     private Integer st_id;
-    private String m_acc;
+    private String u_acc;
     private String smm_info;
     private Integer stall_view;
     private Integer mentor_view;
@@ -29,7 +29,7 @@ public class StallMentorMessage extends ReflectionUtils {
     public StallMentorMessage(Integer smm_id, Integer st_id, String m_acc, String smm_info, Integer stall_view, Integer mentor_view, Integer smm_pass, Integer smm_status, Integer join_status, Integer smm_dct, LocalDateTime smm_time) {
         this.smm_id = smm_id;
         this.st_id = st_id;
-        this.m_acc = m_acc;
+        this.u_acc = m_acc;
         this.smm_info = smm_info;
         this.stall_view = stall_view;
         this.mentor_view = mentor_view;
@@ -43,7 +43,7 @@ public class StallMentorMessage extends ReflectionUtils {
     public StallMentorMessage(StallMentorMessage s) {
         this.smm_id = s.getSmm_id();
         this.st_id = s.getSt_id();
-        this.m_acc = s.getM_acc();
+        this.u_acc = s.getU_acc();
         this.smm_info = s.getSmm_info();
         this.stall_view = s.getStall_view();
         this.mentor_view = s.getMentor_view();
