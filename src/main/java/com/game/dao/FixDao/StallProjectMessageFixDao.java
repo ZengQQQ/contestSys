@@ -17,15 +17,20 @@ public class StallProjectMessageFixDao {
     StallDao stallDao = new StallDao();
     StallFixDao stallFixDao = new StallFixDao();
     StallProjectMessageDao messageDao = new StallProjectMessageDao();
+    private StallProjectMessage model;
     private PageBean<StallProjectMessageFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, StallProjectMessage object){
+    public void initPage( StallProjectMessage object){
+        this.model= object;
         List<StallProjectMessage> total =messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<StallProjectMessageFix> queryByPage(Integer currentPage, StallProjectMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<StallProjectMessage> temresult = new ArrayList<>();
         List<StallProjectMessageFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);

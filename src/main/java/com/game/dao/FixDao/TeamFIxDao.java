@@ -15,12 +15,14 @@ public class TeamFIxDao {
 
     UserDao userDao = new UserDao();
     TeamDao teamDao = new TeamDao();
-    ProjectDao projectDao = new ProjectDao();
+
+    private Team model;
 
     private PageBean<TeamFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, Team object){
+    public void initPage(Team object){
+        this.model=object;
         List<Team> total =teamDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
@@ -41,6 +43,9 @@ public class TeamFIxDao {
     }
 
     public PageBean<TeamFix> queryByPage(Integer currentPage, Team object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Team> temresult = new ArrayList<>();
         List<TeamFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);

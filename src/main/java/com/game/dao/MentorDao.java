@@ -12,6 +12,7 @@ public class MentorDao extends BaseDao<Mentor> {
     public MentorDao() {
         super("mentor");
     }
+    private Mentor model;
 
 
     public boolean insert(Mentor mentor) {
@@ -74,12 +75,16 @@ public class MentorDao extends BaseDao<Mentor> {
     private PageBean<Mentor> pageBean = new PageBean<Mentor>();
 
 
-    public void initPage(Integer currentPage, Mentor object){
+    public void initPage(Mentor object){
+        this.model=object;
         List<Mentor> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Mentor> queryByPage(Integer currentPage, Mentor object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Mentor> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

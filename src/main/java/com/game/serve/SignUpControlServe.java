@@ -7,6 +7,7 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.User;
 import com.game.domain.Mentor;
 import com.game.domain.Student;
+import com.game.utils.Result;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,37 +37,53 @@ public class SignUpControlServe {
             return false;
         }
     }
-    public Map<String,String> studentSignUp(User user){
-        Map<String,String>map=new HashMap<>();
-        if(studentCheckUnsigned(user)) {
-            if (studentCheckRegistered(user)) {
-                if (user.getU_acc() != null && user.getU_pwd() != null) {
-                    Student student = new Student();
-                    student.setS_acc(user.getU_acc());
-                    Student student1 = (new StudentDao()).querySingle(student);
-                    if (student1.getS_status() != 0) {
-                        map.put("code", "1");
-                        map.put("message", "用户成功注册");
-                        user.setU_identity(0);
-                        (new UserDao()).insert(user);
+    public Result<String>SignUp(User user){
+        if(user.getU_acc() != null && user.getU_pwd() != null&&user.getU_identity()!=null) {
+            if(user.getU_identity()==1){
+                if(mentorCheckRegistered(user)) {
+                    if (mentorCheckUnsigned(user)) {
+                        Mentor mentor = new Mentor();
+                        mentor.setM_acc(user.getU_acc());
+                        Mentor mentor1 = (new MentorDao()).querySingle(mentor);
+                        if (mentor1.getM_status() != 0) {
+                            user.setU_identity(1);
+                            (new UserDao()).insert(user);
+                            return Result.success("用户成功注册");
+                        } else {
+                            return Result.fail("用户注册失败","该导师已被封禁");
+                        }
+
                     } else {
-                        map.put("code", "0");
-                        map.put("message", "用户封禁中");
+                        return Result.fail("用户注册失败","该账号已经注册");
+                    }
+                }else {
+                    return Result.fail("用户注册失败","该账号再注册表中不存在");
+                }
+            }else {
+                if (studentCheckRegistered(user)) {
+                    if (studentCheckUnsigned(user)) {
+                        Student student = new Student();
+                        student.setS_acc(user.getU_acc());
+                        Student student1 = (new StudentDao()).querySingle(student);
+                        if (student1.getS_status() == 0) {
+                            user.setU_identity(0);
+                            (new UserDao()).insert(user);
+                            return Result.success("用户成功注册");
+                        } else {
+                            return Result.fail("用户注册失败","该学生已被封禁");
+                        }
+                    } else {
+                        return Result.fail("用户注册失败","该账号已经注册");
                     }
                 } else {
-                    map.put("code", "0");
-                    map.put("message", "输入值异常");
+
+                    return Result.fail("用户注册失败","该账号再注册表中不存在");
                 }
-            } else {
-                map.put("code", "0");
-                map.put("message", "注册表不存在");
             }
         }else {
-            map.put("code", "0");
-            map.put("message", "用户已注册");
+            return Result.fail("用户注册失败","输入值异常");
         }
 
-        return map;
     }
     public boolean mentorCheckRegistered(User user){
         if(user.getU_acc()!=null){
@@ -87,37 +104,6 @@ public class SignUpControlServe {
         }else {
             return false;
         }
-    }
-    public Map<String,String> mentorSignUp(User user){
-        Map<String,String>map=new HashMap<>();
-        if(mentorCheckUnsigned(user)) {
-            if (mentorCheckRegistered(user)) {
-                if (user.getU_acc() != null && user.getU_pwd() != null) {
-                    Mentor mentor = new Mentor();
-                    mentor.setM_acc(user.getU_acc());
-                    Mentor mentor1 = (new MentorDao()).querySingle(mentor);
-                    if (mentor1.getM_status() != 0) {
-                        map.put("code", "1");
-                        map.put("message", "用户成功注册");
-                        user.setU_identity(1);
-                        (new UserDao()).insert(user);
-                    } else {
-                        map.put("code", "0");
-                        map.put("message", "用户封禁中");
-                    }
-                } else {
-                    map.put("code", "0");
-                    map.put("message", "输入值异常");
-                }
-            } else {
-                map.put("code", "0");
-                map.put("message", "注册表不存在");
-            }
-        }else {
-            map.put("code", "0");
-            map.put("message", "用户已注册");
-        }
-        return map;
     }
 
 }

@@ -14,6 +14,8 @@ public class TeamUserMessageDao extends BaseDao<TeamUserMessage> {
         super("team_user_message");
     }
 
+    private TeamUserMessage model;
+
 
     public boolean insert(TeamUserMessage TeamUserMessage) {
         Map<String, Object> map = TeamUserMessage.toMap();
@@ -72,12 +74,16 @@ public class TeamUserMessageDao extends BaseDao<TeamUserMessage> {
     private PageBean<TeamUserMessage> pageBean = new PageBean<TeamUserMessage>();
 
 
-    public void initPage(Integer currentPage, TeamUserMessage object){
+    public void initPage(TeamUserMessage object){
+        this.model=object;
         List<TeamUserMessage> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<TeamUserMessage> queryByPage(Integer currentPage, TeamUserMessage object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<TeamUserMessage> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

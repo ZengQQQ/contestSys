@@ -3,6 +3,7 @@ package com.game.servlet;
 import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.serve.LoginControlServe;
+import com.game.utils.Result;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -24,10 +25,6 @@ public class LoginControl extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json;charset=UTF-8");
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = now.format(formatter);
-
         Enumeration<String> parameterNames = req.getParameterNames();
 
         Map<String, Object> paramMap = new HashMap<>();
@@ -43,23 +40,9 @@ public class LoginControl extends HttpServlet {
 
         LoginControlServe loginControlServe = new LoginControlServe();
         String identity = req.getParameter("identity");
-        Map<String, String> responseData = new HashMap<>();
+        Result<String> responseData = new Result<>();
 
-        switch (identity) {
-            case "student":
-                responseData = loginControlServe.studentLogin(user);
-                break;
-            case "mentor":
-                responseData = loginControlServe.mentorLogin(user);
-                break;
-            case "admin":
-                responseData = loginControlServe.administratorLogin(administrator);
-                break;
-            default:
-                responseData.put("code","0");
-                responseData.put("message","身份选择错误");
-                break;
-        }
+        responseData = loginControlServe.login(user);
 
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");

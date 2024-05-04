@@ -14,6 +14,8 @@ public class TeamDao extends BaseDao<Team> {
      super("team");
     }
 
+    private Team model;
+
     //查询队伍信息
     public List<Team> findAllTeam(){
         return super.query(Team.class,new HashMap<>(),0,0);
@@ -71,12 +73,16 @@ public class TeamDao extends BaseDao<Team> {
     private PageBean<Team> pageBean = new PageBean<Team>();
 
 
-    public void initPage(Integer currentPage, Team object){
+    public void initPage( Team object){
+        this.model=object;
         List<Team> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Team> queryByPage(Integer currentPage, Team object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Team> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

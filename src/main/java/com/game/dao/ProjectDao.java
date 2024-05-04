@@ -15,6 +15,7 @@ public class ProjectDao extends BaseDao<Project> {
     public ProjectDao() {
         super("project");
     }
+    private Project model;
 
 
     /**
@@ -95,12 +96,16 @@ public class ProjectDao extends BaseDao<Project> {
     private PageBean<Project> pageBean = new PageBean<Project>();
 
 
-    public void initPage(Integer currentPage, Project object){
+    public void initPage( Project object){
+        this.model=object;
         List<Project> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<Project> queryByPage(Integer currentPage, Project object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Project> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());

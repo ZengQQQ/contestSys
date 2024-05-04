@@ -9,6 +9,8 @@ public class UserDao extends BaseDao<User> {
         super("user");
     }
 
+    private User model;
+
     @Override
     public boolean insert(User object) {
         boolean value = super.insert(object);
@@ -60,15 +62,22 @@ public class UserDao extends BaseDao<User> {
     private PageBean<User> pageBean = new PageBean<User>();
 
 
-    public void initPage(Integer currentPage, User object){
+    public void initPage(User object){
+        this.model=object;
         List<User> total =query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
     public PageBean<User> queryByPage(Integer currentPage, User object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<User> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());
+        for (User u :result){
+            u.setU_pwd(null);
+        }
         pageBean.setListPage(result);
         return pageBean;
     }

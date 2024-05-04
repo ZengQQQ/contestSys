@@ -20,11 +20,13 @@ public class StallFixDao {
     TeamDao teamDao = new TeamDao();
     ProjectDao projectDao = new ProjectDao();
     TeamFIxDao teamFIxDao =new TeamFIxDao();
+    private Stall model;
 
     private PageBean<StallFix> pageBean = new PageBean<>();
 
 
-    public void initPage(Integer currentPage, Stall object){
+    public void initPage(Stall object){
+        this.model=object;
         List<Stall> total =stallDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
@@ -49,6 +51,9 @@ public class StallFixDao {
     }
 
     public PageBean<StallFix> queryByPage(Integer currentPage, Stall object){
+        if(!object.equals(this.model)){
+            initPage(object);
+        }
         List<Stall> temresult = new ArrayList<>();
         List<StallFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);
