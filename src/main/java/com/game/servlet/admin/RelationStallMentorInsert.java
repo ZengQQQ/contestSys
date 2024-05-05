@@ -26,25 +26,16 @@ public class RelationStallMentorInsert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        StringBuilder jsonBuilder = new StringBuilder();
-//        String line;
-//        try (BufferedReader reader = req.getReader()) {
-//            while ((line = reader.readLine()) != null) {
-//                jsonBuilder.append(line);
-//            }
-//        }
         Enumeration<String> parameterNames = req.getParameterNames();
-
         Map<String, Object> paramMap = new HashMap<>();
-
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
         StallMentorMessage stallMentorMessage =new StallMentorMessage().mapToClass(paramMap);
-        String json1 = new Gson().toJson(stallMentorMessage);
-        Result<String> result = relation.insertStallMentorRelation(json1);
+
+        Result<String> result = relation.insertStallMentorRelation(stallMentorMessage);
         String json = new Gson().toJson(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

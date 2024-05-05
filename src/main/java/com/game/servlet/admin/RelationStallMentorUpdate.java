@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -33,9 +32,8 @@ public class RelationStallMentorUpdate extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-
         StallMentorMessage stallMentorMessage =new StallMentorMessage().mapToClass(paramMap);
-//        String json1 = new Gson().toJson(stallMentorMessage);
+
         Result<String> result = relation.updateStallMentorRelation(stallMentorMessage);
         String json = new Gson().toJson(result);
         resp.setContentType("application/json");
