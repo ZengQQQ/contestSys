@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/admin/queryStall")
+@WebServlet(value = "/admin/queryUser")
 public class QueryUser extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
