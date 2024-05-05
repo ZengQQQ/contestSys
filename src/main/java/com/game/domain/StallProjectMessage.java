@@ -20,7 +20,7 @@ public class StallProjectMessage extends ReflectionUtils {
     private Integer join_status;
     private Integer spm_dct;
     private LocalDateTime spm_time;
-    private static String table_name = "stall_task_message";
+    private static String table_name = "stall_project_message";
 
     public StallProjectMessage() {
     }

@@ -28,7 +28,7 @@ public class RelationshipServe {
         String jsonString = JSON.toJSONString(ele);
         TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
         boolean result = teamUserMessageDao.insert(teamUserMessage);
-        if(!result){
+        if(!result||teamUserMessage.getTsm_dct()==null){
             return Result.fail("添加关系失败","队伍关系添加失败");
         }
         return Result.success("队伍关系添加成功");
@@ -52,7 +52,7 @@ public class RelationshipServe {
         String jsonString = JSON.toJSONString(ele);
         StallProjectMessage stallProjectMessage = JSON.parseObject(jsonString,StallProjectMessage.class);
         boolean result = stallProjectMessageDao.insert(stallProjectMessage);
-        if(!result){
+        if(!result||stallProjectMessage.getSt_id()==null||stallProjectMessage.getSpm_dct()==null){
             return Result.fail("添加房间任务关系失败","房间任务关系添加失败");
         }
         return Result.success("房间任务关系添加成功");
@@ -76,7 +76,7 @@ public class RelationshipServe {
         String jsonString = JSON.toJSONString(ele);
         StallTeamMessage stallTeamMessage = JSON.parseObject(jsonString,StallTeamMessage.class);
         boolean result = stallTeamMessageDao.insert(stallTeamMessage);
-        if(!result){
+        if(!result||stallTeamMessage.getSt_id()==null||stallTeamMessage.getStm_dct()==null){
             return Result.fail("添加房间队伍关系失败","房间队伍关系添加失败");
         }
         return Result.success("房间队伍关系添加成功");
@@ -100,7 +100,7 @@ public class RelationshipServe {
         String jsonString = JSON.toJSONString(ele);
         StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
         boolean result = stallMentorMessageDao.insert(stallMentorMessage);
-        if(!result){
+        if(!result||stallMentorMessage.getSt_id()==null||stallMentorMessage.getSmm_dct()==null){
             return Result.fail("添加房间导师关系失败","房间导师关系添加失败");
         }
         return Result.success("房间导师关系添加成功");
