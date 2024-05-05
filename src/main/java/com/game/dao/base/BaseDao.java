@@ -648,8 +648,8 @@ public class BaseDao<T> extends ReflectionUtils {
     /**
      *
      *
-     * @param map 更新成什么元素
-     * @param condition 被更新的元素
+     * @param map 新数据
+     * @param condition 旧数据
      * @return 1 对 0 错
      */
     public int update(Map<String, Object> map, Map<String, Object> condition) {
