@@ -267,17 +267,17 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> updateStallMentorRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
-        List<StallMentorMessage> resList = stallMentorMessageDao.query(stallMentorMessage,-1,-1);
+    public Result<String> updateStallMentorRelation(StallMentorMessage stallMentorMessage){
+//        String jsonString = JSON.toJSONString(ele);
+//        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
+        StallMentorMessage tar = new StallMentorMessage();
+        tar.setSmm_id(stallMentorMessage.getSmm_id());
+        List<StallMentorMessage> resList = stallMentorMessageDao.query(tar,-1,-1);
         for (StallMentorMessage res : resList){
             if (res.getSt_id() == null){
                 return Result.fail("更新房间导师关系失败","没有该房间导师关系");
             }
         }
-        StallMentorMessage tar = new StallMentorMessage();
-        tar.setSmm_id(stallMentorMessage.getSmm_id());
         User user = new User();
         Stall stall = new Stall();
         user.setU_acc(stallMentorMessage.getU_acc());
@@ -297,7 +297,7 @@ public class RelationshipServe {
                 return Result.fail("更新房间导师关系失败","房间状态异常");
             }
         }
-        int result=stallMentorMessageDao.update(stallMentorMessage,tar);
+        int result=stallMentorMessageDao.update(tar,stallMentorMessage);
         if(result==0){
             return Result.fail("更新房间导师关系失败","房间导师关系更新失败");
         }

@@ -1,7 +1,12 @@
-package com.game.servlet.admin;
+package com.game.servlet.admin.mentor;
 
-import com.game.domain.StallMentorMessage;
-import com.game.serve.RelationshipServe;
+
+import com.alibaba.fastjson2.JSON;
+import com.game.bean.PageBean;
+import com.game.domain.Mentor;
+import com.game.domain.Project;
+import com.game.domain.Student;
+import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -16,9 +21,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/RelationStallMentorInsert")
-public class RelationStallMentorInsert extends HttpServlet {
-    RelationshipServe relation = new RelationshipServe();
+@WebServlet(value = "/admin/mentor/query")
+public class QueryMentor extends HttpServlet {
+    QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -26,13 +31,9 @@ public class RelationStallMentorInsert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        StringBuilder jsonBuilder = new StringBuilder();
-//        String line;
-//        try (BufferedReader reader = req.getReader()) {
-//            while ((line = reader.readLine()) != null) {
-//                jsonBuilder.append(line);
-//            }
-//        }
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
+
         Enumeration<String> parameterNames = req.getParameterNames();
 
         Map<String, Object> paramMap = new HashMap<>();
@@ -42,10 +43,11 @@ public class RelationStallMentorInsert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        StallMentorMessage stallMentorMessage =new StallMentorMessage().mapToClass(paramMap);
-        String json1 = new Gson().toJson(stallMentorMessage);
-        Result<String> result = relation.insertStallMentorRelation(json1);
-        String json = new Gson().toJson(result);
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+        // 将JSON字符串转换为User对象
+        Mentor stall = new Mentor ().mapToClass(paramMap);
+        Result<PageBean<Mentor>> responseData =query.queryPage(currentPage,stall);
+        String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

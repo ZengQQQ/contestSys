@@ -691,10 +691,6 @@ public class BaseDao<T> extends ReflectionUtils {
                 conut++;
             }
 
-            for (Map.Entry<String, Object> entry : condition.entrySet()) {
-                preparedStatement.setObject(conut, entry.getValue());
-                conut++;
-            }
 
             int res = preparedStatement.executeUpdate();
             if (res == 0) {
