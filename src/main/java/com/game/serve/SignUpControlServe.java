@@ -45,7 +45,7 @@ public class SignUpControlServe {
                         Mentor mentor = new Mentor();
                         mentor.setM_acc(user.getU_acc());
                         Mentor mentor1 = (new MentorDao()).querySingle(mentor);
-                        if (mentor1.getM_status() != 0) {
+                        if (mentor1.getM_status() == 0) {
                             user.setU_identity(1);
                             (new UserDao()).insert(user);
                             return Result.success("用户成功注册");
@@ -57,7 +57,7 @@ public class SignUpControlServe {
                         return Result.fail("用户注册失败","该账号已经注册");
                     }
                 }else {
-                    return Result.fail("用户注册失败","该账号再注册表中不存在");
+                    return Result.fail("用户注册失败","该账号注册表中不存在");
                 }
             }else {
                 if (studentCheckRegistered(user)) {
@@ -77,7 +77,7 @@ public class SignUpControlServe {
                     }
                 } else {
 
-                    return Result.fail("用户注册失败","该账号再注册表中不存在");
+                    return Result.fail("用户注册失败","该账号注册表中不存在");
                 }
             }
         }else {
@@ -89,6 +89,7 @@ public class SignUpControlServe {
         if(user.getU_acc()!=null){
             Mentor mentor = new Mentor();
             mentor.setM_acc(user.getU_acc());
+            System.out.println(mentor);
             List<Mentor> mentors =(new MentorDao()).query(mentor,-1,-1);
             return !mentors.isEmpty();
         }else {

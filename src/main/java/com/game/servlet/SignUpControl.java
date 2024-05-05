@@ -39,9 +39,13 @@ public class SignUpControl extends HttpServlet {
 
         SignUpControlServe signUpControlServe = new SignUpControlServe();
         User user = (new User()).mapToClass(paramMap);
+        if(identity==null){
+            identity="";
+        }
         switch (identity){
             case "mentor":
                 user.setU_identity(1);
+                break;
             default:
                 user.setU_identity(0);
         }
