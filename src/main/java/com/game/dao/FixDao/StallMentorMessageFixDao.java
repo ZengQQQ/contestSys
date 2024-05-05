@@ -25,7 +25,8 @@ public class StallMentorMessageFixDao {
 
     public void initPage( StallMentorMessage object){
         this.model=object;
-        List<StallMentorMessage> total =messageDao.query(object,-1,-1);
+        List<StallMentorMessage> total =new ArrayList<>();
+        total=messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

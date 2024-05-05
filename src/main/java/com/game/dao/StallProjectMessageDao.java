@@ -4,6 +4,7 @@ import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.StallProjectMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +84,7 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
         List<StallProjectMessage>  StallTaskMessageList = super.query(StallProjectMessage.class, map, current, size);
         if (StallTaskMessageList.isEmpty()) {
             System.out.println("查询StallTaskMessage失败");
-            return null;
+            return StallTaskMessageList;
         } else {
             System.out.println("查询StallTaskMessage成功！");
             for (StallProjectMessage c : StallTaskMessageList) {
@@ -103,7 +104,8 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
 
     public void initPage(StallProjectMessage object){
         this.model=object;
-        List<StallProjectMessage> total =query(object,-1,-1);
+        List<StallProjectMessage> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

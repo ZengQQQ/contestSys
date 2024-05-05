@@ -23,7 +23,8 @@ public class StallProjectMessageFixDao {
 
     public void initPage( StallProjectMessage object){
         this.model= object;
-        List<StallProjectMessage> total =messageDao.query(object,-1,-1);
+        List<StallProjectMessage> total =new ArrayList<>();
+        total=messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

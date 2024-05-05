@@ -5,6 +5,7 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.TeamUserMessage;
 import com.game.domain.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,8 @@ public class TeamUserMessageDao extends BaseDao<TeamUserMessage> {
 
     public void initPage(TeamUserMessage object){
         this.model=object;
-        List<TeamUserMessage> total =query(object,-1,-1);
+        List<TeamUserMessage> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

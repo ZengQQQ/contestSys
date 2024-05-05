@@ -3,6 +3,8 @@ package com.game.dao;
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Stall;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +83,7 @@ public class StallDao extends BaseDao<Stall> {
         List<Stall>  stallList = super.query(Stall.class, map, current, size);
         if (stallList.isEmpty()) {
             System.out.println("查询stall失败");
-            return null;
+            return stallList;
         } else {
             System.out.println("查询stall成功！");
             for (Stall c : stallList) {
@@ -97,7 +99,8 @@ public class StallDao extends BaseDao<Stall> {
 
     public void initPage( Stall object){
         this.model=object;
-        List<Stall> total =query(object,-1,-1);
+        List<Stall> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

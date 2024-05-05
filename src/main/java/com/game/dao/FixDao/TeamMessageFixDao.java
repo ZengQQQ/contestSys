@@ -29,7 +29,8 @@ public class TeamMessageFixDao {
 
     public void initPage(TeamUserMessage object){
         this.model=object;
-        List<TeamUserMessage> total =messageDao.query(object,-1,-1);
+        List<TeamUserMessage> total =new ArrayList<>();
+        total=messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

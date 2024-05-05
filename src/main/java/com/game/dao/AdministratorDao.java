@@ -5,6 +5,7 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.Administrator;
 import com.game.domain.Stall;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class AdministratorDao extends BaseDao<Administrator> {
 
     public void initPage( Administrator object){
         this.model=object;
-        List<Administrator> total =query(object,-1,-1);
+        List<Administrator> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

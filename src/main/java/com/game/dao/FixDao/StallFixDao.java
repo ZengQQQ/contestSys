@@ -29,7 +29,8 @@ public class StallFixDao {
 
     public void initPage(Stall object){
         this.model=object;
-        List<Stall> total =stallDao.query(object,-1,-1);
+        List<Stall> total =new ArrayList<>();
+        total=stallDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

@@ -42,7 +42,12 @@ public class QueryJoinedStall extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+        Integer currentPage;
+        if(paramMap.get("currentPage")==null){
+            currentPage =1;
+        }else {
+            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+        }
         User stall = (new User()).mapToClass(paramMap);
         TeamUserMessage chain = new TeamUserMessage();
         Team chain1 = new Team();
