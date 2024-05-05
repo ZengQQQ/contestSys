@@ -41,7 +41,7 @@ public class QueryProject extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = (Integer)paramMap.get("currentPage");
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
         Project stall = new Project ().mapToClass(paramMap);
         Result<PageBean<ProjectFix>> responseData =query.queryPage(currentPage,stall);

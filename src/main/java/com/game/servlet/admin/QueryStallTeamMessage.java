@@ -41,7 +41,7 @@ public class QueryStallTeamMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = (Integer)paramMap.get("currentPage");
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
         StallTeamMessage stall = new StallTeamMessage ().mapToClass(paramMap);
         Result<PageBean<StallTeamMessageFix>> responseData =query.queryPage(currentPage,stall);

@@ -42,7 +42,7 @@ public class QueryTeamMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = (Integer) paramMap.get("currentPage");
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
         TeamUserMessage stall = new TeamUserMessage().mapToClass(paramMap);
         Result<PageBean<TeamMessageFix>> responseData =query.queryPage(currentPage,stall);

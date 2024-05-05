@@ -41,7 +41,7 @@ public class QueryStall extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = (Integer)paramMap.get("currentPage");
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
         Stall stall = new Stall ().mapToClass(paramMap);
         Result<PageBean<StallFix>> responseData =query.queryPage(currentPage,stall);
