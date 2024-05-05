@@ -3,7 +3,7 @@ package com.game.servlet.user;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.User;
+import com.game.domain.*;
 import com.game.domain.fixDomain.StallFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
@@ -34,11 +34,47 @@ public class QueryJoinedStall extends HttpServlet {
                 jsonBuilder.append(line);
             }
         }
+        TeamUserMessage chain = new TeamUserMessage();
+        Team chain1 = new Team();
+        StallTeamMessage chain2 = new StallTeamMessage();
+        Stall target = new Stall();
+        String joinType = req.getParameter("joinType");
+        String teamType = req.getParameter("teamType");
+        String joinStallType = req.getParameter("joinStallType");
+        String stallType = req.getParameter("stallType");
+
+        switch (joinType){
+            case "joining":chain.setJoin_status(0);chain.setTsm_pass(1);
+                break;
+            default:chain.setJoin_status(1);
+        }
+        switch (teamType){
+            case "lock":chain1.setT_status(1);
+                break;
+            case "Disband":chain1.setT_status(2);
+                break;
+            default:chain1.setT_status(0);
+        }
+        switch (joinStallType){
+            case "joined":chain2.setJoin_status(1);
+                break;
+            case "joining":chain2.setJoin_status(0);chain2.setStm_status(1);
+                break;
+            default:
+        }
+        switch (stallType){
+            case "normal":target.setSt_status(0);
+                break;
+            case "lock":target.setSt_status(1);
+                break;
+            default:
+        }
+
         Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
         // 将JSON字符串转换为User对象
         String jsonString = jsonBuilder.toString();
         User stall = JSON.parseObject(jsonString, User.class);
-        Result<PageBean<StallFix>> responseData =query.joinedStallQuery(currentPage,stall);
+        Result<PageBean<StallFix>> responseData =query.joinedStallQuery(currentPage,stall,chain,chain1,chain2,target);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

@@ -6,6 +6,7 @@ import com.game.utils.Result;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -13,8 +14,8 @@ import java.io.IOException;
 
  */
 
-//@WebFilter("/admin/*")
-public class AdminFilter implements Filter {
+//@WebFilter("/user/*")
+public class userFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Filter初始化时调用，通常用于资源的加载或一次性工作
@@ -26,13 +27,14 @@ public class AdminFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request1, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+        HttpServletRequest request =(HttpServletRequest)request1;
         // 返回的结果
         Result result = null;
 
         // 获取请求头中的token
-        String token = request.getParameter("token");
+        String token = request.getHeader("token");
 
         // token存在
         if (token == null) {

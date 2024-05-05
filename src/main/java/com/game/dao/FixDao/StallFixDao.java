@@ -33,6 +33,10 @@ public class StallFixDao {
         pageBean.setTotalSize(total.size());
     }
 
+    public void initPage(Integer totalsize){
+        pageBean.setTotalSize(totalsize);
+    }
+
     public StallFix singToFix(Stall ele) {
         User u = new User();
         u.setU_acc(ele.getU_acc());
@@ -68,21 +72,23 @@ public class StallFixDao {
         return pageBean;
     }
 
-    public void initPage(Integer totalsize){
-        pageBean.setTotalSize(totalsize);
-    }
-    public PageBean<StallFix> queryByPage(Integer currentPage, User user){
-
-        TeamUserMessage chain = new TeamUserMessage();
-        Team chain1 = new Team();
-        StallTeamMessage chain2 = new StallTeamMessage();
-        Stall taget = new Stall();
+    /**
+     *
+     * @param currentPage
+     * @param user
+     * @param chain
+     * @param chain1
+     * @param chain2
+     * @param target
+     * @return
+     */
+    public PageBean<StallFix> queryByPage(Integer currentPage, User user,TeamUserMessage chain,Team chain1,StallTeamMessage chain2,Stall target){
         Map<String,String> joinCondition = new HashMap<>();
         joinCondition.put("stall_team_message","stall.st_id=stall_team_message.st_id");
         joinCondition.put("team","stall_team_message.t_id=team.t_id");
         joinCondition.put("team_user_message","team.t_id=team_user_message.t_id");
         joinCondition.put("user","team_user_message.u_acc=user.u_acc");
-        List<Stall> temresult = stallDao.leftQuery(Stall.class,"stall",BaseDao.formList(taget,chain,chain1,chain2,user),joinCondition,-1,-1);
+        List<Stall> temresult = stallDao.leftQuery(Stall.class,"stall",BaseDao.formList(target,chain,chain1,chain2,user),joinCondition,-1,-1);
         List<StallFix> result = new ArrayList<>();
         initPage(temresult.size());
         pageBean.setCurrentPage(currentPage);

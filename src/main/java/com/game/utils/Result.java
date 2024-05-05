@@ -1,10 +1,11 @@
 package com.game.utils;
 
 import com.alibaba.fastjson2.JSON;
+import lombok.Data;
 
 import java.util.Map;
 
-
+@Data
 public class Result<T> {
     public int code = 200;
     public String message = "success";

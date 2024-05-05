@@ -49,4 +49,5 @@ public class StallProjectMessageFixDao {
         pageBean.setListPage(result);
         return pageBean;
     }
+
 }
