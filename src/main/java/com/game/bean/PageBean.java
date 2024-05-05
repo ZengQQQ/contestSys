@@ -3,6 +3,7 @@ package com.game.bean;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,9 +14,9 @@ public class PageBean<T> {
     private Integer totalSize;
     private Integer begin;
     private Integer end;
-    private List<Integer> optionalPages;
+    private List<Integer> optionalPages=new ArrayList<>();
     @Setter
-    private List<T> listPage;
+    private List<T> listPage = new ArrayList<>();
 
     public PageBean() {
     }
