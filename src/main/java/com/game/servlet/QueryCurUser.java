@@ -3,6 +3,7 @@ package com.game.servlet;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
+import com.game.dao.UserDao;
 import com.game.domain.User;
 import com.game.serve.QueryControlServe;
 import com.game.utils.JWTUtils;

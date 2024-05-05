@@ -52,16 +52,16 @@ public class QueryJoinedStall extends HttpServlet {
         String teamType = req.getParameter("teamType");
         String joinStallType = req.getParameter("joinStallType");
         String stallType = req.getParameter("stallType");
-        if(joinType!=null){
+        if(joinType==null){
             joinType="";
         }
-        if(teamType!=null){
+        if(teamType==null){
             joinType="";
         }
-        if(joinStallType!=null){
+        if(joinStallType==null){
             joinType="";
         }
-        if(stallType!=null){
+        if(stallType==null){
             joinType="";
         }
 
@@ -74,7 +74,7 @@ public class QueryJoinedStall extends HttpServlet {
         switch (teamType){
             case "lock":chain1.setT_status(1);
                 break;
-            case "Disband":chain1.setT_status(2);
+            case "disband":chain1.setT_status(2);
                 break;
             default:chain1.setT_status(0);
         }

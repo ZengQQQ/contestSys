@@ -18,6 +18,7 @@ public class User extends ReflectionUtils {
     private String u_wechat;
     private String u_qq;
     private String u_info;
+    private String u_major;
     private Integer u_status;
     private Integer u_power;
     private Integer u_identity;
@@ -26,7 +27,7 @@ public class User extends ReflectionUtils {
     public User() {
     }
 
-    public User(Integer u_id, String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, String u_info, Integer u_status, Integer u_power, Integer u_identity) {
+    public User(Integer u_id, String u_acc, String u_pwd, String u_name, String u_tele, String u_mail, String u_wechat, String u_qq, String u_info, String u_major, Integer u_status, Integer u_power, Integer u_identity) {
         this.u_id = u_id;
         this.u_acc = u_acc;
         this.u_pwd = u_pwd;
@@ -36,6 +37,7 @@ public class User extends ReflectionUtils {
         this.u_wechat = u_wechat;
         this.u_qq = u_qq;
         this.u_info = u_info;
+        this.u_major = u_major;
         this.u_status = u_status;
         this.u_power = u_power;
         this.u_identity = u_identity;
@@ -50,6 +52,8 @@ public class User extends ReflectionUtils {
         this.u_mail = user.getU_mail();
         this.u_wechat = user.getU_wechat();
         this.u_qq = user.getU_qq();
+        this.u_info = user.getU_info();
+        this.u_major = user.getU_major();
         this.u_status = user.getU_status();
         this.u_power = user.getU_power();
         this.u_identity=user.getU_identity();

@@ -51,10 +51,10 @@ public class QueryJoinedTeam extends HttpServlet {
         String joinType = req.getParameter("joinType");
         String targetType = req.getParameter("teamType");
 
-        if(joinType!=null){
+        if(joinType==null){
             joinType="";
         }
-        if(targetType!=null){
+        if(targetType==null){
             joinType="";
         }
 
@@ -70,7 +70,7 @@ public class QueryJoinedTeam extends HttpServlet {
                 break;
             case "lock":target.setT_status(1);
                 break;
-            case "Disband":target.setT_status(2);
+            case "disband":target.setT_status(2);
                 break;
             default:
         }
