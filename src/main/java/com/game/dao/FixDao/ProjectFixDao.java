@@ -20,7 +20,8 @@ public class ProjectFixDao {
 
     public void initPage(Project object){
         this.model=object;
-        List<Project> total =projectDao.query(object,-1,-1);
+        List<Project> total =new ArrayList<>();
+         total =projectDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

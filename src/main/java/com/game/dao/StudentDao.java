@@ -6,6 +6,7 @@ import com.game.domain.Student;
 
 import com.game.domain.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,8 @@ public class StudentDao extends BaseDao<Student> {
 
     public void initPage(Student object){
         this.model=object;
-        List<Student> total =query(object,-1,-1);
+        List<Student> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

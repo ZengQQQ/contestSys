@@ -24,7 +24,8 @@ public class TeamFixDao {
 
     public void initPage(Team object){
         this.model=object;
-        List<Team> total =teamDao.query(object,-1,-1);
+        List<Team> total =new ArrayList<>();
+        total=teamDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

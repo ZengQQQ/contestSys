@@ -3,6 +3,8 @@ package com.game.dao;
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.User;
+
+import java.util.ArrayList;
 import java.util.List;
 public class UserDao extends BaseDao<User> {
     public UserDao() {
@@ -64,7 +66,8 @@ public class UserDao extends BaseDao<User> {
 
     public void initPage(User object){
         this.model=object;
-        List<User> total =query(object,-1,-1);
+        List<User> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

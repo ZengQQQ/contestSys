@@ -4,6 +4,7 @@ import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.StallTeamMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,7 +104,8 @@ public class StallTeamMessageDao extends BaseDao<StallTeamMessage> {
 
     public void initPage( StallTeamMessage object){
         this.model=object;
-        List<StallTeamMessage> total =query(object,-1,-1);
+        List<StallTeamMessage> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

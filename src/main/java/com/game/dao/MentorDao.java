@@ -5,6 +5,7 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.Mentor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,8 @@ public class MentorDao extends BaseDao<Mentor> {
 
     public void initPage(Mentor object){
         this.model=object;
-        List<Mentor> total =query(object,-1,-1);
+        List<Mentor> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

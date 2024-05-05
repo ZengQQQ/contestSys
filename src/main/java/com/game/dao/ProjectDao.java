@@ -3,6 +3,8 @@ package com.game.dao;
 import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.Project;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -98,7 +100,8 @@ public class ProjectDao extends BaseDao<Project> {
 
     public void initPage( Project object){
         this.model=object;
-        List<Project> total =query(object,-1,-1);
+        List<Project> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

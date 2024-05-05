@@ -25,7 +25,8 @@ public class StallTeamMessageFixDao {
 
     public void initPage(StallTeamMessage object){
         this.model=object;
-        List<StallTeamMessage> total =messageDao.query(object,-1,-1);
+        List<StallTeamMessage> total =new ArrayList<>();
+        total=messageDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 

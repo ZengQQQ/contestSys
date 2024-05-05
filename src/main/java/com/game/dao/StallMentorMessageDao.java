@@ -4,6 +4,7 @@ import com.game.bean.PageBean;
 import com.game.dao.base.BaseDao;
 import com.game.domain.StallMentorMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -98,7 +99,8 @@ public class StallMentorMessageDao extends BaseDao<StallMentorMessage> {
 
     public void initPage( StallMentorMessage object){
         this.model = object;
-        List<StallMentorMessage> total =query(object,-1,-1);
+        List<StallMentorMessage> total =new ArrayList<>();
+        total=query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
