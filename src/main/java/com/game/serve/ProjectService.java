@@ -36,4 +36,16 @@ public class ProjectService {
         return Result.success("更新成功");
     }
 
+    public Result<String> delete(Project project) {
+        List<Project> exited = projectDao.query(project,-1,-1);
+        if (exited.isEmpty()){
+            return Result.fail("删除失败，没有该项目",null);
+        }
+        int deleted = projectDao.delete(project);
+        if (deleted == 0){
+            return Result.fail("删除失败",null);
+        }
+        return Result.success("删除成功");
+    }
+
 }

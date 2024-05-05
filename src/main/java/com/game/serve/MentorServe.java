@@ -35,4 +35,18 @@ public class MentorServe {
         }
         return Result.success("更新成功");
     }
+
+
+    public Result<String> delete(Mentor mentor) {
+        List<Mentor> exited = mentorDao.query(mentor,-1,-1);
+        if (exited.isEmpty()){
+            return Result.fail("删除失败，没有该导师",null);
+        }
+        int deleted = mentorDao.delete(mentor);
+        if (deleted == 0){
+            return Result.fail("删除失败",null);
+        }
+        return Result.success("删除成功");
+    }
+
 }

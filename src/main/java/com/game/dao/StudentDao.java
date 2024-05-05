@@ -56,7 +56,12 @@ public class StudentDao extends BaseDao<Student> {
         return value;
     }
 
-
+    /**
+     * 更新学生信息
+     * @param Student 新的学生信息
+     * @param mapCondition 旧的学生信息
+     * @return 更新的条数
+     */
     public int update(Student Student, Student mapCondition) {
         Map<String, Object> map = Student.toMap();
         map.remove("s_id");

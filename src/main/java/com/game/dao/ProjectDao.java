@@ -135,7 +135,7 @@ public class ProjectDao extends BaseDao<Project> {
 //        competition.setC_name("项目2");
 //        Project conditionCompetition = new Project();
 //        conditionCompetition.setC_id(1);
-//        int updated = competitionDao.update(competition, conditionCompetition);
+//        int updated = competitionDao.Update(competition, conditionCompetition);
 //        System.out.println(updated);
 //
 //        // 删除项目

@@ -1,10 +1,8 @@
-package com.game.servlet.user;
+package com.game.servlet.admin.mentor;
 
 
-import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.TeamUserMessage;
-import com.game.domain.fixDomain.TeamMessageFix;
+import com.game.domain.Mentor;
 import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
@@ -14,14 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/queryTeamMessage")
-public class QueryTeamMessage extends HttpServlet {
+@WebServlet(value = "/admin/mentor/projectService")
+public class Query extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,15 +39,10 @@ public class QueryTeamMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
+        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
-        TeamUserMessage stall = new TeamUserMessage().mapToClass(paramMap);
-        Result<PageBean<TeamMessageFix>> responseData =query.queryPage(currentPage,stall);
+        Mentor stall = new Mentor ().mapToClass(paramMap);
+        Result<PageBean<Mentor>> responseData =query.queryPage(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

@@ -1,10 +1,11 @@
-package com.game.servlet.admin.mentor;
+package com.game.servlet.admin.project;
 
 import com.game.domain.Project;
 import com.game.serve.ProjectService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+@WebServlet(value = "/admin/project/insert")
 public class Insert extends HttpServlet {
     ProjectService projectService = new ProjectService();
 

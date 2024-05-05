@@ -1,7 +1,7 @@
 package com.game.servlet.admin.mentor;
 
-import com.game.domain.Project;
-import com.game.serve.ProjectService;
+import com.game.domain.Mentor;
+import com.game.serve.MentorServe;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -13,8 +13,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Insert extends HttpServlet {
-    ProjectService projectService = new ProjectService();
+public class Delete extends HttpServlet {
+    public static final MentorServe mentorServe = new MentorServe();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,21 +23,17 @@ public class Insert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         Enumeration<String> parameterNames = req.getParameterNames();
-
         Map<String, Object> paramMap = new HashMap<>();
-
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
-        Result<String> result = projectService.insert(project);
+        Mentor mentor = new Mentor().mapToClass(paramMap);
+
+        Result<String> result = mentorServe.delete(mentor);
         resp.getWriter().write(Result.toJson(result));
     }
 }
