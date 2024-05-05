@@ -1,11 +1,12 @@
-package com.game.servlet;
+package com.game.servlet.admin;
+
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.Project;
-import com.game.domain.Stall;
-import com.game.domain.fixDomain.ProjectFix;
-import com.game.domain.fixDomain.StallFix;
+import com.game.domain.Team;
+import com.game.domain.TeamUserMessage;
+import com.game.domain.fixDomain.TeamFix;
+import com.game.domain.fixDomain.TeamMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
@@ -18,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/queryForStall")
-public class QueryForProject extends HttpServlet {
+@WebServlet(value = "/admin/queryTeamMessage")
+public class QueryTeamMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,8 +39,8 @@ public class QueryForProject extends HttpServlet {
         Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
         // 将JSON字符串转换为User对象
         String jsonString = jsonBuilder.toString();
-        Project stall = JSON.parseObject(jsonString, Project.class);
-        Result<PageBean<ProjectFix>> responseData =query.queryPage(currentPage,stall);
+        TeamUserMessage stall = JSON.parseObject(jsonString, TeamUserMessage.class);
+        Result<PageBean<TeamMessageFix>> responseData =query.queryPage(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

@@ -25,6 +25,8 @@ public class TeamMessageFixDao {
     private PageBean<TeamMessageFix> pageBean = new PageBean<>();
 
 
+
+
     public void initPage(TeamUserMessage object){
         this.model=object;
         List<TeamUserMessage> total =messageDao.query(object,-1,-1);

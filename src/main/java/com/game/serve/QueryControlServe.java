@@ -65,7 +65,31 @@ public class QueryControlServe {
         return Result.success(data);
     }
 
+    public Result<PageBean<TeamFix>> joinedTeamQuery(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<TeamFix> data = teamFixDao.queryByPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
     public Result<PageBean<StallFix>> queryPage(Integer currentPage,Stall stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallFix> data = stallFixDao.queryByPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<StallFix>> joinedStallQuery(Integer currentPage,User stall){
         if(currentPage ==null){
             currentPage=1;
         }

@@ -43,7 +43,7 @@ public class StallProjectMessageFixDao {
             p.setP_id(s.getP_id());
             Project project= projectDao.querySingle(p);
             StallFix stallFix = stallFixDao.singToFix(stall);
-            StallProjectMessageFix em = new StallProjectMessageFix(s.getSmm_id(),stallFix,project,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s.getSmm_time(),s.getStall_view(),s.getProject_view(),s.getJoin_status());
+            StallProjectMessageFix em = new StallProjectMessageFix(s.getSpm_id(),stallFix,project,s.getSpm_info(),s.getSpm_pass(),s.getSpm_status(),s.getSpm_dct(),s.getSpm_time(),s.getStall_view(),s.getProject_view(),s.getJoin_status());
             result.add(em);
         }
         pageBean.setListPage(result);

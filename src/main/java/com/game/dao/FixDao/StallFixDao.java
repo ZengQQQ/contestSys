@@ -11,7 +11,9 @@ import com.game.domain.fixDomain.StallFix;
 import com.game.domain.fixDomain.TeamFix;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StallFixDao {
 
@@ -61,6 +63,33 @@ public class StallFixDao {
         for(Stall ele :temresult){
             StallFix stallFix = singToFix(ele);
             result.add(stallFix);
+        }
+        pageBean.setListPage(result);
+        return pageBean;
+    }
+
+    public void initPage(Integer totalsize){
+        pageBean.setTotalSize(totalsize);
+    }
+    public PageBean<StallFix> queryByPage(Integer currentPage, User user){
+
+        TeamUserMessage chain = new TeamUserMessage();
+        Team chain1 = new Team();
+        StallTeamMessage chain2 = new StallTeamMessage();
+        Stall taget = new Stall();
+        Map<String,String> joinCondition = new HashMap<>();
+        joinCondition.put("stall_team_message","stall.st_id=stall_team_message.st_id");
+        joinCondition.put("team","stall_team_message.t_id=team.t_id");
+        joinCondition.put("team_user_message","team.t_id=team_user_message.t_id");
+        joinCondition.put("user","team_user_message.u_acc=user.u_acc");
+        List<Stall> temresult = stallDao.leftQuery(Stall.class,"stall",BaseDao.formList(taget,chain,chain1,chain2,user),joinCondition,-1,-1);
+        List<StallFix> result = new ArrayList<>();
+        initPage(temresult.size());
+        pageBean.setCurrentPage(currentPage);
+        temresult=temresult.subList(pageBean.getBegin()-1,pageBean.getEnd());
+        for(Stall ele :temresult){
+            StallFix fix = singToFix(ele);
+            result.add(fix);
         }
         pageBean.setListPage(result);
         return pageBean;

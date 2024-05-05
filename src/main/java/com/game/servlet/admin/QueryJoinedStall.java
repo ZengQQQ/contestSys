@@ -1,14 +1,12 @@
-package com.game.servlet;
+package com.game.servlet.admin;
+
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.Stall;
-import com.game.domain.StallMentorMessage;
 import com.game.domain.User;
 import com.game.domain.fixDomain.StallFix;
-import com.game.domain.fixDomain.StallMentorMessageFix;
+import com.game.domain.fixDomain.TeamFix;
 import com.game.serve.QueryControlServe;
-import com.game.serve.SignUpControlServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -20,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/queryForStallMentorMessage")
-public class QueryForStallMentorMessage extends HttpServlet {
+@WebServlet(value = "/admin/queryJoinedStall")
+public class QueryJoinedStall extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,8 +38,8 @@ public class QueryForStallMentorMessage extends HttpServlet {
         Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
         // 将JSON字符串转换为User对象
         String jsonString = jsonBuilder.toString();
-        StallMentorMessage stall = JSON.parseObject(jsonString, StallMentorMessage.class);
-        Result<PageBean<StallMentorMessageFix>> responseData =query.queryPage(currentPage,stall);
+        User stall = JSON.parseObject(jsonString, User.class);
+        Result<PageBean<StallFix>> responseData =query.joinedStallQuery(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

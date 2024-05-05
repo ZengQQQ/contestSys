@@ -45,7 +45,7 @@ public class StallTeamMessageFixDao {
             ele.setT_id(s.getT_id());
             Team team= teamDao.querySingle(ele);
             StallFix stallFix = stallFixDao.singToFix(stall);
-            StallTeamMessageFix em = new StallTeamMessageFix(s.getSmm_id(),stallFix,team,s.getSmm_info(),s.getSmm_pass(),s.getSmm_status(),s.getSmm_dct(),s.getSmm_time(),s.getStall_view(),s.getTeam_view(),s.getJoin_status());
+            StallTeamMessageFix em = new StallTeamMessageFix(s.getStm_id(),stallFix,team,s.getStm_info(),s.getStm_pass(),s.getStm_status(),s.getStm_dct(),s.getStm_time(),s.getStall_view(),s.getTeam_view(),s.getJoin_status());
             result.add(em);
         }
         pageBean.setListPage(result);

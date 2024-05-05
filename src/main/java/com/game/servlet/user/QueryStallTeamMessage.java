@@ -1,10 +1,8 @@
-package com.game.servlet;
+package com.game.servlet.user;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.StallMentorMessage;
 import com.game.domain.StallTeamMessage;
-import com.game.domain.fixDomain.StallMentorMessageFix;
 import com.game.domain.fixDomain.StallTeamMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
@@ -18,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/queryForStallTeamMessage")
-public class QueryForStallTeamMessage extends HttpServlet {
+@WebServlet(value = "/admin/queryStallTeamMessage")
+public class QueryStallTeamMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

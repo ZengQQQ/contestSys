@@ -9,48 +9,48 @@ import java.util.Map;
 
 @Data
 public class StallProjectMessage extends ReflectionUtils {
-    private Integer smm_id;
+    private Integer spm_id;
     private Integer st_id;
     private Integer p_id;
-    private String smm_info;
+    private String spm_info;
     private Integer stall_view;
     private Integer project_view;
-    private Integer smm_pass;
-    private Integer smm_status;
+    private Integer spm_pass;
+    private Integer spm_status;
     private Integer join_status;
-    private Integer smm_dct;
-    private LocalDateTime smm_time;
+    private Integer spm_dct;
+    private LocalDateTime spm_time;
     private static String table_name = "stall_task_message";
 
     public StallProjectMessage() {
     }
 
-    public StallProjectMessage(Integer smm_id, Integer st_id, Integer p_id, String smm_info, Integer stall_view, Integer project_view, Integer smm_pass, Integer smm_status, Integer join_status, Integer smm_dct, LocalDateTime smm_time) {
-        this.smm_id = smm_id;
+    public StallProjectMessage(Integer spm_id, Integer st_id, Integer p_id, String spm_info, Integer stall_view, Integer project_view, Integer spm_pass, Integer spm_status, Integer join_status, Integer spm_dct, LocalDateTime spm_time) {
+        this.spm_id = spm_id;
         this.st_id = st_id;
         this.p_id = p_id;
-        this.smm_info = smm_info;
+        this.spm_info = spm_info;
         this.stall_view = stall_view;
         this.project_view = project_view;
-        this.smm_pass = smm_pass;
-        this.smm_status = smm_status;
+        this.spm_pass = spm_pass;
+        this.spm_status = spm_status;
         this.join_status = join_status;
-        this.smm_dct = smm_dct;
-        this.smm_time = smm_time;
+        this.spm_dct = spm_dct;
+        this.spm_time = spm_time;
     }
 
     public StallProjectMessage(StallProjectMessage s) {
-        this.smm_id = s.getSmm_id();
+        this.spm_id = s.getSpm_id();
         this.st_id = s.getSt_id();
         this.p_id = s.getP_id();
-        this.smm_info = s.getSmm_info();
+        this.spm_info = s.getSpm_info();
         this.stall_view =s.getStall_view();
         this.project_view = s.getProject_view();
-        this.smm_pass = s.getSmm_pass();
-        this.smm_status = s.getSmm_status();
+        this.spm_pass = s.getSpm_pass();
+        this.spm_status = s.getSpm_status();
         this.join_status = s.getJoin_status();
-        this.smm_dct = s.getSmm_dct();
-        this.smm_time = s.getSmm_time();
+        this.spm_dct = s.getSpm_dct();
+        this.spm_time = s.getSpm_time();
     }
 
     public StallProjectMessage mapToClass(Map<String, Object> map) {

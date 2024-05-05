@@ -8,7 +8,9 @@ import com.game.domain.*;
 import com.game.domain.fixDomain.TeamFix;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TeamFixDao {
 
@@ -56,4 +58,28 @@ public class TeamFixDao {
         pageBean.setListPage(result);
         return pageBean;
     }
+
+    public void initPage(Integer totalsize){
+        pageBean.setTotalSize(totalsize);
+    }
+    public PageBean<TeamFix> queryByPage(Integer currentPage, User user){
+
+        TeamUserMessage chain = new TeamUserMessage();
+        Team taget = new Team();
+        Map<String,String> joinCondition = new HashMap<>();
+        joinCondition.put("team_user_message","team.t_id=team_user_message.t_id");
+        joinCondition.put("user","team_user_message.u_acc=user.u_acc");
+        List<Team> temresult = teamDao.leftQuery(Team.class,"team",BaseDao.formList(taget,chain,user),joinCondition,-1,-1);
+        List<TeamFix> result = new ArrayList<>();
+        initPage(temresult.size());
+        pageBean.setCurrentPage(currentPage);
+        temresult=temresult.subList(pageBean.getBegin()-1,pageBean.getEnd());
+        for(Team ele :temresult){
+            TeamFix teamFix = singToFix(ele);
+            result.add(teamFix);
+        }
+        pageBean.setListPage(result);
+        return pageBean;
+    }
+
 }

@@ -8,14 +8,14 @@ import java.time.LocalDateTime;
 
 @Data
 public class StallTeamMessageFix {
-    private Integer smm_id;
+    private Integer stm_id;
     private StallFix stallFix;
     private Team team;
-    private String smm_info;
-    private Integer smm_pass;
-    private Integer smm_status;
-    private Integer smm_dct;
-    private LocalDateTime smm_time;
+    private String stm_info;
+    private Integer stm_pass;
+    private Integer stm_status;
+    private Integer stm_dct;
+    private LocalDateTime stm_time;
     private Integer stall_view;
     private Integer team_view;
     private Integer join_status;
@@ -23,15 +23,15 @@ public class StallTeamMessageFix {
     public StallTeamMessageFix() {
     }
 
-    public StallTeamMessageFix(Integer smm_id, StallFix stallFix, Team team, String smm_info, Integer smm_pass, Integer smm_status, Integer smm_dct, LocalDateTime smm_time, Integer stall_view, Integer team_view, Integer join_status) {
-        this.smm_id = smm_id;
+    public StallTeamMessageFix(Integer stm_id, StallFix stallFix, Team team, String stm_info, Integer stm_pass, Integer stm_status, Integer stm_dct, LocalDateTime stm_time, Integer stall_view, Integer team_view, Integer join_status) {
+        this.stm_id = stm_id;
         this.stallFix = stallFix;
         this.team = team;
-        this.smm_info = smm_info;
-        this.smm_pass = smm_pass;
-        this.smm_status = smm_status;
-        this.smm_dct = smm_dct;
-        this.smm_time = smm_time;
+        this.stm_info = stm_info;
+        this.stm_pass = stm_pass;
+        this.stm_status = stm_status;
+        this.stm_dct = stm_dct;
+        this.stm_time = stm_time;
         this.stall_view = stall_view;
         this.team_view = team_view;
         this.join_status = join_status;
