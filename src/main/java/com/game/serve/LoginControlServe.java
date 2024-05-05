@@ -5,6 +5,7 @@ import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.domain.Mentor;
 import com.game.domain.Student;
+import com.game.utils.JWTUtils;
 import com.game.utils.Result;
 
 import java.util.ArrayList;
@@ -21,13 +22,15 @@ public class LoginControlServe {
         code 0:失败 1:成功
         message 提示消息
      */
-    public Result<User> login(User user){
-        if (user.getU_acc()!=null && user.getU_pwd()!=null &&user.getU_identity()!=null) {
+    public Result<String> login(User user){
+        System.out.println(user);
+        if (user.getU_acc()!=null && user.getU_pwd()!=null ) {
             User user2 = (new UserDao()).querySingle(user);
             if(user2!=null){
                 if(user2.getU_status()==0){
                     user2.setU_pwd(null);
-                    return Result.success(user2);
+                    String token= JWTUtils.encodeJwt(user2);;
+                    return Result.success(token);
                 }else if(user2.getU_status()==1){
                     return Result.fail("用户登录失败,用户已注销",null);
                 }else if(user2.getU_status()==2) {
@@ -43,14 +46,15 @@ public class LoginControlServe {
         }
     }
 
-    public Result<User> administratorLogin(Administrator administrator){
+    public Result<String> administratorLogin(Administrator administrator){
         if(administrator.getA_acc()!=null&&administrator.getA_pwd()!=null){
             List<Administrator> administratorList =(new AdministratorDao()).query(administrator,-1,-1);
             if(!administratorList.isEmpty()){
                 User user =  new User();
                 user.setU_acc("1111");
                 user.setU_name("管理员");
-                return Result.success(user);
+                String token=JWTUtils.encodeJwt(user);
+                return Result.success(token);
             }else {
                 return Result.fail("管理员登录失败,账号或密码错误", null);
             }

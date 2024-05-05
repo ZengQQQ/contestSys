@@ -48,7 +48,8 @@ public class PageBean<T> {
         Integer current=currentPage;
         if (current > this.totalPage){
             current = this.totalPage;
-        } else if (current<1) {
+        }
+        if (current<1) {
             current=1;
         }
         this.currentPage = current;

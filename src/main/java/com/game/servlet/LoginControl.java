@@ -36,12 +36,16 @@ public class LoginControl extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
 
+        System.out.println(paramMap);
         User user = (new User()).mapToClass(paramMap);
         Administrator administrator = new Administrator(null,user.getU_acc(),user.getU_pwd());
 
         LoginControlServe loginControlServe = new LoginControlServe();
         String identity = req.getParameter("identity");
-        Result<User> responseData ;
+        if(identity==null){
+            identity="";
+        }
+        Result<String> responseData ;
         switch (identity){
             case "admin":
                 responseData = loginControlServe.administratorLogin(administrator);
@@ -50,12 +54,14 @@ public class LoginControl extends HttpServlet {
                 responseData = loginControlServe.login(user);
         }
         Gson gson = new Gson();
-        User user1 = responseData.getData();
         resp.setContentType("application/json");
-        String token=JWTUtils.encodeJwt(user1);
-        Result<String> result = Result.success(token);
-        String json2 = gson.toJson(result);
+        String json2 = gson.toJson(responseData);
         resp.getWriter().println(json2);
         resp.getWriter().flush();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req,resp);
     }
 }

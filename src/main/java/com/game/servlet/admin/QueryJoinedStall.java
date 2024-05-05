@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(value = "/admin/queryJoinedStall")
 public class QueryJoinedStall extends HttpServlet {
@@ -28,13 +31,20 @@ public class QueryJoinedStall extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line;
-        try (BufferedReader reader = req.getReader()) {
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-            }
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
+
+        Enumeration<String> parameterNames = req.getParameterNames();
+
+        Map<String, Object> paramMap = new HashMap<>();
+
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            paramMap.put(paramName, paramValue);
         }
+        Integer currentPage =(Integer) paramMap.get("currentPage");
+        User stall = (new User()).mapToClass(paramMap);
         TeamUserMessage chain = new TeamUserMessage();
         Team chain1 = new Team();
         StallTeamMessage chain2 = new StallTeamMessage();
@@ -43,6 +53,18 @@ public class QueryJoinedStall extends HttpServlet {
         String teamType = req.getParameter("teamType");
         String joinStallType = req.getParameter("joinStallType");
         String stallType = req.getParameter("stallType");
+        if(joinType!=null){
+            joinType="";
+        }
+        if(teamType!=null){
+            joinType="";
+        }
+        if(joinStallType!=null){
+            joinType="";
+        }
+        if(stallType!=null){
+            joinType="";
+        }
 
         switch (joinType){
             case "joined":chain.setJoin_status(1);
@@ -83,10 +105,6 @@ public class QueryJoinedStall extends HttpServlet {
             default:
         }
 
-        Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
-        // 将JSON字符串转换为User对象
-        String jsonString = jsonBuilder.toString();
-        User stall = JSON.parseObject(jsonString, User.class);
         Result<PageBean<StallFix>> responseData =query.joinedStallQuery(currentPage,stall,chain,chain1,chain2,target);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");

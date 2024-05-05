@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(value = "/admin/queryStallProjectMessage")
 public class QueryStallProjectMessage extends HttpServlet {
@@ -26,17 +29,21 @@ public class QueryStallProjectMessage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line;
-        try (BufferedReader reader = req.getReader()) {
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-            }
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json;charset=UTF-8");
+
+        Enumeration<String> parameterNames = req.getParameterNames();
+
+        Map<String, Object> paramMap = new HashMap<>();
+
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
+        Integer currentPage = (Integer)paramMap.get("currentPage");
         // 将JSON字符串转换为User对象
-        String jsonString = jsonBuilder.toString();
-        StallProjectMessage stall = JSON.parseObject(jsonString, StallProjectMessage.class);
+        StallProjectMessage stall = new StallProjectMessage ().mapToClass(paramMap);
         Result<PageBean<StallProjectMessageFix>> responseData =query.queryPage(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");

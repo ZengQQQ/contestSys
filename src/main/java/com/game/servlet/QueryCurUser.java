@@ -26,8 +26,16 @@ public class QueryCurUser extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getHeader("token");
-        String jsonString = JWTUtils.decodedJWT(token).getClaim("token").toString();
+        String token = req.getHeader("Authorization");
+        if (token!= null) {
+            // 进行进一步处理，比如解析token等等
+            System.out.println("Authorization Header: " + token);
+        } else {
+            // 如果Authorization头部为空，可以返回错误或者进行其他处理
+            System.out.println("Authorization Header is missing");
+        }
+        String jsonString = JWTUtils.decodedJWT(token).getClaim("token").asString();
+        System.out.println(jsonString);
         User user=JSON.parseObject(jsonString,User.class);
         String json = new Gson().toJson(Result.success(user));
         resp.setContentType("application/json");
