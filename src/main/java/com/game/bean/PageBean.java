@@ -43,6 +43,8 @@ public class PageBean<T> {
     }
 
     public void setCurrentPage(Integer currentPage) {
+        this.optionalPages =new ArrayList<>();
+        this.listPage = new ArrayList<>();
         Integer current=currentPage;
         if (current > this.totalPage){
             current = this.totalPage;
@@ -61,6 +63,9 @@ public class PageBean<T> {
             if (current+diff<=this.totalPage){
                 this.optionalPages.add(current+diff);
                 turn++;
+            }
+            if(current-diff<1&&current+diff>this.totalPage){
+                break;
             }
         }
     }
