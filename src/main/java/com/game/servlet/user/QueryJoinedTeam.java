@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/admin/queryJoinedTeam")
+@WebServlet(value = "/user/queryJoinedTeam")
 public class QueryJoinedTeam extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override

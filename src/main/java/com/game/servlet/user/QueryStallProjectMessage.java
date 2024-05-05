@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/admin/queryStallProjectMessage")
+@WebServlet(value = "/user/queryStallProjectMessage")
 public class QueryStallProjectMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override

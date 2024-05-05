@@ -50,11 +50,10 @@ public class LoginControl extends HttpServlet {
                 responseData = loginControlServe.login(user);
         }
         Gson gson = new Gson();
-        String json = gson.toJson(responseData);
+        User user1 = responseData.getData();
         resp.setContentType("application/json");
-        String token=JWTUtils.encodeJwt(user);
-        Result<String> result = new Result<>();
-        result.setData(token);
+        String token=JWTUtils.encodeJwt(user1);
+        Result<String> result = Result.success(token);
         String json2 = gson.toJson(result);
         resp.getWriter().println(json2);
         resp.getWriter().flush();
