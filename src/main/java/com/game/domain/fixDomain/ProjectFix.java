@@ -19,11 +19,12 @@ public class ProjectFix {
     private Integer p_maxtime;
     private Integer p_resagree;
     private User editor;
+    private Integer p_status;
 
     public ProjectFix() {
     }
 
-    public ProjectFix(Integer p_id, String p_name, String p_info, Level p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree, User editor) {
+    public ProjectFix(Integer p_id, String p_name, String p_info, Level p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree, User editor, Integer p_status) {
         this.p_id = p_id;
         this.p_name = p_name;
         this.p_info = p_info;
@@ -36,5 +37,6 @@ public class ProjectFix {
         this.p_maxtime = p_maxtime;
         this.p_resagree = p_resagree;
         this.editor = editor;
+        this.p_status = p_status;
     }
 }

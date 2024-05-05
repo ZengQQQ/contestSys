@@ -69,9 +69,7 @@ public class UserDao extends BaseDao<User> {
     }
 
     public PageBean<User> queryByPage(Integer currentPage, User object){
-        if(!object.equals(this.model)){
-            initPage(object);
-        }
+        initPage(object);
         List<User> result = null;
         pageBean.setCurrentPage(currentPage);
         result=query(object,pageBean.getBegin(),pageBean.getEnd());
@@ -80,5 +78,10 @@ public class UserDao extends BaseDao<User> {
         }
         pageBean.setListPage(result);
         return pageBean;
+    }
+
+    public static void main(String[] args) {
+        UserDao userDao = new UserDao();
+        userDao.query(new User(),-1,-1);
     }
 }

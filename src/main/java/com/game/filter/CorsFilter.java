@@ -10,7 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
-//@WebFilter("/*") // 这里的 "/*" 表示拦截所有请求
+@WebFilter("/*") // 这里的 "/*" 表示拦截所有请求
 public class CorsFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

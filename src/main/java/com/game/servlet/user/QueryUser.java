@@ -37,6 +37,9 @@ public class QueryUser extends HttpServlet {
         // 将JSON字符串转换为User对象
         String jsonString = jsonBuilder.toString();
         User stall = JSON.parseObject(jsonString, User.class);
+        if(stall ==null){
+            stall = new User();
+        }
         Result<PageBean<User>> responseData =query.queryPage(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");

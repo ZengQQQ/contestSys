@@ -24,12 +24,13 @@ public class Project extends ReflectionUtils {
     private Integer p_maxtime;
     private Integer p_resagree;
     private String u_acc;
+    private Integer p_status;
     private static String table_name="project";
 
     public Project() {
     }
 
-    public Project(Integer p_id, String p_name, String p_info, Level p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree,String u_acc) {
+    public Project(Integer p_id, String p_name, String p_info, Level p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree,String u_acc,Integer p_status) {
         this.p_id = p_id;
         this.p_name = p_name;
         this.p_info = p_info;
@@ -42,6 +43,7 @@ public class Project extends ReflectionUtils {
         this.p_maxtime = p_maxtime;
         this.p_resagree = p_resagree;
         this.u_acc = u_acc;
+        this.p_status=p_status;
     }
 
     public Project(Project p){
@@ -57,6 +59,7 @@ public class Project extends ReflectionUtils {
         this.p_maxtime=p.getP_maxtime();
         this.p_resagree=p.getP_resagree();
         this.u_acc=p.getU_acc();
+        this.p_status=p.getP_status();
     }
     public Project mapToClass(Map<String, Object> map) {
         Class<?> clazz = this.getClass();

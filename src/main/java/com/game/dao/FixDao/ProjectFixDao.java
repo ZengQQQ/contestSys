@@ -28,7 +28,7 @@ public class ProjectFixDao {
         User u = new User();
         u.setU_acc(ele.getU_acc());
         User editor = userDao.querySingle(u);
-        return new ProjectFix(ele.getP_id(),ele.getP_name(),ele.getP_info(),ele.getP_level(),ele.getP_st(),ele.getP_ddl(),ele.getP_url(),ele.getP_img(),ele.getP_cc(),ele.getP_maxtime(),ele.getP_resagree(),editor);
+        return new ProjectFix(ele.getP_id(),ele.getP_name(),ele.getP_info(),ele.getP_level(),ele.getP_st(),ele.getP_ddl(),ele.getP_url(),ele.getP_img(),ele.getP_cc(),ele.getP_maxtime(),ele.getP_resagree(),editor,ele.getP_status());
     }
     public PageBean<ProjectFix> queryByPage(Integer currentPage, Project object){
         if(!object.equals(this.model)){

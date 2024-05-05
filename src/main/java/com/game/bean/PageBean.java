@@ -33,7 +33,9 @@ public class PageBean<T> {
         this.currentPage=1;
     }
 
+
     public void setTotalSize(Integer totalSize) {
+        this.pageSize=16;
         this.totalSize = totalSize;
         this.totalPage = (int) Math.ceil((double)totalSize/pageSize);
         this.currentPage=1;
