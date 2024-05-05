@@ -79,4 +79,6 @@ public class User extends ReflectionUtils {
     public Map<String, Object> toMap(){
         return mapFields(this);
     }
+
+    public Map<String,String> toStringMap(){return mapFieldsString(this);}
 }

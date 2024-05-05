@@ -1,10 +1,10 @@
-package com.game.servlet.user;
+package com.game.servlet.admin;
 
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.Team;
-import com.game.domain.fixDomain.TeamFix;
+import com.game.domain.Student;
+import com.game.domain.User;
 import com.game.serve.QueryControlServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/user/queryTeam")
-public class QueryTeam extends HttpServlet {
+@WebServlet(value = "/admin/queryStudent")
+public class QueryStudent extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,8 +37,8 @@ public class QueryTeam extends HttpServlet {
         Integer currentPage = Integer.valueOf(req.getParameter("currentPage"));
         // 将JSON字符串转换为User对象
         String jsonString = jsonBuilder.toString();
-        Team stall = JSON.parseObject(jsonString, Team.class);
-        Result<PageBean<TeamFix>> responseData =query.queryPage(currentPage,stall);
+        Student stall = JSON.parseObject(jsonString, Student.class);
+        Result<PageBean<Student>> responseData =query.queryPage(currentPage,stall);
         String json = new Gson().toJson(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

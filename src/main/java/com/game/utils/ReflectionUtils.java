@@ -38,6 +38,27 @@ public class ReflectionUtils {
         return resultMap;
     }
 
+    public static <T> Map<String,String> mapFieldsString(T object) {
+        Map<String, String> resultMap = new HashMap<>();
+        Class<?> clazz = object.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                field.setAccessible(true); // 使得 private 字段可访问
+                try {
+                    Object value = field.get(object); // 获取字段的值
+                    if (value != null) {
+                        resultMap.put(field.getName(), value.toString()); // 将字段名和值映射到Map中
+                    }
+                } catch (IllegalAccessException e) {
+                    // 处理异常
+                    e.printStackTrace();
+                }
+            }
+        }
+        return resultMap;
+    }
+
     /**
      * 用于建立连接查询关系
      * @param object

@@ -1,9 +1,11 @@
 package com.game.utils;
 
+import com.alibaba.fastjson2.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.game.domain.User;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -60,6 +62,23 @@ public class JWTUtils {
                 .sign(Algorithm.HMAC256(SING));
     }
 
+    public static String encodeJwt(User user) {
+
+        Calendar instance = Calendar.getInstance();
+        // 默认1天过期
+        instance.add(Calendar.DATE, 1);
+
+        //创建jwt builder
+        JWTCreator.Builder builder = JWT.create();
+        String token=JSON.toJSONString(user);
+        // payload
+        Map<String, String> map = new HashMap<>();
+        map.put("token",token);
+        map.forEach(builder::withClaim);
+        return builder.withExpiresAt(instance.getTime())  //指定令牌过期时间
+                .sign(Algorithm.HMAC256(SING));
+    }
+
 
 
 
@@ -92,12 +111,6 @@ public class JWTUtils {
 
 
 
-    /**
-     * 验证token 是否为管理员
-     * @param decodedJWT 解码后的token
-     * @return 是管理员返回true，否则返回false
-     */
-
     public static boolean verifyAdmin(DecodedJWT decodedJWT) {
 
         if (decodedJWT == null) {
@@ -114,7 +127,7 @@ public class JWTUtils {
      * @param decodedJWT 解码后的token
      * @return 是用户返回true，否则返回false
      */
-    public static boolean verifyUser(DecodedJWT decodedJWT) {
+    public static boolean verifyMentor(DecodedJWT decodedJWT) {
 
         // 检查签名
         if (decodedJWT == null) {

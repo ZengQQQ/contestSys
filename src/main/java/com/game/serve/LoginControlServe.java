@@ -21,37 +21,41 @@ public class LoginControlServe {
         code 0:失败 1:成功
         message 提示消息
      */
-    public Result<String> login(User user){
+    public Result<User> login(User user){
         if (user.getU_acc()!=null && user.getU_pwd()!=null &&user.getU_identity()!=null) {
             User user2 = (new UserDao()).querySingle(user);
             if(user2!=null){
                 if(user2.getU_status()==0){
-                    return Result.success("用户登录成功");
+                    user2.setU_pwd(null);
+                    return Result.success(user2);
                 }else if(user2.getU_status()==1){
-                    return Result.fail("用户登录失败","用户已注销");
+                    return Result.fail("用户登录失败,用户已注销",null);
                 }else if(user2.getU_status()==2) {
-                    return Result.fail("用户登录失败", "用户违规");
+                    return Result.fail("用户登录失败,用户违规", null);
                 }else {
-                    return Result.fail("用户登录失败", "用户封禁");
+                    return Result.fail("用户登录失败,用户封禁", null);
                 }
             }else{
-                return Result.fail("用户登录失败", "账号或密码错误");
+                return Result.fail("用户登录失败,账号或密码错误", null);
             }
         }else {
-            return Result.fail("用户登录失败", "输入内容异常");
+            return Result.fail("用户登录失败,输入内容异常", null);
         }
     }
 
-    public Result<String> administratorLogin(Administrator administrator){
+    public Result<User> administratorLogin(Administrator administrator){
         if(administrator.getA_acc()!=null&&administrator.getA_pwd()!=null){
             List<Administrator> administratorList =(new AdministratorDao()).query(administrator,-1,-1);
             if(!administratorList.isEmpty()){
-                return Result.success("管理员登录成功");
+                User user =  new User();
+                user.setU_acc("1111");
+                user.setU_name("管理员");
+                return Result.success(user);
             }else {
-                return Result.fail("管理员登录失败", "账号或密码错误");
+                return Result.fail("管理员登录失败,账号或密码错误", null);
             }
         }else {
-            return Result.fail("管理员登录失败", "输入内容异常");
+            return Result.fail("管理员登录失败,输入内容异常", null);
         }
     }
 

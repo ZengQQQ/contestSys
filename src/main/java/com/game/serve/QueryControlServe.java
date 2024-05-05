@@ -2,6 +2,8 @@ package com.game.serve;
 
 import com.game.bean.PageBean;
 import com.game.dao.FixDao.*;
+import com.game.dao.MentorDao;
+import com.game.dao.StudentDao;
 import com.game.dao.UserDao;
 import com.game.domain.*;
 import com.game.domain.fixDomain.*;
@@ -12,6 +14,10 @@ public class QueryControlServe {
     StallMentorMessageFixDao stallMentorMessageFixDao = new StallMentorMessageFixDao();
     StallTeamMessageFixDao stallTeamMessageFixDao = new StallTeamMessageFixDao();
     StallProjectMessageFixDao stallProjectMessageFixDao = new StallProjectMessageFixDao();
+
+    StudentDao studentDao = new StudentDao();
+
+    MentorDao mentorDao = new MentorDao();
 
     ProjectFixDao projectFixDao = new ProjectFixDao();
 
@@ -65,11 +71,11 @@ public class QueryControlServe {
         return Result.success(data);
     }
 
-    public Result<PageBean<TeamFix>> joinedTeamQuery(Integer currentPage, User stall){
+    public Result<PageBean<TeamFix>> joinedTeamQuery(Integer currentPage, User stall,TeamUserMessage chain,Team taget){
         if(currentPage ==null){
             currentPage=1;
         }
-        PageBean<TeamFix> data = teamFixDao.queryByPage(currentPage,stall);
+        PageBean<TeamFix> data = teamFixDao.queryByPage(currentPage,stall,chain,taget);
 
         if(data==null||data.getListPage()==null){
             return Result.fail("查询失败",data);
@@ -89,11 +95,11 @@ public class QueryControlServe {
         return Result.success(data);
     }
 
-    public Result<PageBean<StallFix>> joinedStallQuery(Integer currentPage,User stall){
+    public Result<PageBean<StallFix>> joinedStallQuery(Integer currentPage,User stall,TeamUserMessage chain,Team chain1,StallTeamMessage chain2,Stall target){
         if(currentPage ==null){
             currentPage=1;
         }
-        PageBean<StallFix> data = stallFixDao.queryByPage(currentPage,stall);
+        PageBean<StallFix> data = stallFixDao.queryByPage(currentPage,stall,chain,chain1,chain2,target);
 
         if(data==null||data.getListPage()==null){
             return Result.fail("查询失败",data);
@@ -129,6 +135,30 @@ public class QueryControlServe {
             currentPage=1;
         }
         PageBean<StallProjectMessageFix> data = stallProjectMessageFixDao.queryByPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<Student>> queryPage(Integer currentPage,Student stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<Student> data = studentDao.queryByPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<Mentor>> queryPage(Integer currentPage,Mentor stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<Mentor> data = mentorDao.queryByPage(currentPage,stall);
 
         if(data==null||data.getListPage()==null){
             return Result.fail("查询失败",data);

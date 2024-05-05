@@ -3,6 +3,7 @@ package com.game.servlet;
 import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.serve.LoginControlServe;
+import com.game.utils.JWTUtils;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -40,17 +41,21 @@ public class LoginControl extends HttpServlet {
 
         LoginControlServe loginControlServe = new LoginControlServe();
         String identity = req.getParameter("identity");
-        Result<String> responseData = new Result<>();
-
-        responseData = loginControlServe.login(user);
-
-        String json = new Gson().toJson(responseData);
+        Result<User> responseData ;
+        switch (identity){
+            case "admin":
+                responseData = loginControlServe.administratorLogin(administrator);
+                break;
+            default:
+                responseData = loginControlServe.login(user);
+        }
+        Gson gson = new Gson();
+        User user1 = responseData.getData();
         resp.setContentType("application/json");
-        resp.getWriter().write(json);
+        String token=JWTUtils.encodeJwt(user1);
+        Result<String> result = Result.success(token);
+        String json2 = gson.toJson(result);
+        resp.getWriter().println(json2);
         resp.getWriter().flush();
     }
-
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
-//    }
 }

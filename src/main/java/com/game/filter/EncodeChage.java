@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class EncodeChage implements Filter {
 
     @Override

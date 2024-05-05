@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet(value = "/admin/queryStallMentorMessage")
+@WebServlet(value = "/user/queryStallMentorMessage")
 public class QueryStallMentorMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
