@@ -83,7 +83,7 @@ public class ProjectDao extends BaseDao<Project> {
         competitionList = super.query(competition, current, size);
         if (competitionList.isEmpty()) {
             System.out.println("查询项目失败");
-            return null;
+            return competitionList;
         } else {
             System.out.println("查询项目成功！");
             for (Project c : competitionList) {

@@ -21,7 +21,7 @@ public class ProjectFixDao {
     public void initPage(Project object){
         this.model=object;
         List<Project> total =new ArrayList<>();
-         total =projectDao.query(object,-1,-1);
+        total =projectDao.query(object,-1,-1);
         pageBean.setTotalSize(total.size());
     }
 
@@ -32,6 +32,8 @@ public class ProjectFixDao {
         return new ProjectFix(ele.getP_id(),ele.getP_name(),ele.getP_info(),ele.getP_level(),ele.getP_st(),ele.getP_ddl(),ele.getP_url(),ele.getP_img(),ele.getP_cc(),ele.getP_maxtime(),ele.getP_resagree(),editor,ele.getP_status());
     }
     public PageBean<ProjectFix> queryByPage(Integer currentPage, Project object){
+        List<Project> projects = projectDao.query(object,-1,-1);
+        pageBean.setTotalSize(projects.size());
         if(!object.equals(this.model)){
             initPage(object);
         }

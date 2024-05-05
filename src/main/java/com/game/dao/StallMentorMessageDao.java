@@ -83,7 +83,7 @@ public class StallMentorMessageDao extends BaseDao<StallMentorMessage> {
         List<StallMentorMessage>  StallMentorMessageList = super.query(StallMentorMessage.class, map, current, size);
         if (StallMentorMessageList.isEmpty()) {
             System.out.println("查询StallMentorMessage失败");
-            return null;
+            return StallMentorMessageList;
         } else {
             System.out.println("查询StallMentorMessage成功！");
             for (StallMentorMessage c : StallMentorMessageList) {

@@ -84,7 +84,7 @@ public class StallTeamMessageDao extends BaseDao<StallTeamMessage> {
         List<StallTeamMessage>  StallTeamMessageList = super.query(StallTeamMessage.class, map, current, size);
         if (StallTeamMessageList.isEmpty()) {
             System.out.println("查询StallTeamMessage失败");
-            return null;
+            return StallTeamMessageList;
         } else {
             System.out.println("查询StallTeamMessage成功！");
             for (StallTeamMessage c : StallTeamMessageList) {

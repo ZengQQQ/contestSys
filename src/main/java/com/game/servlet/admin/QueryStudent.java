@@ -43,7 +43,12 @@ public class QueryStudent extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+        Integer currentPage;
+        if(paramMap.get("currentPage")==null){
+            currentPage =1;
+        }else {
+            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
+        }
         // 将JSON字符串转换为User对象
         Student stall = new Student ().mapToClass(paramMap);
         Result<PageBean<Student>> responseData =query.queryPage(currentPage,stall);

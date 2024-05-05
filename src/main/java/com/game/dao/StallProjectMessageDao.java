@@ -84,7 +84,7 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
         List<StallProjectMessage>  StallTaskMessageList = super.query(StallProjectMessage.class, map, current, size);
         if (StallTaskMessageList.isEmpty()) {
             System.out.println("查询StallTaskMessage失败");
-            return null;
+            return StallTaskMessageList;
         } else {
             System.out.println("查询StallTaskMessage成功！");
             for (StallProjectMessage c : StallTaskMessageList) {
