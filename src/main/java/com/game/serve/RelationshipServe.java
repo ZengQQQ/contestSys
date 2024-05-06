@@ -69,9 +69,10 @@ public class RelationshipServe {
     public Result<String> updateTeamRelation(TeamUserMessage teamUserMessage){
         TeamUserMessage tar = new TeamUserMessage();
         tar.setT_id(teamUserMessage.getT_id());
+        tar.setU_acc(teamUserMessage.getU_acc());
         List<TeamUserMessage> resList = teamUserMessageDao.query(tar,-1,-1);
         if (resList.isEmpty()){
-            return Result.fail("更新房间任务关系失败","没有该房间任务关系");
+            return Result.fail("更新学生队伍关系失败","没有该学生队伍关系");
         }
         User user = new User();
         user.setU_acc(teamUserMessage.getU_acc());
@@ -130,7 +131,8 @@ public class RelationshipServe {
 
     public Result<String> updateStallProjectRelation(StallProjectMessage stallProjectMessage){
         StallProjectMessage tar = new StallProjectMessage();
-        tar.setSpm_id(stallProjectMessage.getSpm_id());
+        tar.setSt_id(stallProjectMessage.getSt_id());
+        tar.setP_id(stallProjectMessage.getP_id());
         List<StallProjectMessage> resList = stallProjectMessageDao.query(tar,-1,-1);
         if (resList.isEmpty()){
             return Result.fail("更新房间任务关系失败","没有该房间任务关系");
@@ -193,7 +195,8 @@ public class RelationshipServe {
 
     public Result<String> updateStallTeamRelation(StallTeamMessage stallTeamMessage){
         StallTeamMessage tar = new StallTeamMessage();
-        tar.setStm_id(stallTeamMessage.getStm_id());
+        tar.setSt_id(stallTeamMessage.getSt_id());
+        tar.setT_id(stallTeamMessage.getT_id());
         List<StallTeamMessage> resList = stallTeamMessageDao.query(tar,-1,-1);
         if (resList.isEmpty()){
             return Result.fail("更新房间队伍关系失败","没有该房间队伍关系");
@@ -255,7 +258,8 @@ public class RelationshipServe {
 
     public Result<String> updateStallMentorRelation(StallMentorMessage stallMentorMessage){
         StallMentorMessage tar = new StallMentorMessage();
-        tar.setSmm_id(stallMentorMessage.getSmm_id());
+        tar.setSt_id(stallMentorMessage.getSt_id());
+        tar.setU_acc(stallMentorMessage.getU_acc());
         List<StallMentorMessage> resList = stallMentorMessageDao.query(tar,-1,-1);
         if (resList.isEmpty()){
             return Result.fail("更新房间导师关系失败","没有该房间导师关系");

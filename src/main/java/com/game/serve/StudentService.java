@@ -16,13 +16,13 @@ public class StudentService {
         old.setS_acc(Student.getS_acc());
         List<Student> exited = studentDao.query(old,-1,-1);
         if (!exited.isEmpty()){
-            return Result.fail("添加失败,已存在","");
+            return Result.fail("添加失败","已存在该学生");
         }
         boolean inserted = studentDao.insert(Student);
         if (inserted){
-            return Result.success("");
+            return Result.success("添加成功");
         }
-        return Result.fail("更新失败","");
+        return Result.fail("添加失败","添加失败");
     }
 
     public Result<String> update(Student student) {
@@ -30,7 +30,7 @@ public class StudentService {
         old.setS_id(student.getS_id());
         List<Student> exited = studentDao.query(old,-1,-1);
         if (exited.isEmpty()){
-            return Result.fail("更新失败，没有该项目","");
+            return Result.fail("更新失败，没有该学生","");
         }
         int updated = studentDao.update(student,old);
         if (updated == 0){
@@ -42,7 +42,7 @@ public class StudentService {
     public Result<String> delete(Student student) {
         List<Student> exited = studentDao.query(student,-1,-1);
         if (exited.isEmpty()){
-            return Result.fail("删除失败，没有该项目",null);
+            return Result.fail("删除失败，没有该学生",null);
         }
         int deleted = studentDao.delete(student);
         if (deleted == 0){
