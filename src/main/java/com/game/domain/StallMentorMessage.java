@@ -63,6 +63,13 @@ public class StallMentorMessage extends ReflectionUtils {
             try {
                 Field field = clazz.getDeclaredField(key);
                 field.setAccessible(true); // 设置可访问私有属性
+                Class<?> fieldType = field.getType();
+                // 根据字段类型进行适当的类型转换
+                if (fieldType.equals(Integer.class) && value instanceof String) {
+                    value = Integer.parseInt((String) value);
+                } else if (fieldType.equals(String.class) && !(value instanceof String)) {
+                    value = String.valueOf(value);
+                }
                 field.set(this, value);
             } catch (NoSuchFieldException e) {
                 // 如果Map中的key不存在对应的类属性，可以选择忽略或者进行其他处理

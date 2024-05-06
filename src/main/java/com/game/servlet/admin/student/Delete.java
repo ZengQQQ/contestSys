@@ -1,25 +1,24 @@
-package com.game.servlet.admin;
+package com.game.servlet.admin.student;
 
-import com.game.domain.StallTeamMessage;
-import com.game.domain.TeamUserMessage;
-import com.game.serve.RelationshipServe;
+import com.game.domain.Student;
+import com.game.serve.StudentService;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/RelationTeamUserInsert")
-public class RelationTeamUserInsert extends HttpServlet {
-    RelationshipServe relation = new RelationshipServe();
+
+@WebServlet(value = "/admin/student/delete")
+public class Delete extends HttpServlet {
+    public static final StudentService studentService = new StudentService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -34,12 +33,9 @@ public class RelationTeamUserInsert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        TeamUserMessage teamUserMessage =new TeamUserMessage().mapToClass(paramMap);
-
-        Result<String> result = relation.insertTeamRelation(teamUserMessage);
-        String json = new Gson().toJson(result);
-        resp.setContentType("application/json");
-        resp.getWriter().write(json);
-        resp.getWriter().flush();
+        // 将JSON字符串转换为User对象
+        Student student = new Student().mapToClass(paramMap);
+        Result<String> result = studentService.delete(student);
+        resp.getWriter().write(Result.toJson(result));
     }
 }

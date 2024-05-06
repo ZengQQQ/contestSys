@@ -1,5 +1,6 @@
 package com.game.servlet.admin;
 
+import com.game.domain.StallMentorMessage;
 import com.game.serve.RelationshipServe;
 import com.game.utils.Result;
 import com.google.gson.Gson;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet(value = "/admin/RelationStallMentorInsert")
 public class RelationStallMentorInsert extends HttpServlet {
@@ -22,15 +26,16 @@ public class RelationStallMentorInsert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder jsonBuilder = new StringBuilder();
-        String line;
-        try (BufferedReader reader = req.getReader()) {
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line);
-            }
+        Enumeration<String> parameterNames = req.getParameterNames();
+        Map<String, Object> paramMap = new HashMap<>();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            paramMap.put(paramName, paramValue);
         }
-        String jsonString = jsonBuilder.toString();
-        Result<String> result = relation.insertStallMentorRelation(jsonString);
+        StallMentorMessage stallMentorMessage =new StallMentorMessage().mapToClass(paramMap);
+
+        Result<String> result = relation.insertStallMentorRelation(stallMentorMessage);
         String json = new Gson().toJson(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

@@ -17,7 +17,6 @@ public class RelationshipServe {
     TeamUserMessageDao teamUserMessageDao = new TeamUserMessageDao();
     StallDao stallDao = new StallDao();
     ProjectDao projectDao = new ProjectDao();
-    MentorDao mentorDao = new MentorDao();
     UserDao userDao = new UserDao();
     TeamDao teamDao = new TeamDao();
     StallProjectMessageDao stallProjectMessageDao = new StallProjectMessageDao();
@@ -25,9 +24,7 @@ public class RelationshipServe {
     StallMentorMessageDao stallMentorMessageDao = new StallMentorMessageDao();
 
 
-    public Result<String> insertTeamRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
+    public Result<String> insertTeamRelation(TeamUserMessage teamUserMessage){
         if (teamUserMessage.getT_id()==null||teamUserMessage.getU_acc()==null||teamUserMessage.getTsm_dct()==null){
             return Result.fail("添加关系失败","缺少参数");
         } else if (teamUserMessage.getTsm_dct() == 0){
@@ -69,9 +66,13 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> updateTeamRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString,TeamUserMessage.class);
+    public Result<String> updateTeamRelation(TeamUserMessage teamUserMessage){
+        TeamUserMessage tar = new TeamUserMessage();
+        tar.setT_id(teamUserMessage.getT_id());
+        List<TeamUserMessage> resList = teamUserMessageDao.query(tar,-1,-1);
+        if (resList.isEmpty()){
+            return Result.fail("更新房间任务关系失败","没有该房间任务关系");
+        }
         User user = new User();
         user.setU_acc(teamUserMessage.getU_acc());
         Team team = new Team();
@@ -91,8 +92,6 @@ public class RelationshipServe {
                 return Result.fail("更新关系失败", "队伍状态异常");
             }
         }
-        TeamUserMessage tar = new TeamUserMessage();
-        tar.setT_id(teamUserMessage.getT_id());
         int result=teamUserMessageDao.update(teamUserMessage,tar);
         if(result == 0){
             return Result.fail("更新关系失败","队伍关系更新失败");
@@ -101,9 +100,7 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> insertStallProjectRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallProjectMessage stallProjectMessage = JSON.parseObject(jsonString,StallProjectMessage.class);
+    public Result<String> insertStallProjectRelation(StallProjectMessage stallProjectMessage){
         Project project = new Project();
         Stall stall = new Stall();
         project.setP_id(stallProjectMessage.getP_id());
@@ -131,16 +128,13 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> updateStallProjectRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallProjectMessage stallProjectMessage = JSON.parseObject(jsonString,StallProjectMessage.class);
-        List<StallProjectMessage> resList = stallProjectMessageDao.query(stallProjectMessage,-1,-1);
-        for (StallProjectMessage res : resList){
-            if (res.getSt_id() == null){
-                return Result.fail("更新房间任务关系失败","没有该房间任务关系");
-            }
-        }
+    public Result<String> updateStallProjectRelation(StallProjectMessage stallProjectMessage){
         StallProjectMessage tar = new StallProjectMessage();
+        tar.setSpm_id(stallProjectMessage.getSpm_id());
+        List<StallProjectMessage> resList = stallProjectMessageDao.query(tar,-1,-1);
+        if (resList.isEmpty()){
+            return Result.fail("更新房间任务关系失败","没有该房间任务关系");
+        }
         Stall stall = new Stall();
         Project project = new Project();
         project.setP_id(stallProjectMessage.getP_id());
@@ -169,9 +163,7 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> insertStallTeamRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallTeamMessage stallTeamMessage = JSON.parseObject(jsonString,StallTeamMessage.class);
+    public Result<String> insertStallTeamRelation(StallTeamMessage stallTeamMessage){
         Team team = new Team();
         Stall stall = new Stall();
         team.setT_id(stallTeamMessage.getT_id());
@@ -199,17 +191,13 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> updateStallTeamRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallTeamMessage stallTeamMessage = JSON.parseObject(jsonString,StallTeamMessage.class);
-        List<StallTeamMessage> resList = stallTeamMessageDao.query(stallTeamMessage,-1,-1);
-        for (StallTeamMessage res : resList){
-            if (res.getSt_id() == null){
-                return Result.fail("更新房间队伍关系失败","没有该房间队伍关系");
-            }
-        }
+    public Result<String> updateStallTeamRelation(StallTeamMessage stallTeamMessage){
         StallTeamMessage tar = new StallTeamMessage();
         tar.setStm_id(stallTeamMessage.getStm_id());
+        List<StallTeamMessage> resList = stallTeamMessageDao.query(tar,-1,-1);
+        if (resList.isEmpty()){
+            return Result.fail("更新房间队伍关系失败","没有该房间队伍关系");
+        }
         Team team = new Team();
         Stall stall = new Stall();
         team.setT_id(stallTeamMessage.getT_id());
@@ -237,9 +225,7 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> insertStallMentorRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
+    public Result<String> insertStallMentorRelation(StallMentorMessage stallMentorMessage){
         User user = new User();
         Stall stall = new Stall();
         user.setU_acc(stallMentorMessage.getU_acc());
@@ -267,17 +253,13 @@ public class RelationshipServe {
     }
 
 
-    public Result<String> updateStallMentorRelation(Object ele){
-        String jsonString = JSON.toJSONString(ele);
-        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString,StallMentorMessage.class);
-        List<StallMentorMessage> resList = stallMentorMessageDao.query(stallMentorMessage,-1,-1);
-        for (StallMentorMessage res : resList){
-            if (res.getSt_id() == null){
-                return Result.fail("更新房间导师关系失败","没有该房间导师关系");
-            }
-        }
+    public Result<String> updateStallMentorRelation(StallMentorMessage stallMentorMessage){
         StallMentorMessage tar = new StallMentorMessage();
         tar.setSmm_id(stallMentorMessage.getSmm_id());
+        List<StallMentorMessage> resList = stallMentorMessageDao.query(tar,-1,-1);
+        if (resList.isEmpty()){
+            return Result.fail("更新房间导师关系失败","没有该房间导师关系");
+        }
         User user = new User();
         Stall stall = new Stall();
         user.setU_acc(stallMentorMessage.getU_acc());

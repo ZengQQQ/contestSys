@@ -1,25 +1,21 @@
-package com.game.servlet.admin;
+package com.game.servlet.admin.mentor;
 
-import com.game.domain.StallTeamMessage;
-import com.game.domain.TeamUserMessage;
-import com.game.serve.RelationshipServe;
+import com.game.domain.Mentor;
+import com.game.serve.MentorServe;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/RelationTeamUserInsert")
-public class RelationTeamUserInsert extends HttpServlet {
-    RelationshipServe relation = new RelationshipServe();
+public class Delete extends HttpServlet {
+    public static final MentorServe mentorServe = new MentorServe();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -34,12 +30,10 @@ public class RelationTeamUserInsert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        TeamUserMessage teamUserMessage =new TeamUserMessage().mapToClass(paramMap);
+        // 将JSON字符串转换为User对象
+        Mentor mentor = new Mentor().mapToClass(paramMap);
 
-        Result<String> result = relation.insertTeamRelation(teamUserMessage);
-        String json = new Gson().toJson(result);
-        resp.setContentType("application/json");
-        resp.getWriter().write(json);
-        resp.getWriter().flush();
+        Result<String> result = mentorServe.delete(mentor);
+        resp.getWriter().write(Result.toJson(result));
     }
 }

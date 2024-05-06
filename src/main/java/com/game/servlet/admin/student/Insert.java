@@ -1,28 +1,25 @@
-package com.game.servlet.user;
+package com.game.servlet.admin.student;
 
-import com.alibaba.fastjson2.JSON;
-import com.game.bean.PageBean;
 import com.game.domain.Project;
-import com.game.domain.StallTeamMessage;
-import com.game.domain.fixDomain.ProjectFix;
-import com.game.serve.QueryControlServe;
+
+import com.game.domain.Student;
+import com.game.serve.StudentService;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/queryProject")
-public class QueryProject extends HttpServlet {
-    QueryControlServe query = new QueryControlServe();
+@WebServlet(value = "/admin/student/insert")
+public class Insert extends HttpServlet {
+    StudentService studentService = new StudentService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -30,8 +27,7 @@ public class QueryProject extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json;charset=UTF-8");
+
 
         Enumeration<String> parameterNames = req.getParameterNames();
 
@@ -42,18 +38,11 @@ public class QueryProject extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
+//        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
         // 将JSON字符串转换为User对象
-        Project stall = new Project ().mapToClass(paramMap);
-        Result<PageBean<ProjectFix>> responseData =query.queryPage(currentPage,stall);
-        String json = JSON.toJSONString(responseData);
-        resp.setContentType("application/json");
-        resp.getWriter().write(json);
-        resp.getWriter().flush();
+        // todo Can not set java.lang.Integer field com.game.domain.Student.s_status to java.lang.String
+        Student student = new Student().mapToClass(paramMap);
+        Result<String> result = studentService.insert(student);
+        resp.getWriter().write(Result.toJson(result));
     }
 }
