@@ -1,8 +1,9 @@
 package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
-import com.game.domain.TeamUserMessage;
+import com.game.domain.*;
 import com.game.serve.RelationshipServe;
+import com.game.serve.StallService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -15,9 +16,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/TeamMessageSend")
+@WebServlet(value = "/user/ProjectTeamMessageSend")
 public class ProjectTeamMessageSend extends HttpServlet {
-    RelationshipServe relation = new RelationshipServe();
+    StallService relation = new StallService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,14 +36,9 @@ public class ProjectTeamMessageSend extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString, TeamUserMessage.class);
-        TeamUserMessage tar = new TeamUserMessage();
-        tar.setT_id(teamUserMessage.getT_id());
-        tar.setU_acc(teamUserMessage.getU_acc());
-        tar.setTsm_info(teamUserMessage.getTsm_info());
-        tar.setTsm_dct(teamUserMessage.getTsm_dct());
+        TeamProjectMessage teamProjectMessage = new TeamProjectMessage();
 
-        Result<String> result = relation.insertTeamRelation(tar);
+        Result<String> result = relation.insert(teamProjectMessage);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
