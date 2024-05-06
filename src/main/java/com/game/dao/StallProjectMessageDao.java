@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
     public StallProjectMessageDao() {
-        super("stall_task_message");
+        super("stall_project_message");
     }
 
     private StallProjectMessage model;

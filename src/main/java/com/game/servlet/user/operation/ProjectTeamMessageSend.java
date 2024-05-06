@@ -36,9 +36,13 @@ public class ProjectTeamMessageSend extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        TeamProjectMessage teamProjectMessage = new TeamProjectMessage();
+        TeamProjectMessage teamProjectMessage = JSON.parseObject(jsonString, TeamProjectMessage.class);
+        TeamProjectMessage tar = new TeamProjectMessage();
+        tar.setT_id(teamProjectMessage.getT_id());
+        tar.setP_id(teamProjectMessage.getP_id());
+        tar.setTp_dict(teamProjectMessage.getTp_dict());
 
-        Result<String> result = relation.insert(teamProjectMessage);
+        Result<String> result = relation.insert(tar);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
