@@ -1,9 +1,11 @@
 package com.game.servlet.admin;
 
+import com.game.domain.StallMentorMessage;
 import com.game.domain.StallTeamMessage;
 import com.game.serve.RelationshipServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
-import com.google.gson.Gson;
+import com.alibaba.fastjson2.JSON;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,10 +35,11 @@ public class RelationStallTeamInsert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        StallTeamMessage stallTeamMessage =new StallTeamMessage().mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        StallTeamMessage stallTeamMessage = JSON.parseObject(jsonString, StallTeamMessage.class);
 
         Result<String> result = relation.insertStallTeamRelation(stallTeamMessage);
-        String json = new Gson().toJson(result);
+        String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

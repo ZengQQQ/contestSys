@@ -2,8 +2,9 @@ package com.game.servlet.admin;
 
 import com.game.domain.StallMentorMessage;
 import com.game.serve.RelationshipServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
-import com.google.gson.Gson;
+import com.alibaba.fastjson2.JSON;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,10 +33,13 @@ public class RelationStallMentorUpdate extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        StallMentorMessage stallMentorMessage =new StallMentorMessage().mapToClass(paramMap);
+
+        String jsonString = JSON.toJSONString(paramMap);
+        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString, StallMentorMessage.class);
+
 
         Result<String> result = relation.updateStallMentorRelation(stallMentorMessage);
-        String json = new Gson().toJson(result);
+        String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

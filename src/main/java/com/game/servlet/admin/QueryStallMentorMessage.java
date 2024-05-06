@@ -5,6 +5,7 @@ import com.game.bean.PageBean;
 import com.game.domain.StallMentorMessage;
 import com.game.domain.fixDomain.StallMentorMessageFix;
 import com.game.serve.QueryControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -41,14 +42,11 @@ public class QueryStallMentorMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
+        String jsonString = JSON.toJSONString(paramMap);
+        StallMentorMessage stall = JSON.parseObject(jsonString, StallMentorMessage.class);
+        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+
         // 将JSON字符串转换为User对象
-        StallMentorMessage stall = new StallMentorMessage ().mapToClass(paramMap);
         Result<PageBean<StallMentorMessageFix>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");

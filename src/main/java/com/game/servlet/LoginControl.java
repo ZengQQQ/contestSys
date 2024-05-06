@@ -1,8 +1,10 @@
 package com.game.servlet;
 
+import com.alibaba.fastjson2.JSON;
 import com.game.domain.Administrator;
 import com.game.domain.User;
 import com.game.serve.LoginControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.JWTUtils;
 import com.game.utils.Result;
 import com.google.gson.Gson;
@@ -35,9 +37,9 @@ public class LoginControl extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
+        String jsonString = JSON.toJSONString(paramMap);
+        User user = JSON.parseObject(jsonString, User.class);
 
-        System.out.println(paramMap);
-        User user = (new User()).mapToClass(paramMap);
         Administrator administrator = new Administrator(null,user.getU_acc(),user.getU_pwd());
 
         LoginControlServe loginControlServe = new LoginControlServe();
@@ -55,7 +57,7 @@ public class LoginControl extends HttpServlet {
         }
         Gson gson = new Gson();
         resp.setContentType("application/json");
-        String json2 = gson.toJson(responseData);
+        String json2 = JSON.toJSONString(responseData);
         resp.getWriter().println(json2);
         resp.getWriter().flush();
     }

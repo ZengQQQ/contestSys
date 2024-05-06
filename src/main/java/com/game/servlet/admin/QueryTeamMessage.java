@@ -3,11 +3,13 @@ package com.game.servlet.admin;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.Team;
 import com.game.domain.TeamUserMessage;
 import com.game.domain.fixDomain.TeamFix;
 import com.game.domain.fixDomain.TeamMessageFix;
 import com.game.serve.QueryControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -44,14 +46,11 @@ public class QueryTeamMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
+        String jsonString = JSON.toJSONString(paramMap);
+        TeamUserMessage stall = JSON.parseObject(jsonString, TeamUserMessage.class);
+        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+
         // 将JSON字符串转换为User对象
-        TeamUserMessage stall = new TeamUserMessage().mapToClass(paramMap);
         Result<PageBean<TeamMessageFix>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");

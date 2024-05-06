@@ -3,8 +3,10 @@ package com.game.servlet.admin;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.User;
 import com.game.serve.QueryControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -41,13 +43,10 @@ public class QueryUser extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
-        User stall = (new User()).mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        User stall = JSON.parseObject(jsonString, User.class);
+        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+
         Result<PageBean<User>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");

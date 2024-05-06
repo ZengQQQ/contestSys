@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
 import com.game.domain.Stall;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.fixDomain.StallFix;
 import com.game.serve.QueryControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -41,14 +43,11 @@ public class QueryStall extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
-        // 将JSON字符串转换为User对象
-        Stall stall = new Stall ().mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        Stall stall = JSON.parseObject(jsonString, Stall.class);
+        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+
+
         Result<PageBean<StallFix>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");

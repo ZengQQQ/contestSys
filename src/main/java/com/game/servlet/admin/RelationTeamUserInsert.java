@@ -1,8 +1,10 @@
 package com.game.servlet.admin;
 
-import com.game.domain.StallTeamMessage;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.TeamUserMessage;
 import com.game.serve.RelationshipServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -34,10 +36,11 @@ public class RelationTeamUserInsert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        TeamUserMessage teamUserMessage =new TeamUserMessage().mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString, TeamUserMessage.class);
 
         Result<String> result = relation.insertTeamRelation(teamUserMessage);
-        String json = new Gson().toJson(result);
+        String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

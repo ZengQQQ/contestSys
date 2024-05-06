@@ -7,6 +7,7 @@ import com.game.domain.*;
 import com.game.domain.fixDomain.StallFix;
 import com.game.domain.fixDomain.TeamFix;
 import com.game.serve.QueryControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -43,13 +44,10 @@ public class QueryJoinedStall extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage;
-        if(paramMap.get("currentPage")==null){
-            currentPage =1;
-        }else {
-            currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        }
-        User stall = (new User()).mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        User stall = JSON.parseObject(jsonString, User.class);
+        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+
         TeamUserMessage chain = new TeamUserMessage();
         Team chain1 = new Team();
         StallTeamMessage chain2 = new StallTeamMessage();

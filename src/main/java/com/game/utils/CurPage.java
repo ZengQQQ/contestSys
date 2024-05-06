@@ -1,2 +1,8 @@
-package com.game.utils;public class curPage {
+package com.game.utils;
+
+import lombok.Data;
+
+@Data
+public class CurPage {
+    Integer currentPage;
 }

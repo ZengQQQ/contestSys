@@ -1,6 +1,8 @@
 package com.game.servlet;
+import com.alibaba.fastjson2.JSON;
 import com.game.domain.User;
 import com.game.serve.SignUpControlServe;
+import com.game.utils.CurPage;
 import com.game.utils.Result;
 import com.google.gson.Gson;
 
@@ -38,7 +40,9 @@ public class SignUpControl extends HttpServlet {
 
 
         SignUpControlServe signUpControlServe = new SignUpControlServe();
-        User user = (new User()).mapToClass(paramMap);
+        String jsonString = JSON.toJSONString(paramMap);
+        User user = JSON.parseObject(jsonString, User.class);
+
         if(identity==null){
             identity="";
         }
@@ -50,7 +54,7 @@ public class SignUpControl extends HttpServlet {
                 user.setU_identity(0);
         }
         Result<String> responseData= signUpControlServe.SignUp(user);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

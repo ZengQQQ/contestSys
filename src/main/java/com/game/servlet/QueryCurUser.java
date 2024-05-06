@@ -38,7 +38,7 @@ public class QueryCurUser extends HttpServlet {
         String jsonString = JWTUtils.decodedJWT(token).getClaim("token").asString();
         System.out.println(jsonString);
         User user=JSON.parseObject(jsonString,User.class);
-        String json = new Gson().toJson(Result.success(user));
+        String json = JSON.toJSONString(Result.success(user));
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();
