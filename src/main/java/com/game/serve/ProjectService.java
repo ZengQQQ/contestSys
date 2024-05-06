@@ -17,9 +17,9 @@ public class ProjectService {
         }
         boolean inserted = projectDao.insert(project);
         if (inserted){
-            return Result.success("");
+            return Result.success("更新成功");
         }
-        return Result.fail("更新失败","");
+        return Result.fail("更新失败","更新失败");
     }
 
     public Result<String> update(Project project) {

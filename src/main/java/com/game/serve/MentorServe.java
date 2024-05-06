@@ -17,9 +17,9 @@ public class MentorServe {
         }
         boolean inserted = mentorDao.insert(mentor);
         if (inserted){
-            return Result.success("");
+            return Result.success("插入成功");
         }
-        return Result.fail("更新失败","");
+        return Result.fail("更新失败","更新失败");
     }
 
     public Result<String> update(Mentor mentor) {
