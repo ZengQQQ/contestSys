@@ -60,13 +60,13 @@ public class QueryJoinedStall extends HttpServlet {
             joinType="";
         }
         if(teamType==null){
-            joinType="";
+            teamType="";
         }
         if(joinStallType==null){
-            joinType="";
+            joinStallType="";
         }
         if(stallType==null){
-            joinType="";
+            stallType="";
         }
 
         switch (joinType){
