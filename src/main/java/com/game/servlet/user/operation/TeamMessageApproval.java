@@ -36,13 +36,8 @@ public class TeamMessageApproval extends HttpServlet {
 
         String jsonString = JSON.toJSONString(paramMap);
         TeamUserMessage teamUserMessage = JSON.parseObject(jsonString, TeamUserMessage.class);
-        TeamUserMessage tar = new TeamUserMessage();
-        tar.setT_id(teamUserMessage.getT_id());
-        tar.setU_acc(teamUserMessage.getU_acc());
-        tar.setTsm_info(teamUserMessage.getTsm_info());
-        tar.setTsm_dct(teamUserMessage.getTsm_dct());
 
-        Result<String> result = relation.updateTeamRelation(tar);
+        Result<String> result = relation.updateTeamRelation(teamUserMessage);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
