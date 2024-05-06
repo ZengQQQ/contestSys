@@ -10,10 +10,7 @@ import com.game.domain.*;
 import com.game.domain.fixDomain.StallFix;
 import com.game.domain.fixDomain.TeamFix;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StallFixDao {
 
@@ -84,7 +81,7 @@ public class StallFixDao {
      * @return
      */
     public PageBean<StallFix> queryByPage(Integer currentPage, User user,TeamUserMessage chain,Team chain1,StallTeamMessage chain2,Stall target){
-        Map<String,String> joinCondition = new HashMap<>();
+        Map<String,String> joinCondition = new LinkedHashMap<>();
         joinCondition.put("stall_team_message","stall.st_id=stall_team_message.st_id");
         joinCondition.put("team","stall_team_message.t_id=team.t_id");
         joinCondition.put("team_user_message","team.t_id=team_user_message.t_id");
@@ -93,7 +90,7 @@ public class StallFixDao {
         List<StallFix> result = new ArrayList<>();
         initPage(temresult.size());
         pageBean.setCurrentPage(currentPage);
-        temresult=temresult.subList(pageBean.getBegin()-1,pageBean.getEnd());
+        temresult=temresult.subList(pageBean.getBegin(),pageBean.getEnd()>temresult.size() ? temresult.size() : pageBean.getEnd());
         for(Stall ele :temresult){
             StallFix fix = singToFix(ele);
             result.add(fix);
