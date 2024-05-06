@@ -11,10 +11,27 @@ import java.util.Date;
 public class BaseDao<T> extends ReflectionUtils {
     public String tableName;
 
-    public BaseDao() {}
+    private final List<String> subkeylist;
+
+    public BaseDao() {
+        List<String> tem = new ArrayList<>();
+        tem.add("info");
+        tem.add("major");
+        tem.add("p_cc");
+        tem.add("info");
+        tem.add("info");
+        this.subkeylist = tem;
+    }
 
     public BaseDao(String tableName) {
         this.tableName = tableName;
+        List<String> tem = new ArrayList<>();
+        tem.add("info");
+        tem.add("major");
+        tem.add("p_cc");
+        tem.add("info");
+        tem.add("info");
+        this.subkeylist = tem;
     }
 
     public static <T> List<T> resultSetToList(ResultSet rs, Class<T> clazz) throws Exception {
@@ -179,7 +196,17 @@ public class BaseDao<T> extends ReflectionUtils {
 
         StringBuilder sqlBuilder = new StringBuilder("SELECT * FROM "+tableName+" WHERE ");
         for (String key : map.keySet()) {
-            sqlBuilder.append(key).append("=? AND ");
+            Boolean seem = false;
+            for (String subkey:this.subkeylist){
+                if(key.contains(subkey)){
+                    seem = true;
+                }
+            }
+            if (seem){
+                sqlBuilder.append(key).append(" LIKE CONCAT('%', ?, '%') AND ");
+            }else {
+                sqlBuilder.append(key).append("=? AND ");
+            }
         }
         // 闭合and
         sqlBuilder.append("1=1");
