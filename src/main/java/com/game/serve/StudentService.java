@@ -16,13 +16,13 @@ public class StudentService {
         old.setS_acc(Student.getS_acc());
         List<Student> exited = studentDao.query(old,-1,-1);
         if (!exited.isEmpty()){
-            return Result.fail("添加失败,已存在","");
+            return Result.fail("添加失败","已存在该学生");
         }
         boolean inserted = studentDao.insert(Student);
         if (inserted){
-            return Result.success("");
+            return Result.success("添加成功");
         }
-        return Result.fail("更新失败","");
+        return Result.fail("添加失败","添加失败");
     }
 
     public Result<String> update(Student student) {

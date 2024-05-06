@@ -13,13 +13,13 @@ public class ProjectService {
     public Result<String> insert(Project project) {
         List<Project> exited = projectDao.query(project,-1,-1);
         if (!exited.isEmpty()){
-            return Result.fail("更新失败","项目已存在");
+            return Result.fail("添加失败","项目已存在");
         }
         boolean inserted = projectDao.insert(project);
         if (inserted){
-            return Result.success("更新成功");
+            return Result.success("添加成功");
         }
-        return Result.fail("更新失败","更新失败");
+        return Result.fail("添加失败","更新失败");
     }
 
     public Result<String> update(Project project) {

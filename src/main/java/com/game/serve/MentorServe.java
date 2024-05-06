@@ -13,13 +13,13 @@ public class MentorServe {
     public Result<String> insert(Mentor mentor) {
         List<Mentor> exited = mentorDao.query(mentor,-1,-1);
         if (!exited.isEmpty()){
-            return Result.fail("更新失败","导师已存在");
+            return Result.fail("添加失败","导师已存在");
         }
         boolean inserted = mentorDao.insert(mentor);
         if (inserted){
-            return Result.success("插入成功");
+            return Result.success("添加成功");
         }
-        return Result.fail("更新失败","更新失败");
+        return Result.fail("添加失败","添加失败");
     }
 
     public Result<String> update(Mentor mentor) {
