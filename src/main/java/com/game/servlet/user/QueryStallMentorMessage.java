@@ -51,7 +51,7 @@ public class QueryStallMentorMessage extends HttpServlet {
         // 将JSON字符串转换为User对象
         StallMentorMessage stall = new StallMentorMessage ().mapToClass(paramMap);
         Result<PageBean<StallMentorMessageFix>> responseData =query.queryPage(currentPage,stall);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

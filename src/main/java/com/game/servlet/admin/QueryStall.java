@@ -50,7 +50,7 @@ public class QueryStall extends HttpServlet {
         // 将JSON字符串转换为User对象
         Stall stall = new Stall ().mapToClass(paramMap);
         Result<PageBean<StallFix>> responseData =query.queryPage(currentPage,stall);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

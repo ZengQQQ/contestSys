@@ -15,7 +15,7 @@ public class Project extends ReflectionUtils {
     private Integer p_id ;
     private String p_name ;
     private String p_info ;
-    private Level p_level = null;
+    private String p_level = null;
     private LocalDateTime p_st = null;
     private LocalDateTime p_ddl=null;
     private String p_url;
@@ -30,7 +30,7 @@ public class Project extends ReflectionUtils {
     public Project() {
     }
 
-    public Project(Integer p_id, String p_name, String p_info, Level p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree,String u_acc,Integer p_status) {
+    public Project(Integer p_id, String p_name, String p_info, String p_level, LocalDateTime p_st, LocalDateTime p_ddl, String p_url, String p_img, String p_cc, Integer p_maxtime, Integer p_resagree,String u_acc,Integer p_status) {
         this.p_id = p_id;
         this.p_name = p_name;
         this.p_info = p_info;

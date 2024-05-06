@@ -51,7 +51,7 @@ public class QueryStallTeamMessage extends HttpServlet {
         // 将JSON字符串转换为User对象
         StallTeamMessage stall = new StallTeamMessage ().mapToClass(paramMap);
         Result<PageBean<StallTeamMessageFix>> responseData =query.queryPage(currentPage,stall);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

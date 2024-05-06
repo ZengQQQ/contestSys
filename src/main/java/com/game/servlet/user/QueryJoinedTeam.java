@@ -81,7 +81,7 @@ public class QueryJoinedTeam extends HttpServlet {
         }
         // 将JSON字符串转换为User对象
         Result<PageBean<TeamFix>> responseData =query.joinedTeamQuery(currentPage,stall,chain,target);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().println(json);
         resp.getWriter().flush();

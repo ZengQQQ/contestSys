@@ -50,7 +50,7 @@ public class QueryUser extends HttpServlet {
         }
         User stall = (new User()).mapToClass(paramMap);
         Result<PageBean<User>> responseData =query.queryPage(currentPage,stall);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();

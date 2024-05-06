@@ -82,7 +82,7 @@ public class QueryJoinedTeam extends HttpServlet {
             default:
         }
         Result<PageBean<TeamFix>> responseData =query.joinedTeamQuery(currentPage,stall,chain,target);
-        String json = new Gson().toJson(responseData);
+        String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().println(json);
         resp.getWriter().flush();

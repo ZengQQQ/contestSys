@@ -34,9 +34,6 @@ public class ProjectFixDao {
     public PageBean<ProjectFix> queryByPage(Integer currentPage, Project object){
         List<Project> projects = projectDao.query(object,-1,-1);
         pageBean.setTotalSize(projects.size());
-        if(!object.equals(this.model)){
-            initPage(object);
-        }
         List<Project> temresult = new ArrayList<>();
         List<ProjectFix> result = new ArrayList<>();
         pageBean.setCurrentPage(currentPage);
