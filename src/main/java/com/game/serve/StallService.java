@@ -152,8 +152,26 @@ public class StallService {
                 spm.setSpm_pass(2);
                 return Result.success("拒绝申请成功");
             }
+        }else if (teamProjectMessage.getTp_pass() == 3) {
+            if (spm.getSpm_dct() == 0) {
+                stm.setStm_pass(3);
+                return Result.success("撤回邀请成功");
+            } else if (spm.getSpm_dct() == 1) {
+                spm.setSpm_pass(3);
+                return Result.success("撤回申请成功");
+            }
+        } else if (teamProjectMessage.getTp_join()==0) {
+            stm.setJoin_status(0);
+            stm.setStm_pass(0);
+            spm.setJoin_status(0);
+            spm.setSpm_pass(0);
+            int updated1 = stallTeamMessageDao.update(stm, stm);
+            int updated2 = stallProjectMessageDao.update(spm, spm);
+            if (updated1 == 0 || updated2 == 0) {
+                return Result.fail("更新失败", "");
+            }
         }
-        return Result.fail("更新失败", "");
+        return Result.fail("更新失败,参数错误", "");
     }
 
     public Result<String> updateMentor(Stall stall, Mentor mentor) {

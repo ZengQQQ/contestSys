@@ -15,6 +15,7 @@ public class TeamServe{
         if (!exited.isEmpty()){
             return Result.fail("添加失败","团队已存在");
         }
+        team.setT_curnum(1);
         boolean inserted = teamDao.insert(team);
         if (inserted){
             return Result.success("添加成功");
