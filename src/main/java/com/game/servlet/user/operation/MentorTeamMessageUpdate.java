@@ -1,10 +1,7 @@
 package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
-import com.game.domain.Mentor;
-import com.game.domain.StallMentorMessage;
-import com.game.domain.TeamUserMessage;
-import com.game.serve.RelationshipServe;
+import com.game.domain.TeamMentorMessage;
 import com.game.serve.StallService;
 import com.game.utils.Result;
 
@@ -18,9 +15,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/MentorMessageSend")
-public class MentorTeamProjectMessageSend extends HttpServlet {
-    StallService stallService = new StallService();
+@WebServlet(value = "/user/MentorTeamMessageUpdate")
+public class MentorTeamMessageUpdate extends HttpServlet {
+    StallService relation = new StallService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -37,14 +34,13 @@ public class MentorTeamProjectMessageSend extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        StallMentorMessage stallMentorMessage = JSON.parseObject(jsonString, StallMentorMessage.class);
-        StallMentorMessage tar = new StallMentorMessage();
-        tar.setU_acc(stallMentorMessage.getU_acc());
-        tar.setSt_id(stallMentorMessage.getSt_id());
-        tar.setSmm_info(stallMentorMessage.getSmm_info());
-        Mentor mentor = new Mentor();
-        mentor.setM_acc(tar.getU_acc());
-        Result<String> result = stallService.addMentor(tar,mentor);
+        TeamMentorMessage teamMentorMessage = JSON.parseObject(jsonString, TeamMentorMessage.class);
+        TeamMentorMessage tar = new TeamMentorMessage();
+        tar.setT_id(teamMentorMessage.getT_id());
+        tar.setP_id(teamMentorMessage.getP_id());
+        tar.setTp_dict(teamMentorMessage.getTp_dict());
+
+        Result<String> result = relation.insert(tar);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
