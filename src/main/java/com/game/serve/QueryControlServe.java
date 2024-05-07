@@ -47,13 +47,34 @@ public class QueryControlServe {
         }
         return Result.success(data);
     }
-
-
     public Result<PageBean<TeamMessageFix>> queryPage(Integer currentPage, TeamUserMessage stall){
         if(currentPage ==null){
             currentPage=1;
         }
-        PageBean<TeamMessageFix> data = teamMessageFixDao.queryByPage(currentPage,stall);
+        PageBean<TeamMessageFix> data = teamMessageFixDao.queryPage(currentPage,stall);
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+
+    public Result<PageBean<TeamMessageFix>> queryMemberTeamPage(Integer currentPage, TeamUserMessage stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<TeamMessageFix> data = teamMessageFixDao.queryPage(currentPage,stall);
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<TeamMessageFix>> queryTeamMemberPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<TeamMessageFix> data = teamMessageFixDao.queryTeamMemPage(currentPage,stall);
         if(data==null||data.getListPage()==null){
             return Result.fail("查询失败",data);
         }
@@ -118,11 +139,84 @@ public class QueryControlServe {
         return Result.success(data);
     }
 
+
     public Result<PageBean<StallTeamMessageFix>> queryPage(Integer currentPage, StallTeamMessage stall){
         if(currentPage ==null){
             currentPage=1;
         }
         PageBean<StallTeamMessageFix> data = stallTeamMessageFixDao.queryByPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<StallMentorMessageFix>> queryMentorStallPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallMentorMessageFix> data = stallMentorMessageFixDao.queryMentorPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+    public Result<PageBean<StallMentorMessageFix>> queryStallMenPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallMentorMessageFix> data = stallMentorMessageFixDao.queryStallPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<StallProjectMessageFix>> queryStallProPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallProjectMessageFix> data = stallProjectMessageFixDao.queryStallPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<StallProjectMessageFix>> queryProStallPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallProjectMessageFix> data = stallProjectMessageFixDao.queryProjectPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+    public Result<PageBean<StallTeamMessageFix>> queryTeamStallPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallTeamMessageFix> data = stallTeamMessageFixDao.queryTeamPage(currentPage,stall);
+
+        if(data==null||data.getListPage()==null){
+            return Result.fail("查询失败",data);
+        }
+        return Result.success(data);
+    }
+
+
+    public Result<PageBean<StallTeamMessageFix>> queryStallTeamPage(Integer currentPage, User stall){
+        if(currentPage ==null){
+            currentPage=1;
+        }
+        PageBean<StallTeamMessageFix> data = stallTeamMessageFixDao.queryStallPage(currentPage,stall);
 
         if(data==null||data.getListPage()==null){
             return Result.fail("查询失败",data);

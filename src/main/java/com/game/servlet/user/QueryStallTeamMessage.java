@@ -2,9 +2,11 @@ package com.game.servlet.user;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
+import com.game.domain.StallProjectMessage;
 import com.game.domain.StallTeamMessage;
 import com.game.domain.Team;
 import com.game.domain.User;
+import com.game.domain.fixDomain.StallProjectMessageFix;
 import com.game.domain.fixDomain.StallTeamMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.CurPage;
@@ -22,7 +24,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/queryStallTeamMessage")
+@WebServlet(value = "/user/stallTeamMessage")
 public class QueryStallTeamMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
@@ -44,11 +46,31 @@ public class QueryStallTeamMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
+        StallTeamMessage stallTeamMessage = new StallTeamMessage();
         String jsonString = JSON.toJSONString(paramMap);
-        StallTeamMessage stall = JSON.parseObject(jsonString, StallTeamMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
+        String way = req.getParameter("way");
+        User user =JSON.parseObject(jsonString, User.class);
 
-        Result<PageBean<StallTeamMessageFix>> responseData =query.queryPage(currentPage,stall);
+        if(way==null){
+            way="get";
+        }
+
+        switch (way){
+            case "put":
+                stallTeamMessage.setStm_dct(0);
+                break;
+            case "get":
+                stallTeamMessage.setStm_dct(1);
+                break;
+            default:
+        }
+        Result<PageBean<StallTeamMessageFix>> responseData = query.queryStallTeamPage(currentPage,user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

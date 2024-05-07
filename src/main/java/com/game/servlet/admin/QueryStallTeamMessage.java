@@ -45,7 +45,12 @@ public class QueryStallTeamMessage extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         StallTeamMessage stall = JSON.parseObject(jsonString,StallTeamMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
 
         Result<PageBean<StallTeamMessageFix>> responseData =query.queryPage(currentPage,stall);

@@ -7,10 +7,7 @@ import com.game.dao.base.BaseDao;
 import com.game.domain.*;
 import com.game.domain.fixDomain.TeamFix;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TeamFixDao {
 
@@ -69,18 +66,17 @@ public class TeamFixDao {
      * @param currentPage
      * @param user
      * @param chain
-     * @param taget
      * @return
      */
     public PageBean<TeamFix> queryByPage(Integer currentPage, User user,TeamUserMessage chain,Team target){
-        Map<String,String> joinCondition = new HashMap<>();
+        Map<String,String> joinCondition = new LinkedHashMap<>();
         joinCondition.put("team_user_message","team.t_id=team_user_message.t_id");
         joinCondition.put("user","team_user_message.u_acc=user.u_acc");
         List<Team> temresult = teamDao.leftQuery(Team.class,"team",BaseDao.formList(target,chain,user),joinCondition,-1,-1);
         List<TeamFix> result = new ArrayList<>();
         initPage(temresult.size());
         pageBean.setCurrentPage(currentPage);
-        temresult=temresult.subList(pageBean.getBegin()-1,pageBean.getEnd());
+        temresult=temresult.subList(pageBean.getBegin(),pageBean.getEnd()>temresult.size() ? temresult.size() : pageBean.getEnd());
         for(Team ele :temresult){
             TeamFix teamFix = singToFix(ele);
             result.add(teamFix);

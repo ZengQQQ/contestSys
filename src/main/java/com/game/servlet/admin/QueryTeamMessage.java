@@ -48,7 +48,12 @@ public class QueryTeamMessage extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         TeamUserMessage stall = JSON.parseObject(jsonString, TeamUserMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
         // 将JSON字符串转换为User对象
         Result<PageBean<TeamMessageFix>> responseData =query.queryPage(currentPage,stall);

@@ -1,28 +1,27 @@
-package com.game.servlet.admin;
+package com.game.servlet.user;
 
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
-import com.game.domain.StallMentorMessage;
+import com.game.domain.TeamUserMessage;
 import com.game.domain.User;
+import com.game.domain.fixDomain.TeamMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.CurPage;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/queryUser")
-public class QueryUser extends HttpServlet {
+@WebServlet(value = "/user/teamMemberMessage")
+public class QueryTeamMemMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,15 +43,30 @@ public class QueryUser extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
         String jsonString = JSON.toJSONString(paramMap);
-        User stall = JSON.parseObject(jsonString, User.class);
          Integer currentPage;
         try{
             currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
         }catch (Exception e){
             currentPage =1;
         }
+        String way = req.getParameter("way");
+        User user =JSON.parseObject(jsonString, User.class);
+        TeamUserMessage teamUserMessage = new TeamUserMessage();
 
-        Result<PageBean<User>> responseData =query.queryPage(currentPage,stall);
+        if(way==null){
+            way="get";
+        }
+        switch (way){
+            case "put":
+                teamUserMessage.setTsm_dct(0);
+                break;
+            case "get":
+                teamUserMessage.setTsm_dct(1);
+                break;
+            default:
+        }
+
+        Result<PageBean<TeamMessageFix>> responseData =query.queryTeamMemberPage(currentPage,user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

@@ -46,6 +46,9 @@ public class PageBean<T> {
         this.optionalPages =new ArrayList<>();
         this.listPage = new ArrayList<>();
         Integer current=currentPage;
+        if(current==null){
+            current =1 ;
+        }
         if (current > this.totalPage){
             current = this.totalPage;
         }

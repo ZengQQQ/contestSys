@@ -2,9 +2,11 @@ package com.game.servlet.user;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
+import com.game.domain.StallMentorMessage;
 import com.game.domain.StallProjectMessage;
 import com.game.domain.StallTeamMessage;
 import com.game.domain.User;
+import com.game.domain.fixDomain.StallMentorMessageFix;
 import com.game.domain.fixDomain.StallProjectMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.CurPage;
@@ -22,7 +24,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/queryStallProjectMessage")
+@WebServlet(value = "/user/stallProjectMessage")
 public class QueryStallProjectMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
@@ -45,10 +47,28 @@ public class QueryStallProjectMessage extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
         String jsonString = JSON.toJSONString(paramMap);
-        StallProjectMessage stall = JSON.parseObject(jsonString, StallProjectMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
-
-        Result<PageBean<StallProjectMessageFix>> responseData =query.queryPage(currentPage,stall);
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
+        StallProjectMessage stallProjectMessage = new StallProjectMessage();
+        String way = req.getParameter("way");
+        User user =JSON.parseObject(jsonString, User.class);
+        if(way==null){
+            way="get";
+        }
+        switch (way){
+            case "put":
+                stallProjectMessage.setSpm_dct(0);
+                break;
+            case "get":
+                stallProjectMessage.setSpm_dct(1);
+                break;
+            default:
+        }
+        Result<PageBean<StallProjectMessageFix>> responseData =query.queryStallProPage(currentPage,user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

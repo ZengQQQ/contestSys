@@ -44,7 +44,12 @@ public class QueryStallMentorMessage extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         StallMentorMessage stall = JSON.parseObject(jsonString, StallMentorMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
         // 将JSON字符串转换为User对象
         Result<PageBean<StallMentorMessageFix>> responseData =query.queryPage(currentPage,stall);

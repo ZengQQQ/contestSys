@@ -47,7 +47,12 @@ public class QueryStudent extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         Student stall = JSON.parseObject(jsonString, Student.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
 
         Result<PageBean<Student>> responseData =query.queryPage(currentPage,stall);

@@ -47,7 +47,12 @@ public class QueryMentor extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         Mentor stall = JSON.parseObject(jsonString, Mentor.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
         Result<PageBean<Mentor>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);
