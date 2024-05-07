@@ -45,7 +45,12 @@ public class QueryStallProjectMessage extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         StallProjectMessage stall = JSON.parseObject(jsonString, StallProjectMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
 
         Result<PageBean<StallProjectMessageFix>> responseData =query.queryPage(currentPage,stall);

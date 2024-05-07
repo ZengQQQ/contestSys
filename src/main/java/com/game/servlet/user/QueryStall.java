@@ -46,7 +46,12 @@ public class QueryStall extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         Stall stall = JSON.parseObject(jsonString, Stall.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
         Result<PageBean<StallFix>> responseData =query.queryPage(currentPage,stall);
         String json = JSON.toJSONString(responseData);

@@ -46,7 +46,12 @@ public class QueryTeam extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         Team stall = JSON.parseObject(jsonString, Team.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
 
         Result<PageBean<TeamFix>> responseData =query.queryPage(currentPage,stall);

@@ -48,17 +48,22 @@ public class QueryJoinedTeam extends HttpServlet {
         }
         String jsonString = JSON.toJSONString(paramMap);
         User stall = JSON.parseObject(jsonString, User.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
         TeamUserMessage chain = new TeamUserMessage();
         Team target = new Team();
         String joinType = req.getParameter("joinType");
-        String targetType = req.getParameter("teamType");
+        String teamType = req.getParameter("teamType");
         if(joinType==null){
             joinType="";
         }
-        if(targetType==null){
-            joinType="";
+        if(teamType==null){
+            teamType="";
         }
         switch (joinType){
             case "joined":chain.setJoin_status(1);
@@ -67,7 +72,7 @@ public class QueryJoinedTeam extends HttpServlet {
                 break;
             default:
         }
-        switch (targetType){
+        switch (teamType){
             case "normal":target.setT_status(0);
                 break;
             case "lock":target.setT_status(1);

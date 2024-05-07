@@ -15,7 +15,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/TeamMessageSend")
+@WebServlet(value = "/user/ProjectTeamMessageSend")
 public class ProjectTeamMessageSend extends HttpServlet {
     RelationshipServe relation = new RelationshipServe();
 

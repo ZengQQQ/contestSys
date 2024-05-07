@@ -22,7 +22,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/queryStallMentorMessage")
+@WebServlet(value = "/user/stallMentorMessage")
 public class QueryStallMentorMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
@@ -44,12 +44,33 @@ public class QueryStallMentorMessage extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
+
         String jsonString = JSON.toJSONString(paramMap);
-        StallMentorMessage stall = JSON.parseObject(jsonString, StallMentorMessage.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
 
+         Integer currentPage;
+        try{
+            currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
+        }catch (Exception e){
+            currentPage =1;
+        }
 
-        Result<PageBean<StallMentorMessageFix>> responseData =query.queryPage(currentPage,stall);
+        String way = req.getParameter("way");
+        User user =JSON.parseObject(jsonString, User.class);
+        StallMentorMessage stallMentorMessage = new StallMentorMessage();
+
+        if(way==null){
+            way="get";
+        }
+        switch (way){
+            case "put":
+                stallMentorMessage.setSmm_dct(0);
+                break;
+            case "get":
+                stallMentorMessage.setSmm_dct(1);
+                break;
+            default:
+        }
+        Result<PageBean<StallMentorMessageFix>> responseData =query.queryStallMenPage(currentPage,user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

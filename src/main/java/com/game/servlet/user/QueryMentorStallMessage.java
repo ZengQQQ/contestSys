@@ -1,28 +1,26 @@
-package com.game.servlet.admin;
-
+package com.game.servlet.user;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.bean.PageBean;
 import com.game.domain.StallMentorMessage;
 import com.game.domain.User;
+import com.game.domain.fixDomain.StallMentorMessageFix;
 import com.game.serve.QueryControlServe;
 import com.game.utils.CurPage;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/queryUser")
-public class QueryUser extends HttpServlet {
+@WebServlet(value = "/user/mentorStallMessage")
+public class QueryMentorStallMessage extends HttpServlet {
     QueryControlServe query = new QueryControlServe();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,8 +41,9 @@ public class QueryUser extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
+
         String jsonString = JSON.toJSONString(paramMap);
-        User stall = JSON.parseObject(jsonString, User.class);
+
          Integer currentPage;
         try{
             currentPage=JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
@@ -52,7 +51,23 @@ public class QueryUser extends HttpServlet {
             currentPage =1;
         }
 
-        Result<PageBean<User>> responseData =query.queryPage(currentPage,stall);
+        String way = req.getParameter("way");
+        User user =JSON.parseObject(jsonString, User.class);
+        Result<PageBean<StallMentorMessageFix>> responseData = new Result<>();
+        StallMentorMessage stallMentorMessage = new StallMentorMessage();
+        if(way==null){
+            way="";
+        }
+        switch (way){
+            case "put":
+                stallMentorMessage.setSmm_dct(0);
+                break;
+            case "get":
+                stallMentorMessage.setSmm_dct(1);
+                break;
+            default:
+        }
+        responseData =query.queryMentorStallPage(currentPage,user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
