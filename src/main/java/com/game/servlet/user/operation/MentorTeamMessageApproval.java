@@ -1,7 +1,8 @@
-package com.game.servlet.admin.project;
+package com.game.servlet.user.operation;
 
-import com.game.domain.Project;
-import com.game.serve.ProjectService;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.TeamMentorMessage;
+import com.game.serve.StallService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -14,10 +15,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/project/insert")
-public class Insert extends HttpServlet {
-    ProjectService projectService = new ProjectService();
-
+@WebServlet(value = "/user/MentorTeamMessageApproval")
+public class MentorTeamMessageApproval extends HttpServlet {
+    StallService relation = new StallService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -25,21 +25,25 @@ public class Insert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         Enumeration<String> parameterNames = req.getParameterNames();
-
         Map<String, Object> paramMap = new HashMap<>();
-
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
-        Result<String> result = projectService.insert(project);
-        resp.getWriter().write(Result.toJson(result));
+
+        String jsonString = JSON.toJSONString(paramMap);
+        TeamMentorMessage teamMentorMessage = JSON.parseObject(jsonString, TeamMentorMessage.class);
+        TeamMentorMessage tar = new TeamMentorMessage();
+        tar.setT_id(teamMentorMessage.getT_id());
+        tar.setP_id(teamMentorMessage.getM_id());
+        tar.setTp_dict(teamMentorMessage.getTp_pass());
+
+        Result<String> result = relation.updateApproval(tar);
+        String json = JSON.toJSONString(result);
+        resp.setContentType("application/json");
+        resp.getWriter().write(json);
+        resp.getWriter().flush();
     }
 }

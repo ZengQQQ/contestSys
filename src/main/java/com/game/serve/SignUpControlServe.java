@@ -50,14 +50,14 @@ public class SignUpControlServe {
                             (new UserDao()).insert(user);
                             return Result.success("用户成功注册");
                         } else {
-                            return Result.fail("用户注册失败","该导师已被封禁");
+                            return Result.fail("用户注册失败，该导师已被封禁","该导师已被封禁");
                         }
 
                     } else {
-                        return Result.fail("用户注册失败","该账号已经注册");
+                        return Result.fail("用户注册失败，该账号已经注册","该账号已经注册");
                     }
                 }else {
-                    return Result.fail("用户注册失败","该账号注册表中不存在");
+                    return Result.fail("用户注册失败，该账号注册表中不存在","该账号注册表中不存在");
                 }
             }else {
                 if (studentCheckRegistered(user)) {
@@ -70,18 +70,18 @@ public class SignUpControlServe {
                             (new UserDao()).insert(user);
                             return Result.success("用户成功注册");
                         } else {
-                            return Result.fail("用户注册失败","该学生已被封禁");
+                            return Result.fail("用户注册失败，该学生已被封禁","该学生已被封禁");
                         }
                     } else {
-                        return Result.fail("用户注册失败","该账号已经注册");
+                        return Result.fail("用户注册失败，该账号已经注册","该账号已经注册");
                     }
                 } else {
 
-                    return Result.fail("用户注册失败","该账号注册表中不存在");
+                    return Result.fail("用户注册失败，该账号注册表中不存在","该账号注册表中不存在");
                 }
             }
         }else {
-            return Result.fail("用户注册失败","输入值异常");
+            return Result.fail("用户注册失败，输入值异常","输入值异常");
         }
 
     }

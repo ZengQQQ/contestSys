@@ -1,7 +1,8 @@
-package com.game.servlet.admin.project;
+package com.game.servlet.admin;
 
-import com.game.domain.Project;
-import com.game.serve.ProjectService;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.TeamUserMessage;
+import com.game.serve.RelationshipServe;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -14,10 +15,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@WebServlet(value = "/admin/project/delete")
-public class Delete extends HttpServlet {
-    public static final ProjectService projectService = new ProjectService();
+@WebServlet(value = "/admin/TeamMessageBan")
+public class TeamMessageBan extends HttpServlet {
+    RelationshipServe relation = new RelationshipServe();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -33,10 +33,15 @@ public class Delete extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
 
-        Result<String> result = projectService.delete(project);
-        resp.getWriter().write(Result.toJson(result));
+        String jsonString = JSON.toJSONString(paramMap);
+        TeamUserMessage teamUserMessage = JSON.parseObject(jsonString, TeamUserMessage.class);
+
+
+        Result<String> result = relation.BanTeamUserMessage(teamUserMessage);
+        String json = JSON.toJSONString(result);
+        resp.setContentType("application/json");
+        resp.getWriter().write(json);
+        resp.getWriter().flush();
     }
 }

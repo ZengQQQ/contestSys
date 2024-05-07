@@ -1,7 +1,8 @@
-package com.game.servlet.admin.project;
+package com.game.servlet.user.operation;
 
-import com.game.domain.Project;
-import com.game.serve.ProjectService;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.TeamMentorMessage;
+import com.game.serve.StallService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -14,11 +15,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/project/update")
-public class Update extends HttpServlet {
-
-    private static final ProjectService projectService = new ProjectService();
-
+@WebServlet(value = "/user/MentorTeamMessageUpdate")
+public class MentorTeamMessageUpdate extends HttpServlet {
+    StallService relation = new StallService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -33,9 +32,18 @@ public class Update extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
-        Result<String> result = projectService.update(project);
-        resp.getWriter().write(Result.toJson(result));
+
+        String jsonString = JSON.toJSONString(paramMap);
+        TeamMentorMessage teamMentorMessage = JSON.parseObject(jsonString, TeamMentorMessage.class);
+        TeamMentorMessage tar = new TeamMentorMessage();
+        tar.setT_id(teamMentorMessage.getT_id());
+        tar.setP_id(teamMentorMessage.getP_id());
+        tar.setTp_dict(teamMentorMessage.getTp_dict());
+
+        Result<String> result = relation.insert(tar);
+        String json = JSON.toJSONString(result);
+        resp.setContentType("application/json");
+        resp.getWriter().write(json);
+        resp.getWriter().flush();
     }
 }

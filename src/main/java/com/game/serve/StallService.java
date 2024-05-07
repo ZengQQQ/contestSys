@@ -9,6 +9,9 @@ import java.util.List;
 public class StallService {
     private static final StallDao stalldao = new StallDao();
     private static final ProjectDao projectDao = new ProjectDao();
+
+    private static final UserDao userDao = new UserDao();
+    private static final MentorDao mentorDao = new MentorDao();
     private static final TeamDao teamDao = new TeamDao();
     private static final StallProjectMessageDao stallProjectMessageDao = new StallProjectMessageDao();
     private static final StallTeamMessageDao stallTeamMessageDao = new StallTeamMessageDao();
@@ -175,37 +178,151 @@ public class StallService {
     }
 
 
-    public Result<String> addMentor(StallMentorMessage stall,Mentor mentor) {
-        Stall tar = new Stall();
-        tar.setSt_id(stall.getSt_id());
-        List<Stall> exited = stalldao.query(tar,-1,-1);
-        if (exited.isEmpty()){
-            return Result.fail("发送消息失败，没有该房间","是不是(lll￢ω￢)");
+    public Result<String> updateApproval(TeamMentorMessage message) {
+        StallTeamMessage stm = new StallTeamMessage();
+        StallMentorMessage spm = new StallMentorMessage();
+        stm.setSt_id(message.getSt_id());
+        spm.setSt_id(message.getSt_id());
+        Mentor mentor1 =new Mentor();
+        mentor1.setM_id(message.getM_id());
+        mentor1 = new MentorDao().querySingle(mentor1);
+        spm.setU_acc(mentor1.getM_acc());
+        List<StallMentorMessage> spmList = stallMentorMessageDao.query(spm, -1, -1);
+        if (spmList.isEmpty()) {
+            return Result.fail("更新失败,没有该团队导师对应关系", "");
         }
-        Mentor mentor1 = new Mentor();
-        mentor1.setM_acc(mentor.getM_acc());
-        List<Mentor> mentorList = (new MentorDao()).query(mentor1,-1,-1);
-        if (mentorList.isEmpty()){
-            return Result.fail("发送消息失败，没有该导师","");
-        }
+        spm = spmList.get(0);
+        Mentor mentor = new Mentor();
+        Team team = new Team();
+        mentor.setM_id(message.getM_id());
+        team.setT_id(message.getT_id());
+        mentor = mentorDao.querySingle(mentor);
         User user = new User();
         user.setU_acc(mentor.getM_acc());
-        if(new UserDao().query(user,-1,-1).isEmpty()){
-            return Result.fail("发送消息失败，该导师未注册","该导师未注册");
+        List<User> mentorList = userDao.query(user, -1, -1);
+        List<Team> teamList = teamDao.query(team, -1, -1);
+        if (message.getTp_pass() == 1) {
+            for (User p : mentorList) {
+                if (p.getU_status() != 0) {
+                    return Result.fail("更新失败,项目状态异常", "");
+                }
+            }
+            for (Team t : teamList) {
+                if (t.getT_status() != 0) {
+                    return Result.fail("更新失败,团队状态异常", "");
+                }
+            }
+            StallTeamMessage stm1 = new StallTeamMessage();
+            stm1.setJoin_status(1);
+            stm1.setSt_id(message.getT_id());
+            stm.setStm_pass(1);
+            stm.setJoin_status(1);
+            spm.setSmm_pass(1);
+            spm.setJoin_status(1);
+            int updated1 = stallTeamMessageDao.update(stm, stm);
+            int updated2 = stallMentorMessageDao.update(spm, spm);
+            if (updated1 == 0 || updated2 == 0) {
+                return Result.fail("更新失败", "");
+            }
+        }else if (message.getTp_pass() == 2) {
+            if (spm.getSmm_dct() == 0) {
+                stm.setStm_pass(2);
+                return Result.success("拒绝邀请成功");
+            } else if (spm.getSmm_dct() == 1) {
+                spm.setSmm_pass(2);
+                return Result.success("拒绝申请成功");
+            }
+        }else if (message.getTp_pass() == 3) {
+            if (spm.getSmm_dct() == 0) {
+                stm.setStm_pass(3);
+                return Result.success("撤回邀请成功");
+            } else if (spm.getSmm_dct() == 1) {
+                spm.setSmm_pass(3);
+                return Result.success("撤回申请成功");
+            }
+        } else if (message.getTp_join()==0) {
+            stm.setJoin_status(0);
+            stm.setStm_pass(0);
+            spm.setJoin_status(0);
+            spm.setSmm_pass(0);
+            int updated1 = stallTeamMessageDao.update(stm, stm);
+            int updated2 = stallMentorMessageDao.update(spm, spm);
+            if (updated1 == 0 || updated2 == 0) {
+                return Result.fail("更新失败", "");
+            }
         }
-        StallMentorMessage smm = new StallMentorMessage();
-        smm.setSt_id(stall.getSt_id());
-        smm.setU_acc(mentor.getM_acc());
-        smm.setJoin_status(1);
-        List<StallMentorMessage> smmList = stallMentorMessageDao.query(smm,-1,-1);
-        if (!smmList.isEmpty()){
-            return Result.fail("发送消息失败，已存在该房间导师对应关系","已存在该房间导师对应关系");
+        return Result.fail("更新失败,参数错误", "");
+    }
+
+
+    public Result<String> insert(TeamMentorMessage message) {
+        Team team = new Team();
+        team.setT_id(message.getT_id());
+        Mentor mentor = new Mentor();
+        mentor.setM_id(message.getP_id());
+        mentor = mentorDao.querySingle(mentor);
+        User user = new User();
+        user.setU_acc(mentor.getM_acc());
+        List<User> mentorList = userDao.query(user, -1, -1);
+        List<Team> teamList = teamDao.query(team, -1, -1);
+        if (mentorList.isEmpty() || teamList.isEmpty()) {
+            return Result.fail("添加失败,无目标导师与队伍", "");
         }
-        boolean inserted = stallMentorMessageDao.insert(stall);
-        if (inserted ){
-            return Result.success("添加房间导师关联表成功");
+        team = teamList.get(0);
+        user = mentorList.get(0);
+        Stall stall = new Stall();
+        stall.setU_acc(team.getU_acc());
+        stall.setSt_id(team.getT_id());
+        List<Stall> stallList = stalldao.query(stall, -1, -1);
+        if (!stallList.isEmpty()) {
+            for (Stall s : stallList) {
+                StallMentorMessage spm = new StallMentorMessage();
+                spm.setU_acc(user.getU_acc());
+                spm.setSt_id(s.getSt_id());
+                List<StallMentorMessage> spmList = stallMentorMessageDao.query(spm, -1, -1);
+                if (!spmList.isEmpty()) {
+                    return Result.fail("添加失败,已存在该导师项目对应关系", "");
+                }
+            }
         }
-        return Result.fail("更新失败","");
+
+        boolean inserted = stalldao.insert(stall);
+        StallTeamMessage stm1 = new StallTeamMessage();
+        stm1.setJoin_status(1);
+        stm1.setSt_id(stall.getSt_id());
+        if (inserted) {
+            StallTeamMessage stm = new StallTeamMessage();
+            stm.setSt_id(stall.getSt_id());
+            stm.setT_id(team.getT_id());
+            StallMentorMessage spm = new StallMentorMessage();
+            spm.setU_acc(user.getU_acc());
+            spm.setSt_id(stall.getSt_id());
+            if (message.getTp_dict() == 1) {
+                stm.setStm_pass(1);
+                stm.setJoin_status(1);
+                stm.setStm_dct(1);
+                spm.setSmm_dct(1);
+                spm.setSmm_info(message.getTp_info());
+                boolean inserted1 = stallTeamMessageDao.insert(stm);
+                boolean inserted2 = stallMentorMessageDao.insert(spm);
+                if (inserted2 && inserted1) {
+                    return Result.success("已发送申请");
+                }
+            } else if (message.getTp_dict() == 0) {
+                spm.setSmm_pass(1);
+                spm.setJoin_status(1);
+                spm.setSmm_dct(0);
+                stm.setStm_dct(0);
+                stm.setStm_pass(0);
+                stm.setStm_info(message.getTp_info());
+                boolean inserted1 = stallTeamMessageDao.insert(stm);
+                boolean inserted2 = stallMentorMessageDao.insert(spm);
+                if (inserted2 && inserted1) {
+                    return Result.success("已发送邀请");
+                }
+            }
+        }
+        return Result.fail("添加失败", "");
     }
 
 //    public Result<String> updateTeam(Stall stall,Team team) {

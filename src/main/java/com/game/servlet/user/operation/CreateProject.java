@@ -2,6 +2,7 @@ package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.domain.Project;
+import com.game.domain.fixDomain.ProjectFix;
 import com.game.serve.ProjectService;
 import com.game.utils.Result;
 
@@ -36,7 +37,7 @@ public class CreateProject extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        Project project = JSON.parseObject(jsonString, Project.class);
+        ProjectFix project = JSON.parseObject(jsonString, ProjectFix.class);
 
         Result<String> result = relation.insert(project);
         String json = JSON.toJSONString(result);

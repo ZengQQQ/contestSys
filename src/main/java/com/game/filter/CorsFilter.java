@@ -21,10 +21,12 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 设置CORS响应头
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        String targetUrl = ((javax.servlet.http.HttpServletRequest) request).getRequestURI();
+        System.out.println("targetUrl: " + targetUrl);
         httpResponse.setHeader("Access-Control-Allow-Origin", "*"); // 允许任何源
         httpResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"); // 允许的HTTP方法
         httpResponse.setHeader("Access-Control-Max-Age", "3600"); // 预检请求的缓存时间
-        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, Authorization"); // 允许的HTTP请求头
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, Authorization,token"); // 允许的HTTP请求头
 
         // 如果HTTP请求是OPTIONS，则返回状态码200
         if ("OPTIONS".equalsIgnoreCase(((javax.servlet.http.HttpServletRequest) request).getMethod())) {
