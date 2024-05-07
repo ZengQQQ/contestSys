@@ -123,7 +123,7 @@ public class StallService {
         if (teamProjectMessage.getTp_pass() == 1) {
             for (Project p : projectList) {
                 if (p.getP_status() != 0) {
-                    return Result.fail("更新失败,项目状态异常", "");
+                    return Result.fail("更新失败,项目已经关闭", "");
                 }
             }
             for (Team t : teamList) {
