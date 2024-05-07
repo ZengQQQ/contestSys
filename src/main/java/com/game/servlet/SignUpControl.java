@@ -43,16 +43,16 @@ public class SignUpControl extends HttpServlet {
         String jsonString = JSON.toJSONString(paramMap);
         User user = JSON.parseObject(jsonString, User.class);
 
-        if(identity==null){
-            identity="";
-        }
-        switch (identity){
-            case "mentor":
-                user.setU_identity(1);
-                break;
-            default:
-                user.setU_identity(0);
-        }
+//        if(identity==null){
+//            identity="";
+//        }
+//        switch (identity){
+//            case "mentor":
+//                user.setU_identity(1);
+//                break;
+//            default:
+//                user.setU_identity(0);
+//        }
         Result<String> responseData= signUpControlServe.SignUp(user);
         String json = JSON.toJSONString(responseData);
         resp.setContentType("application/json");
