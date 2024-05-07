@@ -55,7 +55,12 @@ public class MentorDao extends BaseDao<Mentor> {
         return value;
     }
 
-
+    /**
+     * 更新教师信息
+     * @param mentor 新数据，要求不能包含唯一性数据
+     * @param mapCondition 旧数据，用于条件：要求id以及另一个唯一标识
+     * @return
+     */
     public int update(Mentor mentor, Mentor mapCondition) {
         Map<String, Object> map = mentor.toMap();
         map.remove("m_id");

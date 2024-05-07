@@ -1,9 +1,9 @@
-package com.game.servlet.admin.student;
+package com.game.servlet.baseOnDO.user;
 
-import com.game.domain.Project;
+import com.alibaba.fastjson2.JSON;
 import com.game.domain.Student;
-import com.game.serve.ProjectService;
-import com.game.serve.StudentService;
+import com.game.domain.User;
+import com.game.serve.UserService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -16,10 +16,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/student/update")
-public class Update extends HttpServlet {
 
-    private static final StudentService studentService = new StudentService();
+@WebServlet(value = "/user/delete")
+public class Delete extends HttpServlet {
+    public static final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,15 +29,17 @@ public class Update extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Enumeration<String> parameterNames = req.getParameterNames();
+
         Map<String, Object> paramMap = new HashMap<>();
+
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Student student = new Student().mapToClass(paramMap);
-        Result<String> result = studentService.update(student);
+        String jsonString = JSON.toJSONString(paramMap);
+        User stall = JSON.parseObject(jsonString, User.class);
+        Result<String> result = userService.delete(stall);
         resp.getWriter().write(Result.toJson(result));
     }
 }

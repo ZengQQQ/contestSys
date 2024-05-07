@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @WebServlet(value = "/admin/queryStall")
 public class QueryStall extends HttpServlet {
     QueryControlServe query = new QueryControlServe();

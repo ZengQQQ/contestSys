@@ -1,29 +1,25 @@
-package com.game.servlet.admin;
+package com.game.servlet.baseOnDO.project;
 
 import com.alibaba.fastjson2.JSON;
-import com.game.bean.PageBean;
 import com.game.domain.Project;
-import com.game.domain.StallMentorMessage;
 import com.game.domain.fixDomain.ProjectFix;
-import com.game.serve.QueryControlServe;
-import com.game.utils.CurPage;
+import com.game.serve.ProjectService;
 import com.game.utils.Result;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/queryProject")
-public class QueryProject extends HttpServlet {
-    QueryControlServe query = new QueryControlServe();
+@WebServlet(value = "/project/add")
+public class Insert extends HttpServlet {
+    ProjectService projectService = new ProjectService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
@@ -31,9 +27,6 @@ public class QueryProject extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json;charset=UTF-8");
-
         Enumeration<String> parameterNames = req.getParameterNames();
 
         Map<String, Object> paramMap = new HashMap<>();
@@ -44,13 +37,8 @@ public class QueryProject extends HttpServlet {
             paramMap.put(paramName, paramValue);
         }
         String jsonString = JSON.toJSONString(paramMap);
-        Project stall = JSON.parseObject(jsonString, Project.class);
-        Integer currentPage =JSON.parseObject(jsonString, CurPage.class).getCurrentPage();
-
-        Result<PageBean<ProjectFix>> responseData =query.queryPage(currentPage,stall);
-        String json = JSON.toJSONString(responseData);
-        resp.setContentType("application/json");
-        resp.getWriter().write(json);
-        resp.getWriter().flush();
+        ProjectFix stall = JSON.parseObject(jsonString, ProjectFix.class);
+        Result<String> result = projectService.insert(stall);
+        resp.getWriter().write(Result.toJson(result));
     }
 }

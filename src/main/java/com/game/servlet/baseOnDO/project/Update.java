@@ -1,6 +1,8 @@
-package com.game.servlet.admin.project;
+package com.game.servlet.baseOnDO.project;
 
+import com.alibaba.fastjson2.JSON;
 import com.game.domain.Project;
+import com.game.domain.fixDomain.ProjectFix;
 import com.game.serve.ProjectService;
 import com.game.utils.Result;
 
@@ -14,10 +16,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+@WebServlet("/project/update")
+public class Update extends HttpServlet {
 
-@WebServlet(value = "/admin/project/delete")
-public class Delete extends HttpServlet {
-    public static final ProjectService projectService = new ProjectService();
+    private static final ProjectService projectService = new ProjectService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,16 +29,17 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Enumeration<String> parameterNames = req.getParameterNames();
+
         Map<String, Object> paramMap = new HashMap<>();
+
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
-
-        Result<String> result = projectService.delete(project);
+        String jsonString = JSON.toJSONString(paramMap);
+        Project stall = JSON.parseObject(jsonString, Project.class);
+        Result<String> result = projectService.update(stall);
         resp.getWriter().write(Result.toJson(result));
     }
 }
