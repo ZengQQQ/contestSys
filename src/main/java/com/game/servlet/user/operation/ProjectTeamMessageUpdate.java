@@ -1,8 +1,7 @@
 package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
-import com.game.domain.*;
-import com.game.serve.RelationshipServe;
+import com.game.domain.TeamProjectMessage;
 import com.game.serve.StallService;
 import com.game.utils.Result;
 
@@ -16,8 +15,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/ProjectTeamMessageSend")
-public class ProjectTeamMessageSend extends HttpServlet {
+@WebServlet(value = "/user/ProjectTeamMessageUpdate")
+public class ProjectTeamMessageUpdate extends HttpServlet {
     StallService relation = new StallService();
 
     @Override
@@ -40,9 +39,9 @@ public class ProjectTeamMessageSend extends HttpServlet {
         TeamProjectMessage tar = new TeamProjectMessage();
         tar.setT_id(teamProjectMessage.getT_id());
         tar.setP_id(teamProjectMessage.getP_id());
-        tar.setTp_dict(teamProjectMessage.getTp_dict());
+        tar.setTp_dict(teamProjectMessage.getTp_pass());
 
-        Result<String> result = relation.insert(tar);
+        Result<String> result = relation.updateApproval(tar);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

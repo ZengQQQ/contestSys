@@ -51,37 +51,35 @@ public class StallService {
         return Result.fail("添加失败", "添加失败");
     }
 
-    public Result<String> addMentor(StallMentorMessage stall,Mentor mentor) {
+    public Result<String> updateMentor(Stall stall,Mentor mentor) {
         Stall tar = new Stall();
         tar.setSt_id(stall.getSt_id());
         List<Stall> exited = stalldao.query(tar,-1,-1);
         if (exited.isEmpty()){
-            return Result.fail("发送消息失败，没有该房间","是不是(lll￢ω￢)");
+            return Result.fail("更新失败","没有该房间");
         }
         Mentor mentor1 = new Mentor();
         mentor1.setM_acc(mentor.getM_acc());
         List<Mentor> mentorList = (new MentorDao()).query(mentor1,-1,-1);
         if (mentorList.isEmpty()){
-            return Result.fail("发送消息失败，没有该导师","");
-        }
-        User user = new User();
-        user.setU_acc(mentor.getM_acc());
-        if(new UserDao().query(user,-1,-1).isEmpty()){
-            return Result.fail("发送消息失败，该导师未注册","该导师未注册");
+            return Result.fail("更新失败","没有该导师");
         }
         StallMentorMessage smm = new StallMentorMessage();
         smm.setSt_id(stall.getSt_id());
         smm.setU_acc(mentor.getM_acc());
-        smm.setJoin_status(1);
         List<StallMentorMessage> smmList = stallMentorMessageDao.query(smm,-1,-1);
         if (!smmList.isEmpty()){
-            return Result.fail("发送消息失败，已存在该房间导师对应关系","已存在该房间导师对应关系");
+            return Result.fail("更新失败","已存在该房间导师对应关系");
         }
-        boolean inserted = stallMentorMessageDao.insert(stall);
-        if (inserted ){
-            return Result.success("添加房间导师关联表成功");
+        boolean inserted = stallMentorMessageDao.insert(smm);
+        if (!inserted){
+            return Result.success("添加房间导师关联表失败");
         }
-        return Result.fail("更新失败","");
+        int updated = stalldao.update(stall,tar);
+        if (updated == 0){
+            return Result.fail("更新失败","更新失败");
+        }
+        return Result.success("更新成功");
     }
 
 //    public Result<String> updateTeam(Stall stall,Team team) {

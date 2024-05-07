@@ -83,7 +83,7 @@ public class BaseDao<T> extends ReflectionUtils {
         // 构建？
         StringBuilder sqlBuilder = new StringBuilder("INSERT INTO "+tableName+" ");
         // 拼接key
-        sqlBuilder.append("(");
+        sqlBuilder.append("( ");
         for (String key : map.keySet()) {
             sqlBuilder.append(key).append(",");
         }
