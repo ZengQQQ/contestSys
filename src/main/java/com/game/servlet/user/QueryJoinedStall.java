@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @WebServlet(value = "/user/queryJoinedStall")
 public class QueryJoinedStall extends HttpServlet {
@@ -79,26 +80,22 @@ public class QueryJoinedStall extends HttpServlet {
                 break;
             default:chain.setJoin_status(1);
         }
-        switch (teamType){
+        switch (Objects.requireNonNull(teamType)){
             case "lock":chain1.setT_status(1);
                 break;
             case "disband":chain1.setT_status(2);
                 break;
             default:chain1.setT_status(0);
         }
-        switch (joinStallType){
-            case "joined":chain2.setJoin_status(1);
-                break;
+        switch (Objects.requireNonNull(joinStallType)){
             case "joining":chain2.setJoin_status(0);chain2.setStm_status(1);
                 break;
-            default:
+            default:chain2.setJoin_status(1);
         }
-        switch (stallType){
-            case "normal":target.setSt_status(0);
-                break;
+        switch (Objects.requireNonNull(stallType)){
             case "lock":target.setSt_status(1);
                 break;
-            default:
+            default:target.setSt_status(0);
         }
 
         Result<PageBean<StallFix>> responseData =query.joinedStallQuery(currentPage,stall,chain,chain1,chain2,target);

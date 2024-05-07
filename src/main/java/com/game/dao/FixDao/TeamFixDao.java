@@ -33,7 +33,10 @@ public class TeamFixDao {
         User taget = new User();
         TeamUserMessage chain = new TeamUserMessage();
         chain.setJoin_status(1);
-        List<User> member = userDao.leftQuery(User.class,"team",BaseDao.formList(ele,taget,chain),-1,-1);
+        Map<String,String> joincondition = new LinkedHashMap<>();
+        joincondition.put("team_user_message","team_user_message.t_id=team.t_id");
+        joincondition.put("user","team_user_message.u_acc=user.u_acc");
+        List<User> member = userDao.leftQuery(User.class,"team",BaseDao.formList(ele,taget,chain),joincondition,-1,-1);
         for(User e:member){
             e.setU_pwd(null);
         }

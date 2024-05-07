@@ -36,7 +36,6 @@ public class QueryStall extends HttpServlet {
         resp.setContentType("application/json;charset=UTF-8");
 
         Enumeration<String> parameterNames = req.getParameterNames();
-
         Map<String, Object> paramMap = new HashMap<>();
 
         while (parameterNames.hasMoreElements()) {
