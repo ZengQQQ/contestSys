@@ -36,9 +36,10 @@ public class MentorTeamMessageSend extends HttpServlet {
         String jsonString = JSON.toJSONString(paramMap);
         TeamMentorMessage teamMentorMessage = JSON.parseObject(jsonString, TeamMentorMessage.class);
         TeamMentorMessage tar = new TeamMentorMessage();
+        tar.setM_acc(teamMentorMessage.getM_acc());
         tar.setT_id(teamMentorMessage.getT_id());
-        tar.setP_id(teamMentorMessage.getP_id());
-        tar.setTp_dict(teamMentorMessage.getTp_dict());
+        tar.setSm_info(teamMentorMessage.getSm_info());
+        tar.setTp_dct(teamMentorMessage.getTp_dct());
 
         Result<String> result = relation.insert(tar);
         String json = JSON.toJSONString(result);

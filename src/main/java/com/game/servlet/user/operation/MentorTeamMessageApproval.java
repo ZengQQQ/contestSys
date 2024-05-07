@@ -37,8 +37,8 @@ public class MentorTeamMessageApproval extends HttpServlet {
         TeamMentorMessage teamMentorMessage = JSON.parseObject(jsonString, TeamMentorMessage.class);
         TeamMentorMessage tar = new TeamMentorMessage();
         tar.setT_id(teamMentorMessage.getT_id());
-        tar.setP_id(teamMentorMessage.getM_id());
-        tar.setTp_dict(teamMentorMessage.getTp_pass());
+        tar.setM_acc(teamMentorMessage.getM_acc());
+        tar.setSm_pass(teamMentorMessage.getSm_pass());
 
         Result<String> result = relation.updateApproval(tar);
         String json = JSON.toJSONString(result);
