@@ -8,6 +8,7 @@ import com.game.utils.Result;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class RelationshipServe {
     TeamUserMessageDao teamUserMessageDao = new TeamUserMessageDao();
@@ -15,6 +16,7 @@ public class RelationshipServe {
     ProjectDao projectDao = new ProjectDao();
     UserDao userDao = new UserDao();
     private static final TeamDao teamDao = new TeamDao();
+    private static final StudentDao studentDao = new StudentDao();
     TeamServe teamServe = new TeamServe();
     StallProjectMessageDao stallProjectMessageDao = new StallProjectMessageDao();
     StallTeamMessageDao stallTeamMessageDao = new StallTeamMessageDao();
@@ -24,24 +26,24 @@ public class RelationshipServe {
     public Result<String> insertTeamRelation(TeamUserMessage teamUserMessage) {
         if (teamUserMessage.getT_id() == null || teamUserMessage.getU_acc() == null || teamUserMessage.getTsm_dct() == null) {
             return Result.fail("添加关系失败,缺少参数", "");
-        } else if (teamUserMessage.getTsm_dct() == 0) {
+        } else if (teamUserMessage.getTsm_dct() == 0 || teamUserMessage.getTsm_dct() == 1) {
             User user = new User();
             user.setU_acc(teamUserMessage.getU_acc());
             List<User> userList = userDao.query(user, -1, -1);
             if (userList.isEmpty()) {
                 return Result.fail("添加关系失败,没有该用户", "");
             }
+            Student student = new Student();
+            student.setS_acc(user.getU_acc());
+            List<Student> students = studentDao.query(student, -1, -1);
+            if (students.isEmpty()) {
+                return Result.fail("添加关系失败,仅可学生加入队伍", "");
+            }
             for (User u : userList) {
                 if (u.getU_status() != 0) {
                     return Result.fail("添加关系失败,用户状态异常", "");
                 }
             }
-            boolean result = teamUserMessageDao.insert(teamUserMessage);
-            if (!result) {
-                return Result.fail("添加关系失败,队伍关系添加失败", "");
-            }
-            return Result.success("队伍关系添加成功");
-        } else if (teamUserMessage.getTsm_dct() == 1) {
             Team team = new Team();
             team.setT_id(teamUserMessage.getT_id());
             List<Team> teamList = teamDao.query(team, -1, -1);
@@ -53,22 +55,27 @@ public class RelationshipServe {
                     return Result.fail("添加关系失败,队伍状态异常", "");
                 }
             }
+            team = teamList.get(0);
+            if (Objects.equals(team.getU_acc(), user.getU_acc())){
+                return Result.fail("添加关系失败,队长无法加入自己的队伍", "");
+            }
             boolean result = teamUserMessageDao.insert(teamUserMessage);
             if (!result) {
                 return Result.fail("添加关系失败,队伍关系添加失败", "");
             }
             return Result.success("队伍关系添加成功");
         }
-        return Result.fail("添加关系失败,无法识别的关系类型", "");
+        return Result.fail("添加关系失败,无法识别的关系方向", "");
     }
 
     /**
      * 管理员封禁team user message
+     *
      * @param teamUserMessage 修改后的team user message，包含t_id，tsm_status
      * @return Result<String> 修改结果
      */
 
-    public Result<String>  BanTeamUserMessage(TeamUserMessage teamUserMessage) {
+    public Result<String> BanTeamUserMessage(TeamUserMessage teamUserMessage) {
         TeamUserMessage tar = new TeamUserMessage();
         tar.setT_id(teamUserMessage.getT_id());
         List<TeamUserMessage> resList = teamUserMessageDao.query(tar, -1, -1);
@@ -135,8 +142,6 @@ public class RelationshipServe {
         }
         return Result.fail("添加关系失败,无法识别的关系类型", "");
     }
-
-
 
 
     public Result<String> insertStallProjectRelation(StallProjectMessage stallProjectMessage) {

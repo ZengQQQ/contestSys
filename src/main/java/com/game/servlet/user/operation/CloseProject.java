@@ -2,7 +2,6 @@ package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.domain.Project;
-import com.game.domain.fixDomain.ProjectFix;
 import com.game.serve.ProjectService;
 import com.game.utils.Result;
 
@@ -16,9 +15,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@WebServlet(value = "/user/CreateProject")
-public class CreateProject extends HttpServlet {
+@WebServlet(value = "/user/CloseProject")
+public class CloseProject extends HttpServlet {
     ProjectService relation = new ProjectService();
 
     @Override
@@ -38,12 +36,14 @@ public class CreateProject extends HttpServlet {
 
         String jsonString = JSON.toJSONString(paramMap);
         Project project = JSON.parseObject(jsonString, Project.class);
+        Project tar = new Project();
+        tar.setP_id(project.getP_id());
+        tar.setP_status(1);
 
-        Result<String> result = relation.insert(project);
+        Result<String> result = relation.update(tar);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();
     }
 }
-

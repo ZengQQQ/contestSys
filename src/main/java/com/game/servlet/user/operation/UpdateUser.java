@@ -1,9 +1,9 @@
 package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
-import com.game.domain.Project;
-import com.game.domain.fixDomain.ProjectFix;
-import com.game.serve.ProjectService;
+import com.game.domain.Team;
+import com.game.domain.User;
+import com.game.serve.UserService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -16,10 +16,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@WebServlet(value = "/user/CreateProject")
-public class CreateProject extends HttpServlet {
-    ProjectService relation = new ProjectService();
+@WebServlet(value = "/user/UpdateUser")
+public class UpdateUser extends HttpServlet {
+    UserService relation = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,13 +36,12 @@ public class CreateProject extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        Project project = JSON.parseObject(jsonString, Project.class);
+        User user = JSON.parseObject(jsonString, User.class);
 
-        Result<String> result = relation.insert(project);
+        Result<String> result = relation.update(user);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);
         resp.getWriter().flush();
     }
 }
-
