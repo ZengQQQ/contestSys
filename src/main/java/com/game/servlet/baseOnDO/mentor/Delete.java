@@ -1,10 +1,12 @@
-package com.game.servlet.admin.project;
+package com.game.servlet.baseOnDO.mentor;
 
-import com.game.domain.Project;
-import com.game.serve.ProjectService;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.Mentor;
+import com.game.serve.MentorServe;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +16,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/project/update")
-public class Update extends HttpServlet {
-
-    private static final ProjectService projectService = new ProjectService();
+@WebServlet("/mentor/delete")
+public class Delete extends HttpServlet {
+    public static final MentorServe mentorServe = new MentorServe();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,15 +28,18 @@ public class Update extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Enumeration<String> parameterNames = req.getParameterNames();
+
         Map<String, Object> paramMap = new HashMap<>();
+
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Project project = new Project().mapToClass(paramMap);
-        Result<String> result = projectService.update(project);
+        String jsonString = JSON.toJSONString(paramMap);
+        Mentor mentor = JSON.parseObject(jsonString, Mentor.class);
+
+        Result<String> result = mentorServe.delete(mentor);
         resp.getWriter().write(Result.toJson(result));
     }
 }

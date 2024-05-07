@@ -1,8 +1,9 @@
-package com.game.servlet.admin.student;
+package com.game.servlet.baseOnDO.student;
 
+import com.alibaba.fastjson2.JSON;
 import com.game.domain.Project;
-
 import com.game.domain.Student;
+import com.game.serve.ProjectService;
 import com.game.serve.StudentService;
 import com.game.utils.Result;
 
@@ -16,9 +17,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/admin/student/insert")
-public class Insert extends HttpServlet {
-    StudentService studentService = new StudentService();
+@WebServlet("/student/update")
+public class Update extends HttpServlet {
+
+    private static final StudentService studentService = new StudentService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,8 +29,6 @@ public class Insert extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
         Enumeration<String> parameterNames = req.getParameterNames();
 
         Map<String, Object> paramMap = new HashMap<>();
@@ -38,11 +38,9 @@ public class Insert extends HttpServlet {
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-//        Integer currentPage = Integer.parseInt((String) paramMap.get("currentPage"));
-        // 将JSON字符串转换为User对象
-        // todo Can not set java.lang.Integer field com.game.domain.Student.s_status to java.lang.String
-        Student student = new Student().mapToClass(paramMap);
-        Result<String> result = studentService.insert(student);
+        String jsonString = JSON.toJSONString(paramMap);
+        Student stall = JSON.parseObject(jsonString, Student.class);
+        Result<String> result = studentService.update(stall);
         resp.getWriter().write(Result.toJson(result));
     }
 }

@@ -1,7 +1,9 @@
-package com.game.servlet.admin.mentor;
+package com.game.servlet.baseOnDO.user;
 
-import com.game.domain.Mentor;
-import com.game.serve.MentorServe;
+import com.alibaba.fastjson2.JSON;
+import com.game.domain.Student;
+import com.game.domain.User;
+import com.game.serve.UserService;
 import com.game.utils.Result;
 
 import javax.servlet.ServletException;
@@ -14,10 +16,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/admin/mentor/Update")
-public class Update extends HttpServlet {
-
-    private static final MentorServe mentorServe = new MentorServe();
+@WebServlet(value = "/user/add")
+public class Insert extends HttpServlet {
+    UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,15 +28,17 @@ public class Update extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Enumeration<String> parameterNames = req.getParameterNames();
+
         Map<String, Object> paramMap = new HashMap<>();
+
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
             String paramValue = req.getParameter(paramName);
             paramMap.put(paramName, paramValue);
         }
-        // 将JSON字符串转换为User对象
-        Mentor mentor = new Mentor().mapToClass(paramMap);
-        Result<String> result = mentorServe.update(mentor);
+        String jsonString = JSON.toJSONString(paramMap);
+        User stall = JSON.parseObject(jsonString, User.class);
+        Result<String> result = userService.insert(stall);
         resp.getWriter().write(Result.toJson(result));
     }
 }
