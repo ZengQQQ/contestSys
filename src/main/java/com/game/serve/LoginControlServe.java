@@ -27,7 +27,19 @@ public class LoginControlServe {
         if (user.getU_acc()!=null && user.getU_pwd()!=null ) {
             User user2 = (new UserDao()).querySingle(user);
             if(user2!=null){
-                if(user2.getU_status()==0){
+                Integer status;
+                if(user2.getU_identity()==0){
+                    Student student = new Student();
+                    student.setS_acc(user2.getU_acc());
+                    student = new StudentDao().querySingle(student);
+                    status = student.getS_status();
+                }else {
+                    Mentor mentor = new Mentor();
+                    mentor.setM_acc(user.getU_acc());
+                    mentor=new MentorDao().querySingle(mentor);
+                    status = mentor.getM_status();
+                }
+                if(user2.getU_status()==0&& status==0){
                     user2.setU_pwd(null);
                     String token= JWTUtils.encodeJwt(user2);;
                     return Result.success(token);
@@ -36,7 +48,7 @@ public class LoginControlServe {
                 }else if(user2.getU_status()==2) {
                     return Result.fail("用户登录失败,用户违规", null);
                 }else {
-                    return Result.fail("用户登录失败,用户封禁", null);
+                    return Result.fail("用户登录失败,用户注册表封禁", null);
                 }
             }else{
                 return Result.fail("用户登录失败,账号或密码错误", null);
