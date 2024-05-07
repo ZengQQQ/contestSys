@@ -1,14 +1,8 @@
 package com.game.serve;
 
-import com.game.dao.ProjectDao;
-import com.game.dao.StallMentorMessageDao;
-import com.game.dao.StallProjectMessageDao;
-import com.game.dao.StallTeamMessageDao;
-import com.game.domain.Project;
+import com.game.dao.*;
+import com.game.domain.*;
 import com.game.domain.fixDomain.ProjectFix;
-import com.game.domain.StallMentorMessage;
-import com.game.domain.StallProjectMessage;
-import com.game.domain.StallTeamMessage;
 import com.game.utils.Result;
 
 import java.util.List;
@@ -19,6 +13,7 @@ public class ProjectService {
     private static final StallMentorMessageDao stallMentorMessageDao = new StallMentorMessageDao();
     private static final StallProjectMessageDao stallProjectMessageDao = new StallProjectMessageDao();
     private static final StallTeamMessageDao stallTeamMessageDao = new StallTeamMessageDao();
+    private static final StallDao stallDao = new StallDao();
 
     public Result<String> insert(ProjectFix projectFix) {
         // 将ProjectFix 转换为 Project
@@ -81,6 +76,7 @@ public class ProjectService {
             spm.setSpm_status(0);
             StallMentorMessage stallMentorMessage1 = new StallMentorMessage();
             StallProjectMessage stallProjectMessage1 = new StallProjectMessage();
+            Stall stall1 = new Stall();
             List<StallProjectMessage> stallProjectMessages = stallProjectMessageDao.query(spm,-1,-1);
             for (StallProjectMessage stallProjectMessage : stallProjectMessages) {
                 stallProjectMessage1 = stallProjectMessage;
@@ -104,22 +100,35 @@ public class ProjectService {
                             return Result.fail("更新失败", "");
                         }
                     }
-                    StallMentorMessage smm = new StallMentorMessage();
-                    smm.setSt_id(stallProjectMessage.getSt_id());
-                    smm.setSmm_status(0);
-                    smm.setJoin_status(1);
-                    List<StallMentorMessage> stallMentorMessages = stallMentorMessageDao.query(smm, -1, -1);
-                    if (!stallMentorMessages.isEmpty()) {
-                        for (StallMentorMessage stallMentorMessage : stallMentorMessages) {
-                            stallMentorMessage1 = stallMentorMessage;
-                            stallMentorMessage.setJoin_status(0);
-                            result1 = stallMentorMessageDao.update(stallMentorMessage1, stallMentorMessage);
-                            if (result1 == 0) {
-                                return Result.fail("更新失败", "");
-                            }
+                }
+                StallMentorMessage smm = new StallMentorMessage();
+                smm.setSt_id(stallProjectMessage.getSt_id());
+                smm.setSmm_status(0);
+                smm.setJoin_status(1);
+                List<StallMentorMessage> stallMentorMessages = stallMentorMessageDao.query(smm, -1, -1);
+                if (!stallMentorMessages.isEmpty()) {
+                    for (StallMentorMessage stallMentorMessage : stallMentorMessages) {
+                        stallMentorMessage1 = stallMentorMessage;
+                        stallMentorMessage.setJoin_status(0);
+                        result1 = stallMentorMessageDao.update(stallMentorMessage1, stallMentorMessage);
+                        if (result1 == 0) {
+                            return Result.fail("更新失败", "");
                         }
                     }
-
+                }
+                Stall stall = new Stall();
+                stall.setSt_id(stallProjectMessage.getSt_id());
+                stall.setSt_status(0);
+                List<Stall> stalls = new StallDao().query(stall, -1, -1);
+                if (!stalls.isEmpty()) {
+                    for (Stall stall2 : stalls) {
+                        stall1 = stall2;
+                        stall2.setSt_status(1);
+                        result1 = stallDao.update(stall2, stall1);
+                        if (result1 == 0) {
+                            return Result.fail("更新失败", "");
+                        }
+                    }
                 }
             }
             return Result.success("项目关闭成功");

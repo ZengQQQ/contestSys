@@ -16,7 +16,6 @@ public class TeamServe {
     private static final StallMentorMessageDao stallMentorMessageDao = new StallMentorMessageDao();
 
 
-
     public Result<String> insert(Team team) {
         List<Team> exited = teamDao.query(team, -1, -1);
         if (!exited.isEmpty()) {
@@ -37,28 +36,32 @@ public class TeamServe {
         if (exited.isEmpty()) {
             return Result.fail("更新失败,没有该团队", "");
         }
-        int updated = teamDao.update(team, tar);
-        if (updated == 0) {
-            return Result.fail("更新失败", "");
-        }
         if (team.getT_status() == 2) {
             TeamUserMessage tsm = new TeamUserMessage();
             tsm.setT_id(team.getT_id());
             tsm.setJoin_status(1);
             List<TeamUserMessage> teamUserMessages = teamUserMessageDao.query(tsm, -1, -1);
             if (teamUserMessages.isEmpty()) {
-                return Result.fail("更新成功","");
+                int result1 = teamDao.update(team, tar);
+                if (result1 == 0) {
+                    return Result.fail("更新失败", "");
+                }
+                return Result.success("解散成功");
             }
             for (TeamUserMessage teamUserMessage : teamUserMessages) {
                 TeamUserMessage teamUserMessage1 = new TeamUserMessage();
                 teamUserMessage1 = teamUserMessage;
                 teamUserMessage.setJoin_status(2);
-                teamUserMessageDao.update(teamUserMessage, teamUserMessage1);
+                int result1 = teamUserMessageDao.update(teamUserMessage, teamUserMessage1);
+                if (result1 == 0) {
+                    return Result.fail("更新失败", "");
+                }
             }
             StallTeamMessage stm = new StallTeamMessage();
             StallTeamMessage stallTeamMessage1 = new StallTeamMessage();
             StallProjectMessage stallProjectMessage1 = new StallProjectMessage();
             StallMentorMessage stallMentorMessage1 = new StallMentorMessage();
+            Stall stall1 = new Stall();
             stm.setT_id(team.getT_id());
             stm.setJoin_status(1);
             stm.setStm_status(0);
@@ -67,7 +70,10 @@ public class TeamServe {
                 for (StallTeamMessage stallTeamMessage : stallTeamMessages) {
                     stallTeamMessage1 = stallTeamMessage;
                     stallTeamMessage.setJoin_status(0);
-                    stallTeamMessageDao.update(stallTeamMessage1,stallTeamMessage);
+                    int result1 = stallTeamMessageDao.update(stallTeamMessage1, stallTeamMessage);
+                    if (result1 == 0) {
+                        return Result.fail("更新失败", "");
+                    }
                 }
             }
             StallProjectMessage spm = new StallProjectMessage();
@@ -79,7 +85,10 @@ public class TeamServe {
                 for (StallProjectMessage stallProjectMessage : stallProjectMessages) {
                     stallProjectMessage1 = stallProjectMessage;
                     stallProjectMessage.setJoin_status(0);
-                    stallProjectMessageDao.update(stallProjectMessage1, stallProjectMessage);
+                    int result1 = stallProjectMessageDao.update(stallProjectMessage1, stallProjectMessage);
+                    if (result1 == 0) {
+                        return Result.fail("更新失败", "");
+                    }
                 }
             }
             StallMentorMessage smm = new StallMentorMessage();
@@ -91,10 +100,32 @@ public class TeamServe {
                 for (StallMentorMessage stallMentorMessage : stallMentorMessages) {
                     stallMentorMessage1 = stallMentorMessage;
                     stallMentorMessage.setJoin_status(0);
-                    stallMentorMessageDao.update(stallMentorMessage1, stallMentorMessage);
+                    int result1 = stallMentorMessageDao.update(stallMentorMessage1, stallMentorMessage);
+                    if (result1 == 0) {
+                        return Result.fail("更新失败", "");
+                    }
                 }
             }
+            Stall stall = new Stall();
+            stall.setSt_id(team.getT_id());
+            stall.setSt_status(0);
+            List<Stall> stalls = new StallDao().query(stall, -1, -1);
+            if (!stalls.isEmpty()) {
+                for (Stall stall2 : stalls) {
+                    stall1 = stall2;
+                    stall2.setSt_status(1);
+                    new StallDao().update(stall2, stall1);
+                }
+            }
+            int result1 = teamDao.update(team, tar);
+            if (result1 == 0) {
+                return Result.fail("更新失败", "");
+            }
             return Result.success("解散成功");
+        }
+        int result1 = teamDao.update(team, tar);
+        if (result1 == 0) {
+            return Result.fail("更新失败", "");
         }
         return Result.success("更新成功");
     }
