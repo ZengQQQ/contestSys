@@ -37,7 +37,7 @@ public class CreateProject extends HttpServlet {
         }
 
         String jsonString = JSON.toJSONString(paramMap);
-        ProjectFix project = JSON.parseObject(jsonString, ProjectFix.class);
+        Project project = JSON.parseObject(jsonString, Project.class);
 
         Result<String> result = relation.insert(project);
         String json = JSON.toJSONString(result);

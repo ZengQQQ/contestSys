@@ -40,6 +40,20 @@ public class ProjectService {
         return Result.fail("添加失败","更新失败");
     }
 
+
+
+    public Result<String> insert(Project project) {
+        List<Project> exited = projectDao.query(project,-1,-1);
+        if (!exited.isEmpty()){
+            return Result.fail("添加失败","项目已存在");
+        }
+        boolean inserted = projectDao.insert(project);
+        if (inserted){
+            return Result.success("添加成功");
+        }
+        return Result.fail("添加失败","更新失败");
+    }
+
     public Result<String> update(Project project) {
         Project tar = new Project();
         tar.setP_id(project.getP_id());
