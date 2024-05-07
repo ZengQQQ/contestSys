@@ -62,6 +62,25 @@ public class RelationshipServe {
         return Result.fail("添加关系失败,无法识别的关系类型", "");
     }
 
+    /**
+     * 管理员封禁team user message
+     * @param teamUserMessage 修改后的team user message，包含t_id，tsm_status
+     * @return Result<String> 修改结果
+     */
+
+    public Result<String>  BanTeamUserMessage(TeamUserMessage teamUserMessage) {
+        TeamUserMessage tar = new TeamUserMessage();
+        tar.setT_id(teamUserMessage.getT_id());
+        List<TeamUserMessage> resList = teamUserMessageDao.query(tar, -1, -1);
+        if (resList.isEmpty()) {
+            return Result.fail("没有该消息", null);
+        }
+        int result = teamUserMessageDao.update(teamUserMessage, tar);
+        if (result == 0) {
+            return Result.fail("封禁消息失败", null);
+        }
+        return Result.success("封禁成功");
+    }
 
     public Result<String> updateTeamRelation(TeamUserMessage teamUserMessage) {
         TeamUserMessage tar = new TeamUserMessage();
@@ -116,6 +135,8 @@ public class RelationshipServe {
         }
         return Result.fail("添加关系失败,无法识别的关系类型", "");
     }
+
+
 
 
     public Result<String> insertStallProjectRelation(StallProjectMessage stallProjectMessage) {
