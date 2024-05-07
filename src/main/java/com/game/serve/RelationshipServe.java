@@ -8,6 +8,7 @@ import com.game.utils.Result;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class RelationshipServe {
     TeamUserMessageDao teamUserMessageDao = new TeamUserMessageDao();
@@ -53,6 +54,10 @@ public class RelationshipServe {
                 if (t.getT_status() != 0) {
                     return Result.fail("添加关系失败,队伍状态异常", "");
                 }
+            }
+            team = teamList.get(0);
+            if (Objects.equals(team.getU_acc(), user.getU_acc())){
+                return Result.fail("添加关系失败,队长无法加入自己的队伍", "");
             }
             boolean result = teamUserMessageDao.insert(teamUserMessage);
             if (!result) {
