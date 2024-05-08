@@ -67,10 +67,10 @@ public class QueryJoinedTeam extends HttpServlet {
         }
 
         switch (joinType){
-            case "joined":chain.setJoin_status(1);
+            case "joined":chain.setJoin_status(0);chain.setTsm_pass(1);
                 break;
             default:
-                chain.setJoin_status(0);chain.setTsm_pass(1);
+                chain.setJoin_status(1);chain.setTsm_pass(1);
         }
         switch (teamType){
             case "lock":target.setT_status(1);
