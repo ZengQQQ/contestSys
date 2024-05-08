@@ -88,9 +88,9 @@ public class QueryJoinedStall extends HttpServlet {
             default:chain1.setT_status(0);
         }
         switch (Objects.requireNonNull(joinStallType)){
-            case "joining":chain2.setJoin_status(0);chain2.setStm_status(1);
+            case "joined":chain2.setJoin_status(1);
                 break;
-            default:chain2.setJoin_status(1);
+            default:chain2.setJoin_status(0);chain2.setStm_status(1);
         }
         switch (Objects.requireNonNull(stallType)){
             case "lock":target.setSt_status(1);

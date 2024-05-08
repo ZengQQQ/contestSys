@@ -69,18 +69,16 @@ public class QueryJoinedTeam extends HttpServlet {
         switch (joinType){
             case "joined":chain.setJoin_status(1);
                 break;
-            case "joining":chain.setJoin_status(0);chain.setTsm_pass(1);
-                break;
             default:
+                chain.setJoin_status(0);chain.setTsm_pass(1);
         }
         switch (teamType){
-            case "normal":target.setT_status(0);
-                break;
             case "lock":target.setT_status(1);
                 break;
             case "disband":target.setT_status(2);
                 break;
             default:
+                target.setT_status(0);
         }
         // 将JSON字符串转换为User对象
         Result<PageBean<TeamFix>> responseData =query.joinedTeamQuery(currentPage,stall,chain,target);
