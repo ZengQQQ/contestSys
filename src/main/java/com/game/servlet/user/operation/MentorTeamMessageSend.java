@@ -39,7 +39,7 @@ public class MentorTeamMessageSend extends HttpServlet {
         tar.setM_acc(teamMentorMessage.getM_acc());
         tar.setT_id(teamMentorMessage.getT_id());
         tar.setSm_info(teamMentorMessage.getSm_info());
-        tar.setTp_dct(teamMentorMessage.getTp_dct());
+        tar.setSm_dct(teamMentorMessage.getSm_dct());
 
         Result<String> result = relation.insert(tar);
         String json = JSON.toJSONString(result);

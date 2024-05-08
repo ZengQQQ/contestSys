@@ -290,14 +290,14 @@ public class StallService {
         StallMentorMessage smm = new StallMentorMessage();
         smm.setU_acc(user.getU_acc());
         smm.setSt_id(stall.getSt_id());
-        if (message.getTp_dct() == 1) {
+        if (message.getSm_dct() == 1) {
             smm.setSmm_dct(1);
             smm.setSmm_info(message.getSm_info());
             boolean inserted2 = stallMentorMessageDao.insert(smm);
             if (inserted2) {
                 return Result.success("已发送申请");
             }
-        } else if (message.getTp_dct() == 0) {
+        } else if (message.getSm_dct() == 0) {
             smm.setSmm_dct(0);
             smm.setSmm_info(message.getSm_info());
             boolean inserted2 = stallMentorMessageDao.insert(smm);
