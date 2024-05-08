@@ -54,17 +54,18 @@ public class QueryMemTeamMessage extends HttpServlet {
         teamUserMessage =JSON.parseObject(jsonString, TeamUserMessage.class);
 
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":
-                teamUserMessage.setTsm_dct(0);
+                teamUserMessage.setTsm_dct(1);
                 break;
             case "get":
-                teamUserMessage.setTsm_dct(1);
+                teamUserMessage.setTsm_dct(0);
                 break;
             default:
         }
+
 
         Result<PageBean<TeamMessageFix>> responseData =query.queryMemberTeamPage(currentPage,teamUserMessage);
         String json = JSON.toJSONString(responseData);

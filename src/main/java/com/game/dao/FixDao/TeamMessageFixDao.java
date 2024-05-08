@@ -111,6 +111,11 @@ public class TeamMessageFixDao {
         return pageBean;
     }
 
-
+    public static void main(String[] args) {
+        TeamUserMessage teamUserMessage = new TeamUserMessage();
+        TeamMessageFixDao teamMessageFixDao =new TeamMessageFixDao();
+        teamUserMessage.setU_acc("21110124");
+        System.out.println(teamMessageFixDao.queryPage(1,teamUserMessage));
+    }
 
 }
