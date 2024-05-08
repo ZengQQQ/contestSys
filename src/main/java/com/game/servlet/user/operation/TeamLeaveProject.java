@@ -15,8 +15,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(value = "/user/ProjectTeamMessageApproval")
-public class ProjectTeamMessageApproval extends HttpServlet {
+@WebServlet(value = "/user/TeamLeaveProject")
+public class TeamLeaveProject extends HttpServlet {
     StallService relation = new StallService();
 
     @Override
@@ -39,7 +39,7 @@ public class ProjectTeamMessageApproval extends HttpServlet {
         TeamProjectMessage tar = new TeamProjectMessage();
         tar.setT_id(teamProjectMessage.getT_id());
         tar.setP_id(teamProjectMessage.getP_id());
-        tar.setTp_pass(teamProjectMessage.getTp_pass());
+        tar.setTp_join(0);
 
         Result<String> result = relation.updateApproval(tar);
         String json = JSON.toJSONString(result);

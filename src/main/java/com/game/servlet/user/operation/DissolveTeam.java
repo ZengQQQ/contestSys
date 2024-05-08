@@ -40,7 +40,7 @@ public class DissolveTeam extends HttpServlet {
         tar.setT_id(team.getT_id());
         tar.setT_status(2);
 
-        Result<String> result = relation.update(team);
+        Result<String> result = relation.update(tar);
         String json = JSON.toJSONString(result);
         resp.setContentType("application/json");
         resp.getWriter().write(json);

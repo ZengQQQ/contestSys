@@ -55,8 +55,4 @@ public class TeamMentorMessage {
         }
         return this;
     }
-
-    public int getTp_dct() {
-        return tp_dct;
-    }
 }
