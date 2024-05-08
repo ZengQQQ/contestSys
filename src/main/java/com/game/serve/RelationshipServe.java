@@ -34,7 +34,7 @@ public class RelationshipServe {
                 return Result.fail("添加关系失败,没有该用户", "");
             }
             Student student = new Student();
-            student.setS_acc(user.getU_acc());
+            student.setS_acc(teamUserMessage.getU_acc());
             List<Student> students = studentDao.query(student, -1, -1);
             if (students.isEmpty()) {
                 return Result.fail("添加关系失败,仅可学生加入队伍", "");

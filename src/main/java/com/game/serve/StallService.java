@@ -25,7 +25,7 @@ public class StallService {
         List<Project> projectList = projectDao.query(project, -1, -1);
         List<Team> teamList = teamDao.query(team, -1, -1);
         if (projectList.isEmpty() || teamList.isEmpty()) {
-            return Result.fail("添加失败,无目标项目与队伍", "");
+            return Result.fail("添加失败,无目标项目或队伍", "");
         }
         team = teamList.get(0);
         project = projectList.get(0);
@@ -33,19 +33,21 @@ public class StallService {
         stall.setU_acc(team.getU_acc());
         stall.setSt_id(team.getT_id());
         List<Stall> stallList = stalldao.query(stall, -1, -1);
-        if (!stallList.isEmpty()) {
-            for (Stall s : stallList) {
-                StallProjectMessage spm = new StallProjectMessage();
-                spm.setP_id(project.getP_id());
-                spm.setSt_id(s.getSt_id());
-                List<StallProjectMessage> spmList = stallProjectMessageDao.query(spm, -1, -1);
-                if (!spmList.isEmpty()) {
-                    return Result.fail("添加失败,已存在该团队项目对应关系", "");
-                }
+        if (stallList.isEmpty()) {
+            boolean inserted = stalldao.insert(stall);
+            if (!inserted) {
+                return Result.fail("添加失败,房间创建失败", "");
             }
         }
-
-        boolean inserted = stalldao.insert(stall);
+        for (Stall s : stallList) {
+            StallProjectMessage spm = new StallProjectMessage();
+            spm.setP_id(project.getP_id());
+            spm.setSt_id(s.getSt_id());
+            List<StallProjectMessage> spmList = stallProjectMessageDao.query(spm, -1, -1);
+            if (!spmList.isEmpty()) {
+                return Result.fail("添加失败,已存在该团队项目对应关系", "");
+            }
+        }
         StallTeamMessage stm1 = new StallTeamMessage();
         stm1.setJoin_status(1);
         stm1.setSt_id(stall.getSt_id());
@@ -53,51 +55,49 @@ public class StallService {
         if (project.getP_maxtime() != 0 && stmList1.size() >= project.getP_maxtime()) {
             return Result.fail("添加失败,超出队伍数量限制", "");
         }
-        if (inserted) {
-            StallTeamMessage stm = new StallTeamMessage();
-            stm.setSt_id(stall.getSt_id());
-            stm.setT_id(team.getT_id());
-            StallProjectMessage spm = new StallProjectMessage();
-            spm.setP_id(project.getP_id());
-            spm.setSt_id(stall.getSt_id());
-            for (Project p : projectList) {
-                if (p.getP_resagree() == 0) {
-                    stm.setStm_pass(1);
-                    stm.setJoin_status(1);
-                    stm.setStm_dct(1);
-                    spm.setSpm_pass(1);
-                    spm.setJoin_status(1);
-                    spm.setSpm_dct(1);
-                    boolean inserted1 = stallTeamMessageDao.insert(stm);
-                    boolean inserted2 = stallProjectMessageDao.insert(spm);
-                    if (inserted2 && inserted1) {
-                        return Result.success("加入成功（无需申请）");
-                    }
-                }
-            }
-            if (teamProjectMessage.getTp_dict() == 1) {
+        StallTeamMessage stm = new StallTeamMessage();
+        stm.setSt_id(stall.getSt_id());
+        stm.setT_id(team.getT_id());
+        StallProjectMessage spm = new StallProjectMessage();
+        spm.setP_id(project.getP_id());
+        spm.setSt_id(stall.getSt_id());
+        for (Project p : projectList) {
+            if (p.getP_resagree() == 0) {
                 stm.setStm_pass(1);
                 stm.setJoin_status(1);
                 stm.setStm_dct(1);
-                spm.setSpm_dct(1);
-                spm.setSpm_info(teamProjectMessage.getTp_info());
-                boolean inserted1 = stallTeamMessageDao.insert(stm);
-                boolean inserted2 = stallProjectMessageDao.insert(spm);
-                if (inserted2 && inserted1) {
-                    return Result.success("已发送申请");
-                }
-            } else if (teamProjectMessage.getTp_dict() == 0) {
                 spm.setSpm_pass(1);
                 spm.setJoin_status(1);
-                spm.setSpm_dct(0);
-                stm.setStm_dct(0);
-                stm.setStm_pass(0);
-                stm.setStm_info(teamProjectMessage.getTp_info());
+                spm.setSpm_dct(1);
                 boolean inserted1 = stallTeamMessageDao.insert(stm);
                 boolean inserted2 = stallProjectMessageDao.insert(spm);
                 if (inserted2 && inserted1) {
-                    return Result.success("已发送邀请");
+                    return Result.success("加入成功（无需申请）");
                 }
+            }
+        }
+        if (teamProjectMessage.getTp_dict() == 1) {
+            stm.setStm_pass(1);
+            stm.setJoin_status(1);
+            stm.setStm_dct(1);
+            spm.setSpm_dct(1);
+            spm.setSpm_info(teamProjectMessage.getTp_info());
+            boolean inserted1 = stallTeamMessageDao.insert(stm);
+            boolean inserted2 = stallProjectMessageDao.insert(spm);
+            if (inserted2 && inserted1) {
+                return Result.success("已发送申请");
+            }
+        } else if (teamProjectMessage.getTp_dict() == 0) {
+            spm.setSpm_pass(1);
+            spm.setJoin_status(1);
+            spm.setSpm_dct(0);
+            stm.setStm_dct(0);
+            stm.setStm_pass(0);
+            stm.setStm_info(teamProjectMessage.getTp_info());
+            boolean inserted1 = stallTeamMessageDao.insert(stm);
+            boolean inserted2 = stallProjectMessageDao.insert(spm);
+            if (inserted2 && inserted1) {
+                return Result.success("已发送邀请");
             }
         }
         return Result.fail("添加失败", "");
@@ -177,7 +177,7 @@ public class StallService {
                 }
                 return Result.success("拒绝申请成功");
             }
-        }else if (teamProjectMessage.getTp_join() == 0) {
+        } else if (teamProjectMessage.getTp_join() == 0) {
             stm.setJoin_status(0);
             stm_tar.setStm_pass(1);
             stm_tar.setJoin_status(1);
