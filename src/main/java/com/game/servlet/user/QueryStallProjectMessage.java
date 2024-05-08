@@ -57,7 +57,7 @@ public class QueryStallProjectMessage extends HttpServlet {
         String way = req.getParameter("way");
         User user =JSON.parseObject(jsonString, User.class);
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":

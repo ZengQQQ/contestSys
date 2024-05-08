@@ -53,7 +53,7 @@ public class QueryProjectStallMessage extends HttpServlet {
         User user =JSON.parseObject(jsonString, User.class);
 
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":

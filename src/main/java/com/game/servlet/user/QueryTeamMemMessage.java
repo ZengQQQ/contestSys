@@ -54,7 +54,7 @@ public class QueryTeamMemMessage extends HttpServlet {
         TeamUserMessage teamUserMessage = new TeamUserMessage();
 
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":

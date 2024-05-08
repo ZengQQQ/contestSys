@@ -51,7 +51,7 @@ public class QueryTeamStallMessage extends HttpServlet {
         }
         String way = req.getParameter("way");
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":

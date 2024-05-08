@@ -58,10 +58,10 @@ public class QueryMemTeamMessage extends HttpServlet {
         }
         switch (way){
             case "put":
-                teamUserMessage.setTsm_dct(1);
+                teamUserMessage.setTsm_dct(0);
                 break;
             case "get":
-                teamUserMessage.setTsm_dct(0);
+                teamUserMessage.setTsm_dct(1);
                 break;
             default:
         }

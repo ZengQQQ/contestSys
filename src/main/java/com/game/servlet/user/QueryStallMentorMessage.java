@@ -59,7 +59,7 @@ public class QueryStallMentorMessage extends HttpServlet {
         StallMentorMessage stallMentorMessage = new StallMentorMessage();
 
         if(way==null){
-            way="get";
+            way="";
         }
         switch (way){
             case "put":

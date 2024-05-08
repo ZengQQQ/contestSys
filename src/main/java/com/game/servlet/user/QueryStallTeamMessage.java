@@ -58,7 +58,7 @@ public class QueryStallTeamMessage extends HttpServlet {
         User user =JSON.parseObject(jsonString, User.class);
 
         if(way==null){
-            way="get";
+            way="";
         }
 
         switch (way){
