@@ -55,7 +55,4 @@ public class TeamProjectMessage {
         return this;
     }
 
-    public int getTp_dict() {
-        return tp_dict;
-    }
 }
