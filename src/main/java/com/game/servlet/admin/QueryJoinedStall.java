@@ -77,7 +77,7 @@ public class QueryJoinedStall extends HttpServlet {
         switch (joinType){
             case "joined":chain.setJoin_status(1);
                 break;
-            case "joining":chain.setJoin_status(0);chain.setTsm_pass(1);
+            case "joining":chain.setJoin_status(1);chain.setTsm_pass(1);
                 break;
             default:
         }
@@ -97,7 +97,7 @@ public class QueryJoinedStall extends HttpServlet {
         switch (joinStallType){
             case "joined":chain2.setJoin_status(1);
                 break;
-            case "joining":chain2.setJoin_status(0);chain2.setStm_status(1);
+            case "joining":chain2.setJoin_status(1);chain2.setStm_pass(1);
                 break;
             default:
         }

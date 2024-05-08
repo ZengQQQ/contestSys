@@ -65,13 +65,13 @@ public class QueryJoinedStall extends HttpServlet {
             joinType="";
         }
         if(teamType==null){
-            joinType="";
+            teamType="";
         }
         if(joinStallType==null){
-            joinType="";
+            joinStallType="";
         }
         if(stallType==null){
-            joinType="";
+            stallType="";
         }
 
 
@@ -79,7 +79,7 @@ public class QueryJoinedStall extends HttpServlet {
             case "joined":chain.setJoin_status(1);
                 break;
             default:
-                chain.setJoin_status(0);chain.setTsm_pass(1);
+                chain.setJoin_status(1);chain.setTsm_pass(1);
         }
         switch (Objects.requireNonNull(teamType)){
             case "lock":chain1.setT_status(1);
@@ -89,9 +89,9 @@ public class QueryJoinedStall extends HttpServlet {
             default:chain1.setT_status(0);
         }
         switch (Objects.requireNonNull(joinStallType)){
-            case "joined":chain2.setJoin_status(1);
+            case "joined":chain2.setJoin_status(0);
                 break;
-            default:chain2.setJoin_status(0);chain2.setStm_status(1);
+            default:chain2.setJoin_status(1);chain2.setStm_pass(1);
         }
         switch (Objects.requireNonNull(stallType)){
             case "lock":target.setSt_status(1);
