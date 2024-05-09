@@ -118,7 +118,7 @@ public class RelationshipServe {
             }
         }
         team = teamList.get(0);
-        if (teamUserMessage.getTsm_pass() == 1 && teamUserMessage.getJoin_status() == 0) {
+        if (teamUserMessage.getTsm_pass() == 1) {
             TeamUserMessage tar2 = new TeamUserMessage();
             tar2.setT_id(teamUserMessage.getT_id());
             tar2.setJoin_status(1);

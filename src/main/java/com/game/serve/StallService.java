@@ -76,7 +76,7 @@ public class StallService {
                 }
             }
         }
-        if (teamProjectMessage.getTp_dict() == 1) {
+        if (teamProjectMessage.getTp_dct() == 1) {
             stm.setStm_pass(1);
             stm.setJoin_status(1);
             stm.setStm_dct(1);
@@ -87,7 +87,7 @@ public class StallService {
             if (inserted2 && inserted1) {
                 return Result.success("已发送申请");
             }
-        } else if (teamProjectMessage.getTp_dict() == 0) {
+        } else if (teamProjectMessage.getTp_dct() == 0) {
             spm.setSpm_pass(1);
             spm.setJoin_status(1);
             spm.setSpm_dct(0);

@@ -39,7 +39,7 @@ public class ProjectTeamMessageUpdate extends HttpServlet {
         TeamProjectMessage tar = new TeamProjectMessage();
         tar.setT_id(teamProjectMessage.getT_id());
         tar.setP_id(teamProjectMessage.getP_id());
-        tar.setTp_dict(teamProjectMessage.getTp_pass());
+        tar.setTp_dct(teamProjectMessage.getTp_pass());
 
         Result<String> result = relation.updateApproval(tar);
         String json = JSON.toJSONString(result);

@@ -2,7 +2,6 @@ package com.game.servlet.user.operation;
 
 import com.alibaba.fastjson2.JSON;
 import com.game.domain.*;
-import com.game.serve.RelationshipServe;
 import com.game.serve.StallService;
 import com.game.utils.Result;
 
@@ -40,7 +39,8 @@ public class ProjectTeamMessageSend extends HttpServlet {
         TeamProjectMessage tar = new TeamProjectMessage();
         tar.setT_id(teamProjectMessage.getT_id());
         tar.setP_id(teamProjectMessage.getP_id());
-        tar.setTp_dict(teamProjectMessage.getTp_dict());
+        tar.setTp_dct(teamProjectMessage.getTp_dct());
+        tar.setTp_info(teamProjectMessage.getTp_info());
 
         Result<String> result = relation.insert(tar);
         String json = JSON.toJSONString(result);
