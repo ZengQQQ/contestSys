@@ -58,9 +58,9 @@ public class StallProjectMessageDao extends BaseDao<StallProjectMessage> {
         StallProjectMessage StallTaskMessage1 =new StallProjectMessage(StallTaskMessage);
         StallTaskMessage1.setSt_id(null);
         // 更新条件
-        Map<String, Object> condition = StallTaskMessage1.toMap();
+        Map<String, Object> condition = conditionStallTaskMessage.toMap();
 
-        Map<String, Object> map = conditionStallTaskMessage.toMap();
+        Map<String, Object> map = StallTaskMessage.toMap();
 
         int updated = super.update(map, condition);
 
