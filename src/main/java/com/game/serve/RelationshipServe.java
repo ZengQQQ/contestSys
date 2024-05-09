@@ -56,7 +56,7 @@ public class RelationshipServe {
                 }
             }
             team = teamList.get(0);
-            if (Objects.equals(team.getU_acc(), user.getU_acc())){
+            if (Objects.equals(team.getU_acc(), user.getU_acc())) {
                 return Result.fail("添加关系失败,队长无法加入自己的队伍", "");
             }
             boolean result = teamUserMessageDao.insert(teamUserMessage);
@@ -118,29 +118,34 @@ public class RelationshipServe {
             }
         }
         team = teamList.get(0);
-        if (teamUserMessage.getTsm_pass() == 1) {
-            TeamUserMessage tar2 = new TeamUserMessage();
-            tar2.setT_id(teamUserMessage.getT_id());
-            tar2.setJoin_status(1);
-            List<TeamUserMessage> resList2 = teamUserMessageDao.query(tar2, -1, -1);
-            if (resList2.size() >= team.getT_maxnum()) {
-                return Result.fail("更新关系失败,队伍人数已满", "");
+        if (teamUserMessage.getJoin_status() == null) {
+            if (teamUserMessage.getTsm_pass() == 1) {
+                TeamUserMessage tar2 = new TeamUserMessage();
+                tar2.setT_id(teamUserMessage.getT_id());
+                tar2.setJoin_status(1);
+                List<TeamUserMessage> resList2 = teamUserMessageDao.query(tar2, -1, -1);
+                if (resList2.size() >= team.getT_maxnum()) {
+                    return Result.fail("更新关系失败,队伍人数已满", "");
+                }
+                teamUserMessage.setJoin_status(1);
+                tar1.setT_id(teamUserMessage.getT_id());
+                team.setT_curnum(team.getT_curnum() + 1);
+            } else if (teamUserMessage.getTsm_pass() == 2) {
+                teamUserMessage.setJoin_status(0);
             }
-            teamUserMessage.setJoin_status(1);
-            tar1.setT_id(teamUserMessage.getT_id());
-            team.setT_curnum(team.getT_curnum() + 1);
-        } else if (teamUserMessage.getTsm_pass() == 2) {
-            teamUserMessage.setJoin_status(0);
+            return Result.fail("更新状态失败,无法识别的状态类型","");
         } else if (teamUserMessage.getJoin_status() == 2) {
             tar1.setT_id(teamUserMessage.getT_id());
             team.setT_curnum(team.getT_curnum() - 1);
+        } else {
+            return Result.fail("更新状态失败,无法识别的状态类型","");
         }
         int result1 = teamUserMessageDao.update(teamUserMessage, tar);
         int result2 = teamDao.update(team, tar1);
         if (result1 == 0 || result2 == 0) {
             return Result.fail("更新关系失败", "队伍关系更新失败");
         }
-        return Result.fail("添加关系失败,无法识别的关系类型", "");
+        return Result.success("更新关系成功");
     }
 
 
