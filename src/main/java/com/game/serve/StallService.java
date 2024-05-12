@@ -244,9 +244,9 @@ public class StallService {
             }
         } else if (message.getSm_pass() == 2) {
             if (smm.getSmm_dct() == 0) {
-                smm.setSmm_pass(2);
                 StallMentorMessage stallMentorMessage = new StallMentorMessage();
                 stallMentorMessage = smm;
+                smm.setSmm_pass(2);
                 int updated2 = stallMentorMessageDao.update(smm, stallMentorMessage);
                 if (updated2 == 0) {
                     return Result.fail("更新失败", "");
