@@ -58,9 +58,9 @@ public class StallTeamMessageDao extends BaseDao<StallTeamMessage> {
         StallTeamMessage StallTeamMessage1 =new StallTeamMessage(StallTeamMessage);
         StallTeamMessage1.setSt_id(null);
         // 更新条件
-        Map<String, Object> condition = StallTeamMessage1.toMap();
+        Map<String, Object> condition = conditionStallTeamMessage.toMap();
 
-        Map<String, Object> map = conditionStallTeamMessage.toMap();
+        Map<String, Object> map = StallTeamMessage1.toMap();
 
         int updated = super.update(map, condition);
 

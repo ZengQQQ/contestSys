@@ -57,9 +57,8 @@ public class StallDao extends BaseDao<Stall> {
         Stall stall1 =new Stall(stall);
         stall1.setSt_id(null);
         // 更新条件
-        Map<String, Object> condition = stall1.toMap();
-
-        Map<String, Object> map = conditionstall.toMap();
+        Map<String, Object> condition = conditionstall.toMap();
+        Map<String, Object> map = stall.toMap();
 
         int updated = super.update(map, condition);
 

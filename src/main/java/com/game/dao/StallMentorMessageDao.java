@@ -57,9 +57,9 @@ public class StallMentorMessageDao extends BaseDao<StallMentorMessage> {
         StallMentorMessage StallMentorMessage1 =new StallMentorMessage(StallMentorMessage);
         StallMentorMessage1.setSt_id(null);
         // 更新条件
-        Map<String, Object> condition = StallMentorMessage1.toMap();
+        Map<String, Object> condition = conditionStallMentorMessage.toMap();
 
-        Map<String, Object> map = conditionStallMentorMessage.toMap();
+        Map<String, Object> map = StallMentorMessage1.toMap();
 
         int updated = super.update(map, condition);
 

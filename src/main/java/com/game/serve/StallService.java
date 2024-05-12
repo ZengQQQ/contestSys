@@ -255,7 +255,9 @@ public class StallService {
             } else if (smm.getSmm_dct() == 1) {
                 smm.setSmm_pass(2);
                 StallMentorMessage stallMentorMessage = new StallMentorMessage();
-                stallMentorMessage = smm;
+                stallMentorMessage.setSmm_id(smm.getSmm_id());
+//                stallMentorMessage.setSt_id(smm.getSt_id());
+//                stallMentorMessage.setU_acc(smm.getU_acc());
                 int updated2 = stallMentorMessageDao.update(smm, stallMentorMessage);
                 if (updated2 == 0) {
                     return Result.fail("更新失败", "");
@@ -437,6 +439,25 @@ public class StallService {
         int updated = stalldao.update(stall, tar);
         if (updated == 0) {
             return Result.fail("更新失败", "更新失败");
+        }
+        return Result.success("更新成功");
+    }
+
+
+    /**
+     * 修改消息状态
+     *
+     */
+    public Result<String> updateStatus(Stall stall) {
+        Stall tar = new Stall();
+        tar.setSt_id(stall.getSt_id());
+        List<Stall> exited = stalldao.query(tar,-1,-1);
+        if (exited.isEmpty()){
+            return Result.fail("没有该消息","");
+        }
+        int updated = stalldao.update(stall,tar);
+        if (updated == 0){
+            return Result.fail("更新失败","");
         }
         return Result.success("更新成功");
     }
